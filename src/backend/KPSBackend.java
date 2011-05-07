@@ -10,6 +10,7 @@ public class KPSBackend {
 	
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> activeMail;
+	private ArrayList<Event> events;
 	
 	//private String password;
 	private int passwordHash;
@@ -19,7 +20,7 @@ public class KPSBackend {
 		
 		routes = new ArrayList<Route>();
 		activeMail = new ArrayList<Mail>();
-
+		events = new ArrayList<Event>();
 		//password = "sototessecure";
 		passwordHash = 653306037;
 		isManager = false;
@@ -52,6 +53,53 @@ public class KPSBackend {
 		isManager = false;
 	}
 	
+	public ArrayList<CriticalRoute> getCriticalRoute(){
+		ArrayList<CriticalRoute> criticalRoutes = new ArrayList<CriticalRoute>();
+		
+		for (Route route : routes){
+			
+		}
+		return criticalRoutes;
+	}
+	
+	/** METHODS FOR CALCULATIONS */
+	public Double calculateRevenue(){
+		Double sum = 0.0;
+		
+		// loop through events
+		for (Event event : events){
+			// if mail event, add costPerG and costPerCC to total revenue
+			if (event instanceof MailEvent){
+				Mail mail = ((MailEvent)event).getMail();
+				sum += (event.getVehicle().getCustomerCostPerCC() * mail.getVolume()) + (event.getVehicle().getCustomerCostPerG() * mail.getWeight());
+			}
+		}
+		return sum;
+	}
+	
+	public Double calculateDeliveryTimes(){
+		return 0.0;
+	}	
+	
+	public Double calculateAmountMail(){
+		return 0.0;
+	}	
+	
+	public Double calculateExpenditure(){
+		Double sum = 0.0;
+		
+		// loop through events
+		for (Event event : events){
+			// if mail event, add costPerG and costPerCC to total revenue
+			if (event instanceof MailEvent){
+				Mail mail = ((MailEvent)event).getMail();
+				sum += (event.getVehicle().getTransportCostPerCC() * mail.getVolume()) + (event.getVehicle().getTransportCostPerG() * mail.getWeight());
+			}
+		}
+		return sum;
+	}
+	
+		/** METHODS FOR EVENTS */
 	public void sendMail(int ID, double weight, double volume, String origin, String destination, Priority priority) {
 		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
 		activeMail.add(mail);
@@ -59,20 +107,56 @@ public class KPSBackend {
 	}
 	
 	//Updates the customer price for a route
-	public Event updatePrice(DistributionCentre origin, DistributionCentre destination) {
-		//Needs two nodes
+	public Event updatePrice(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, Priority priority, Firm firm) {
+		Route route = findRoute(origin, destination);
+		if (route == null)
+			return null;
 		
-		//Work out routes
+		Vehicle vehicle = route.getVehicle(priority, firm);
+		if (vehicle == null)
+			return null;
 		
-		return null;
+		vehicle.updateCustomerCost(pricePerG, pricePerCC);
+		
+		// add to event log
+		Event event = new PriceUpdateEvent(); // TODO: add details to event
+		events.add(event); 
+		return event;
 	}
 	
-	public Event updateTransport() {
-		return null;
+	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, Priority priority, Firm firm) {
+		Route route = findRoute(origin, destination);
+		if (route == null)
+			return null;
+		
+		Vehicle vehicle = route.getVehicle(priority, firm);
+		if (vehicle == null)
+			return null;
+		
+		vehicle.updateTransportCost(pricePerG, pricePerCC);
+		
+		// add to event log
+		Event event = new TransportUpdateEvent(); // TODO: add details to event
+		events.add(event); 
+		return event;
 	}
 	
-	public Event discontinueTransport() {
-		return null;
+	//TODO Change int -> Day class?
+	public Event discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm, int day) {
+		Route route = findRoute(origin, destination);
+		if (route == null)
+			return null;
+		
+		Vehicle vehicle = route.getVehicle(priority, firm);
+		if (vehicle == null)
+			return null;
+		
+		route.discontinueTransport(vehicle.getID());
+		
+		// add to event log
+		Event event = new DiscontinueTransportEvent(); // TODO: add details to event
+		events.add(event); 
+		return event;
 	}
 	
 	public void getMail(int ID) {
@@ -95,5 +179,19 @@ public class KPSBackend {
 		int hashed = s.hashCode();
 		hashed = (int) Math.floor((hashed*3621873+1321798)/Math.PI);
 		return hashed;
+	}
+	
+	
+	// Helper methods
+	/**
+	 * Finds the route corresponding to the origin and destination.
+	 */
+	private Route findRoute(DistributionCentre origin, DistributionCentre destination){
+		for (Route route : this.routes){
+			if (route.getD1().equals(origin) && route.getD2().equals(destination))
+				return route;
+		}
+		// route not found, return null
+		return null;
 	}
 }

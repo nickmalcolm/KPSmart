@@ -1,5 +1,5 @@
 package events;
 
-public class PriceUpdateEvent {
+public class PriceUpdateEvent extends Event {
 
 }

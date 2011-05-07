@@ -1,5 +1,5 @@
 package events;
 
-public class TransportUpdateEvent {
+public class TransportUpdateEvent extends Event {
 
 }

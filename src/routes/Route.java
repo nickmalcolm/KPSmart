@@ -2,6 +2,8 @@ package routes;
 
 import java.util.ArrayList;
 
+import priority.Priority;
+
 public class Route {
 	
 	private DistributionCentre d1;
@@ -27,6 +29,16 @@ public class Route {
 		
 		return null;
 	}
+	
+	public Vehicle getVehicle(Priority priority, Firm firm){
+		for (Vehicle vehicle : vehicles){
+			if (vehicle.getPriority() == priority && vehicle.getFirm().equals(firm)){
+				return vehicle;
+			}
+		}
+		// no vehicle found for that firm and priority
+		return null;
+	}
 
 	public DistributionCentre getD1() {
 		return d1;
@@ -47,5 +59,7 @@ public class Route {
 	public ArrayList<Vehicle> getVehicles() {
 		return vehicles;
 	}
+	
+
 	
 }

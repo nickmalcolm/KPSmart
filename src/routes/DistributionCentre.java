@@ -35,7 +35,15 @@ public class DistributionCentre {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof DistributionCentre))
+			return false;
+		DistributionCentre other = (DistributionCentre) obj;
+		if (this.name.equals(other.getName()) && this.city.equals(other.getCity()) && this.country.equals(other.getCountry())){
+			return true;
+		}
+		return false;
+	}
 
 }

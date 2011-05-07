@@ -1,5 +1,5 @@
 package events;
 
-public class DiscontinueTransportEvent {
+public class DiscontinueTransportEvent extends Event {
 
 }
