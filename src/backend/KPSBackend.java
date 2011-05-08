@@ -1,6 +1,8 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
@@ -112,13 +114,43 @@ public class KPSBackend {
 		return sum;
 	}
 	
-	public Double calculateDeliveryTimes(){
-		return 0.0;
+	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination){
+		// get all mails corresponding to priority/origin/destination
+		Route route = findRoute(origin, destination);
+		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
+		double sum = 0.0;
+		int numEvents = 0;
+		// yuck code! want to buy LINQ query/database...
+		// loop through events and find all mail corresponding to correct vehicle
+		for (Event event : events){
+			// check if event is a MailEvent
+			if (event instanceof MailEvent){
+				for (Vehicle vehicle : vehicles){
+					// check if event is on the correct route/priority
+					if (((MailEvent)event).getVehicle().equals(vehicle)){
+						sum += vehicle.getDuration();
+						numEvents++;
+					}
+				}
+			}
+		}
+		// return avg delivery time
+		return sum / numEvents;
 	}	
 	
-	public Double calculateAmountMail(){
-		return 0.0;
-	}	
+	// TODO make view models?
+	public Map<DistributionCentre, Integer> calculateAmountMail(DistributionCentre origin){
+		// get all distribution centres from origin
+		
+		// calculate total volume of all mails
+		
+		// calculate total weight of all mails
+		
+		// calculate total no. of mails
+		
+		// return map of <destination, MailAmountModel(?)> 
+		return null;
+	}
 	
 	public Double calculateExpenditure(){
 		Double sum = 0.0;
@@ -134,7 +166,11 @@ public class KPSBackend {
 		return sum;
 	}
 	
-		/** METHODS FOR EVENTS */
+	public int getNumberOfEvents(){
+		return events.size();
+	}
+	
+	/** METHODS FOR EVENTS */
 	public void sendMail(int ID, double weight, double volume, String origin, String destination, Priority priority) {
 		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
 		activeMail.add(mail);
@@ -159,7 +195,7 @@ public class KPSBackend {
 		return event;
 	}
 	
-	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, Priority priority, Firm firm) {
+	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInMinutes, Day day, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
 		if (route == null)
 			return null;
@@ -171,13 +207,12 @@ public class KPSBackend {
 		vehicle.updateTransportCost(pricePerG, pricePerCC);
 		
 		// add to event log TODO change events
-		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, 1, 1, null, origin, destination);
+		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
 		events.add(event); 
 		return event;
 	}
 	
-	//TODO Change int -> Day class?
-	public Event discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm, int day) {
+	public Event discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm, Day day) {
 		Route route = findRoute(origin, destination);
 		if (route == null)
 			return null;
