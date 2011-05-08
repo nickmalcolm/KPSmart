@@ -1,16 +1,15 @@
 package events;
 
 import routes.DistributionCentre;
+import backend.Day;
 
 public class TransportUpdateEvent extends Event {
-	
-	static enum DAY { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY, SATURDAY, SUNDAY}
 	
 	private double costPerCC;
 	private double costPerG;
 	private int frequency;
 	private int durationInMinutes;
-	private DAY day;
+	private Day day;
 	private DistributionCentre origin;
 	private DistributionCentre destination;
 	
@@ -28,7 +27,7 @@ public class TransportUpdateEvent extends Event {
 	 * @param destination - the DistributionCentre at which the transport arrives
 	 */
 	public TransportUpdateEvent(double costPerCC, double costPerG,
-			int frequency, int durationInMinutes, DAY day,
+			int frequency, int durationInMinutes, Day day,
 			DistributionCentre origin, DistributionCentre destination) {
 		super();
 		this.costPerCC = costPerCC;
@@ -56,11 +55,23 @@ public class TransportUpdateEvent extends Event {
 	public int getDurationInMinutes() {
 		return durationInMinutes;
 	}
+<<<<<<< HEAD
 
 	public DAY getDay() {
 		return day;
 	}
 
+=======
+	public void setDurationInMinutes(int durationInMinutes) {
+		this.durationInMinutes = durationInMinutes;
+	}
+	public Day getDay() {
+		return day;
+	}
+	public void setDay(Day day) {
+		this.day = day;
+	}
+>>>>>>> 768a8b61d2b36150d3a9420328ade03e1d22fab9
 	public DistributionCentre getOrigin() {
 		return origin;
 	}
