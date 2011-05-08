@@ -2,6 +2,11 @@ package backend;
 
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
+import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+
+import com.thoughtworks.xstream.XStream;
+
 import events.*;
 import priority.*;
 import routes.*;
@@ -11,6 +16,8 @@ public class KPSBackend {
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> activeMail;
 	private ArrayList<Event> events;
+	private XStream xstream;
+	private String xmlFile;
 	
 	//private String password;
 	private int passwordHash;
@@ -33,6 +40,34 @@ public class KPSBackend {
 	
 	//Parses the XML record(s) and retains their contents in memory
 	public void parseXMLRecord() {
+		xstream = new XStream();
+		try{
+			//Will we just use one XML file? Need way to split these when parsing.
+			//Un-hash XML file? (if hashed during save)
+		routes = (ArrayList<Route>)xstream.fromXML(xmlFile);
+		activeMail =(ArrayList<Mail>)xstream.fromXML(xmlFile);
+		events = (ArrayList<Event>)xstream.fromXML(xmlFile);
+		}catch(Exception e){
+			System.out.println("Exception!: " +e+"\n ");
+			e.printStackTrace(); //Keep this here for debugging
+		}
+	}
+	
+	//Creates the XML record. Returns true if record is created successfully.
+	public boolean createXMLRecord(){
+		xstream = new XStream();
+		try{
+			xmlFile = xstream.toXML(routes);
+			xmlFile += xstream.toXML(activeMail);
+			xmlFile += xstream.toXML(events);
+			
+			//Then save (and hash?) XML file
+			return true;
+		}catch (Exception e) {
+			System.out.println("Exception!: " +e+"\n ");
+			e.printStackTrace(); //Keep this here for debugging
+			return false;
+		}
 		
 	}
 	
