@@ -170,8 +170,8 @@ public class KPSBackend {
 		
 		vehicle.updateTransportCost(pricePerG, pricePerCC);
 		
-		// add to event log
-		Event event = new TransportUpdateEvent(); // TODO: add details to event
+		// add to event log TODO change events
+		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, 1, 1, null, origin, destination);
 		events.add(event); 
 		return event;
 	}
