@@ -43,24 +43,25 @@ public class TransportUpdateEvent extends Event {
 	public double getCostPerCC() {
 		return costPerCC;
 	}
-	public void setCostPerCC(double costPerCC) {
-		this.costPerCC = costPerCC;
-	}
+
 	public double getCostPerG() {
 		return costPerG;
 	}
-	public void setCostPerG(double costPerG) {
-		this.costPerG = costPerG;
-	}
+
 	public int getFrequency() {
 		return frequency;
 	}
-	public void setFrequency(int frequency) {
-		this.frequency = frequency;
-	}
+
 	public int getDurationInMinutes() {
 		return durationInMinutes;
 	}
+<<<<<<< HEAD
+
+	public DAY getDay() {
+		return day;
+	}
+
+=======
 	public void setDurationInMinutes(int durationInMinutes) {
 		this.durationInMinutes = durationInMinutes;
 	}
@@ -70,21 +71,13 @@ public class TransportUpdateEvent extends Event {
 	public void setDay(Day day) {
 		this.day = day;
 	}
+>>>>>>> 768a8b61d2b36150d3a9420328ade03e1d22fab9
 	public DistributionCentre getOrigin() {
 		return origin;
 	}
-	public void setOrigin(DistributionCentre origin) {
-		this.origin = origin;
-	}
+
 	public DistributionCentre getDestination() {
 		return destination;
 	}
-	public void setDestination(DistributionCentre destination) {
-		this.destination = destination;
-	}
-	
-	
-	
-	
 
 }
