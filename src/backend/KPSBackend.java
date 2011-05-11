@@ -190,7 +190,7 @@ public class KPSBackend {
 		vehicle.updateCustomerCost(pricePerG, pricePerCC);
 		
 		// add to event log
-		Event event = new PriceUpdateEvent(); // TODO: add details to event
+		Event event = new PriceUpdateEvent(pricePerCC, pricePerG); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}
@@ -224,7 +224,7 @@ public class KPSBackend {
 		route.discontinueTransport(vehicle.getID());
 		
 		// add to event log
-		Event event = new DiscontinueTransportEvent(); // TODO: add details to event
+		Event event = new DiscontinueTransportEvent(firm, priority, destination, destination); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}
