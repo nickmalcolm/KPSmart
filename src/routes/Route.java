@@ -1,6 +1,7 @@
 package routes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import priority.Priority;
 
@@ -37,6 +38,11 @@ public class Route {
 			}
 		}
 		// no vehicle found for that firm and priority
+		return null;
+	}
+	
+	public List<Vehicle> getVehiclesByPriority(Priority priority){
+		//TODO
 		return null;
 	}
 
