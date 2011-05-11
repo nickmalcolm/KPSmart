@@ -12,7 +12,13 @@ public class DiscontinueTransportEvent extends Event {
 	private DistributionCentre destination;
 	
 	
-	
+	/**
+	 * 
+	 * @param firm
+	 * @param priority
+	 * @param origin
+	 * @param destination
+	 */
 	public DiscontinueTransportEvent(Firm firm, Priority priority,
 			DistributionCentre origin, DistributionCentre destination) {
 		super();
