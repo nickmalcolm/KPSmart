@@ -1,6 +1,11 @@
 package backend;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.List;
 import java.util.Map;
 
@@ -41,29 +46,83 @@ public class KPSBackend {
 	}
 	
 	//Parses the XML record(s) and retains their contents in memory
+	@SuppressWarnings("unchecked")
 	public void parseXMLRecord() {
 		xstream = new XStream();
 		try{
-			//Will we just use one XML file? Need way to split these when parsing.
-			//Un-hash XML file? (if hashed during save)
-		routes = (ArrayList<Route>)xstream.fromXML(xmlFile);
-		activeMail =(ArrayList<Mail>)xstream.fromXML(xmlFile);
-		events = (ArrayList<Event>)xstream.fromXML(xmlFile);
+			//Reads in all the XML files from disk
+			String routeXMLInput;
+			String mailXMLinput;
+			String eventsXMLInput;
+			
+			File fileToRead = new File("routesXML.xml");
+			routeXMLInput = readFileToString(fileToRead);
+			
+			fileToRead = new File("mailXML.xml");
+			mailXMLinput = readFileToString(fileToRead);
+			
+			fileToRead = new File("eventsXML.xml");
+			eventsXMLInput = readFileToString(fileToRead);
+			
+		//Finally parses the files back into objects.
+		routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
+		activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
+		events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+		
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
 			e.printStackTrace(); //Keep this here for debugging
 		}
 	}
 	
+	//Method to read the disk file and put into a string.
+	public String readFileToString(File f){
+		if (f!=null){
+			try{
+				String output = "";
+				Scanner scanner = new Scanner(new FileReader(f));
+				while(scanner.hasNextLine())
+					output += scanner.nextLine();
+				scanner.close();
+				return output;
+			}catch (Exception e) {
+				System.out.println("Error reading external file!");
+				return null;
+			}
+		}
+		else return null;
+	}
+	
 	//Creates the XML record. Returns true if record is created successfully.
 	public boolean createXMLRecord(){
 		xstream = new XStream();
 		try{
-			xmlFile = xstream.toXML(routes);
-			xmlFile += xstream.toXML(activeMail);
-			xmlFile += xstream.toXML(events);
+			String routesXML = xstream.toXML(routes);
+			String mailXML = xstream.toXML(activeMail);
+			String eventsXML = xstream.toXML(events);
 			
 			//Then save (and hash?) XML file
+			//Save routes file
+			FileWriter fileWriter = new FileWriter("routesXML.xml");
+			BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+			bufWriter.write(routesXML);
+			bufWriter.close();
+			fileWriter.close();
+			
+			//Save mail file
+			fileWriter = new FileWriter("mailXML.xml");
+			bufWriter = new BufferedWriter(fileWriter);
+			bufWriter.write(mailXML);
+			bufWriter.close();
+			fileWriter.close();
+			
+			//Save events file
+			fileWriter = new FileWriter("eventsXML.xml");
+			bufWriter = new BufferedWriter(fileWriter);
+			bufWriter.write(eventsXML);
+			bufWriter.close();
+			fileWriter.close();
+			
 			return true;
 		}catch (Exception e) {
 			System.out.println("Exception!: " +e+"\n ");
