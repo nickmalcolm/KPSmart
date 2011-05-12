@@ -207,7 +207,6 @@ public class KPSBackend {
 		return sum / numEvents;
 	}	
 	
-	// TODO make view models?
 	public Map<PrioritisedRoute, Integer> calculateAmountMail(DistributionCentre origin){
 		// get all distribution centres from origin
 		
@@ -217,7 +216,7 @@ public class KPSBackend {
 		
 		// calculate total no. of mails
 		
-		// return map of <PrioritisedRoute[origin,dest,priority triple], MailAmountModel(?)> 
+		// return map of <PrioritisedRoute[origin,dest,priority triple], totalNumberOfItems> 
 		return null;
 	}
 	
