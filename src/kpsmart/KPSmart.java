@@ -53,21 +53,29 @@ public class KPSmart implements ActionListener{
 			//prompt for data
 			
 			//create and send
+			kFrame.sendMail();
 			kBackend.sendMail(12345, 0, 0, "Christchurch", "Auckland", Priority.DOMESTIC);
 			return;
 		}
 		
-		//TOOLS OPTIONS
-		if ("Authenticate as manager".equals(e.getActionCommand())) {
-			kPasswordField = new JPasswordField(10);
-			JOptionPane.showMessageDialog(kFrame, kPasswordField, "Password Required", JOptionPane.WARNING_MESSAGE);
+		//VIEW OPTIONS
+		if ("Sign out as manager".equals(e.getActionCommand())) {
+			kFrame.notManager();
+			return;
 		}
 		
-		String pass = String.valueOf(kPasswordField.getPassword());
-		if(kBackend.authenticateManager(pass)) {
-			kFrame.manager();
-			System.out.println("MANAGER MODE");
-			return;
+		if ("Sign in as manager".equals(e.getActionCommand())) {
+			kPasswordField = new JPasswordField(10);
+			JOptionPane.showMessageDialog(kFrame, kPasswordField, "Password Required", JOptionPane.WARNING_MESSAGE);
+		//}
+		
+			String pass = String.valueOf(kPasswordField.getPassword());
+			if(kBackend.authenticateManager(pass)) {
+				kFrame.manager();
+				System.out.println("MANAGER MODE");
+				return;
+			}
+			
 		}
 		
 		//HELP OPTIONS

@@ -26,12 +26,17 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	private JMenuItem mSend;
 	
 	private JMenu viewMenu;
+	private JMenuItem vAuthenticate;
+	private JMenuItem vDeauthenticate;
 	private JMenuItem vRevenue;
+	private JMenuItem vExpenditure;
+	private JMenuItem vTotalNumberOfEvents;
 	private JMenuItem vDeliveryTimes;
 	private JMenuItem vAmountOfMail;
+	private JMenuItem vCriticalRoutes;
 	
-	private JMenu toolsMenu;
-	private JMenuItem tAuthenticate;
+	//private JMenu toolsMenu;
+
 
 	private JMenu helpMenu;
 	private JMenuItem hAbout;
@@ -82,25 +87,52 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 		
 		viewMenu = new JMenu("View");
 		
+			vAuthenticate = new JMenuItem("Sign in as manager", KeyEvent.VK_S);
+			vAuthenticate.addActionListener(a);
+			viewMenu.add(vAuthenticate);
+			
+			vDeauthenticate = new JMenuItem("Sign out as manager", KeyEvent.VK_O);
+			vDeauthenticate.addActionListener(a);
+			viewMenu.add(vDeauthenticate);
+		
 			vRevenue = new JMenuItem("Revenue", KeyEvent.VK_V);
 			vRevenue.addActionListener(a);
 			viewMenu.add(vRevenue);
+
+			
+			vExpenditure = new JMenuItem("Expenditure", KeyEvent.VK_E);
+			vExpenditure.addActionListener(a);
+			viewMenu.add(vExpenditure);
+
+			
+			vTotalNumberOfEvents = new JMenuItem("Total Number of Events", KeyEvent.VK_N);
+			vTotalNumberOfEvents.addActionListener(a);
+			viewMenu.add(vTotalNumberOfEvents);
+
 			
 			vDeliveryTimes = new JMenuItem("Average Delivery Times", KeyEvent.VK_T);
 			vDeliveryTimes.addActionListener(a);
 			viewMenu.add(vDeliveryTimes);
+
 			
 			vAmountOfMail = new JMenuItem("Amount of Mail", KeyEvent.VK_A);
 			vAmountOfMail.addActionListener(a);
 			viewMenu.add(vAmountOfMail);
+
 			
-		viewMenu.setEnabled(false);
+			vCriticalRoutes = new JMenuItem("Critical Routes", KeyEvent.VK_C);
+			vCriticalRoutes.addActionListener(a);
+			viewMenu.add(vCriticalRoutes);
+			
+			notManager();
+			
+		//viewMenu.setEnabled(false);
 		
-		toolsMenu = new JMenu("Tools");
+		//toolsMenu = new JMenu("Tools");
 		
-			tAuthenticate = new JMenuItem("Authenticate as manager", KeyEvent.VK_M);
-			tAuthenticate.addActionListener(a);
-			toolsMenu.add(tAuthenticate);
+			//tAuthenticate = new JMenuItem("Authenticate as manager", KeyEvent.VK_M);
+			//tAuthenticate.addActionListener(a);
+			//toolsMenu.add(tAuthenticate);
 		
 		helpMenu = new JMenu("Help");
 		
@@ -112,16 +144,32 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 		this.add(editMenu);
 		this.add(mailMenu);
 		this.add(viewMenu);
-		this.add(toolsMenu);
+		//this.add(toolsMenu);
 		this.add(helpMenu);
 	}
 
 	public void manager() {
-		viewMenu.setEnabled(true);
+		//viewMenu.setEnabled(true);
+		vAuthenticate.setEnabled(false);
+		vDeauthenticate.setEnabled(true);
+		vRevenue.setEnabled(true);
+		vExpenditure.setEnabled(true);
+		vTotalNumberOfEvents.setEnabled(true);			
+		vDeliveryTimes.setEnabled(true);
+		vAmountOfMail.setEnabled(true);
+		vCriticalRoutes.setEnabled(true);
 	}
 	
 	public void notManager() {
-		viewMenu.setEnabled(false);
+		//viewMenu.setEnabled(false);
+		vAuthenticate.setEnabled(true);
+		vDeauthenticate.setEnabled(false);
+		vRevenue.setEnabled(false);
+		vExpenditure.setEnabled(false);
+		vTotalNumberOfEvents.setEnabled(false);			
+		vDeliveryTimes.setEnabled(false);
+		vAmountOfMail.setEnabled(false);
+		vCriticalRoutes.setEnabled(false);
 	}
 
 //
