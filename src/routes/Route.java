@@ -11,6 +11,12 @@ public class Route {
 	private DistributionCentre d2;
 	private ArrayList<Vehicle> vehicles;
 	
+	public Route(DistributionCentre d1, DistributionCentre d2){
+		this.d1 = d1;
+		this.d2 = d2;
+		vehicles = new ArrayList<Vehicle>();
+	}
+	
 	public Route(DistributionCentre d1, DistributionCentre d2, ArrayList<Vehicle> vehicles) {
 		this.d1 = d1;
 		this.d2 = d2;
@@ -64,6 +70,11 @@ public class Route {
 
 	public ArrayList<Vehicle> getVehicles() {
 		return vehicles;
+	}
+
+	public void addVehicle(Vehicle vehicle) {
+		vehicles.add(vehicle);
+		
 	}
 	
 

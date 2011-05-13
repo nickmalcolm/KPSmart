@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
@@ -20,7 +21,7 @@ import priority.*;
 import routes.*;
 
 public class KPSBackend {
-	
+	private Set<DistributionCentre> distributionCentres;
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> activeMail;
 	private ArrayList<Event> events;
@@ -265,15 +266,22 @@ public class KPSBackend {
 	
 	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInMinutes, Day day, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
-		if (route == null)
-			return null;
+		// if no route found, create one
+		if (route == null){
+			route = new Route(origin, destination);
+			routes.add(route);
+		}
 		
 		Vehicle vehicle = route.getVehicle(priority, firm);
-		if (vehicle == null)
-			return null;
-		
-		vehicle.updateTransportCost(pricePerG, pricePerCC);
-		
+		// if no vehicle found, create one
+		if (vehicle == null){
+			vehicle = new Vehicle(route.getVehicles().size(), pricePerG, pricePerCC, frequency, durationInMinutes, priority, firm);
+			route.addVehicle(vehicle);
+		}
+		// else update the transport cost
+		else {
+			vehicle.updateTransportCost(pricePerG, pricePerCC);
+		}
 		// add to event log TODO change events
 		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
 		events.add(event); 
