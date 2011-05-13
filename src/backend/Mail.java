@@ -2,9 +2,14 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+
+
+
+
 import events.MailEvent;
 import priority.*;
 import routes.DistributionCentre;
+import routes.Route;
 
 public class Mail {
 	
@@ -59,68 +64,59 @@ public class Mail {
 	//destination goal node
 	public ArrayList<MailEvent>  calculateRoute(){
 		
-		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();
+		DistributionCentre dest = dest;	//Need to actually find this probably going to need a list of 
+		DistributionCentre org = org;   // routes in kpsBackend
 		
-		//need to find starting dist centre name
-		for(Route r : )
-		DistributionCentre start ;
-		DistributionCentre dest ;
-		int pathLength;
-		
-		
-		//for (Node n : nodes.values()) {
-		//	n.visit(false); //Reset all nodes to unvisited.
-		//}
-	 
-		SearchNode search = new SearchNode(start, null, pathLength  );
-		
+		ArrayList<SearchNode> searched = new ArrayList<SearchNode>(); // The set of nodes already evaluated. 
+		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();// The set of tentative nodes to be evaluated.
+									//	     came_from := the empty map    // The map of navigated nodes.
+		SearchNode search = new SearchNode(org, null, 0 );
 		fringe.offer(search); //Queue our starting node.
 		
-		while (fringe.size() != 0) {
-						
-			SearchNode tmp_search = fringe.poll(); //Get the most likely 
-			
-			DistributionCentre tmp_node = tmp_search.getCurrent(); //Get the node for referencing
-						
-		    double tmp_path = tmp_search.getPathLength(); //Get the length for referencing
-			
-			//If this is our goal, add it to the path nodes (so we can say we got there)
-			//and exit the search.
-			 
-			//If we haven't been to this node before
-			 
-				 //Set the visited flag
-
-				  //Make note of how we got here
-				  //Make note of how long it took
+ 
+		while(fringe.size() != 0){
+			//Remove node closest
+			SearchNode tempNode = fringe.poll(); 
 				
-				 //For each edge/segment
-		
-					  //Get the neighbor node for reference
-
-					  //If we haven't seen this already
-						  //Record the path length
-												
-						//Deals with "better roads".
-						//Adds 1 to prevent divide-by-zero errors.
-						 
-
-						//Work out the "true" length
-						 
-						  //Add it to our queue
-				 
+			//Goal node has been reached
+			if(tempNode.getCurrent().equals(dest)){
+				//*******************************FINISHED DO STUFF NOW************************************
+			}
+	        //Temp node is now in visited set
+			searched.add(tempNode);
+//	         foreach y in neighbor_nodes(x)
+			//want to be able to go tempNode.getRoutes
+			for(DistributionCentre r : tempNode.getConnectingNodes()){
 				
-				  //Add this node to our path
-			 
+				
+//	             if y in closedset
+					if(!searched.contains(r)){
+					}
+						
+//	                 continue
+//	             tentative_g_score := g_score[x] + dist_between(x,y)
+//	 
+//	             if y not in openset
+//	                 add y to openset
+//	                 tentative_is_better := true
+//	             else if tentative_g_score < g_score[y]
+//	                 tentative_is_better := true
+//	             else
+//	                 tentative_is_better := false
+//	 
+//	             if tentative_is_better = true
+//	                 came_from[y] := x
+//	                 g_score[y] := tentative_g_score
+//	                 h_score[y] := heuristic_cost_estimate(y, goal)
+//	                 f_score[y] := g_score[y] + h_score[y]
+//	 
+					
+					
+			}
 		}
 		
-		
-		
-		
-		
-		
-		
 		return null;
+		
 		
 	}
 	
@@ -129,21 +125,21 @@ public class Mail {
 	 
 	
 	
-	private class SearchNode{
+	private class SearchNode implements Comparable<SearchNode>{
 	
 
 		private DistributionCentre current;
 		private DistributionCentre previous ; 
 		private double pathLength ; 
 		private double estimate;
-		 
-		private boolean visited;
+		private double total;
 		
 		public SearchNode(DistributionCentre current , DistributionCentre previous , int pathLength  ){
 			this.current = current;
 			this.previous = previous;
 			this.pathLength = pathLength;
 			estimate = estimate(current,previous);
+			total = estimate + pathLength;
 	 
 		}
 		
@@ -159,13 +155,26 @@ public class Mail {
 		public double getEstimate() {
 			return estimate;
 		} 
-		public boolean isVisited() {
-			return visited;
+		public double getTotal() {
+			return total;
 		}
-		public void setIsVisited(boolean b) {
-			visited = b;
+		public ArrayList<DistributionCentre> getConnectingNodes(){
+			ArrayList<DistributionCentre> connected = new ArrayList<DistributionCentre>();
+			//go through all routes that come off this node
+			//make sure they arnt of greater priority than the mail was sent with
+			//Find other distruibution center they connect to
+			//add to an arraylist
+			//return arraylist
+			return connected;
 		}
- 
+
+		//Find the shortest route based on the estimated distance to go added
+		//to the current distance to get to this node.
+		public int compareTo(SearchNode s) {
+				if (this.total < s.getTotal()) return -1;
+				if (this.total > s.getTotal()) return 1;
+				return 0;
+		}
 		
 	}
  
