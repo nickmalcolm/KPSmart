@@ -281,11 +281,12 @@ public class KPSBackend {
 	}
 	
 	/** METHODS FOR EVENTS */
-	public void sendMail(int ID, double weight, double volume, String origin, String destination, Priority priority) {
+	public void sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
 		activeMail.add(mail);
 		getMail(ID);
 		// add new MailEvents
+		events.addAll(mail.getEvents());
 	}
 	
 	//Updates the customer price for a route

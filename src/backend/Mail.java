@@ -23,6 +23,8 @@ public class Mail {
 	
 	private Priority priority;
 	
+	private ArrayList<MailEvent> events;
+	
 	public Mail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		this.ID = ID;
 		this.weight = weight;
@@ -30,6 +32,7 @@ public class Mail {
 		this.origin = origin;
 		this.destination = destination;
 		this.priority = priority;
+		this.events = calculateRoute();
 	}
 	
 	public int getID() {
@@ -54,6 +57,10 @@ public class Mail {
 
 	public Priority getPriority() {
 		return priority;
+	}
+
+	public ArrayList<MailEvent> getEvents() {
+		return events;
 	}
 	
 	
@@ -194,4 +201,5 @@ public class Mail {
 		return z;
 
 	}
+
 }
