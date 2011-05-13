@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import priority.Priority;
+import routes.DistributionCentre;
 
 import gui.*;
 import backend.*;
@@ -54,7 +55,7 @@ public class KPSmart implements ActionListener{
 			
 			//create and send
 			kFrame.sendMail();
-			kBackend.sendMail(12345, 0, 0, "Christchurch", "Auckland", Priority.DOMESTIC);
+			kBackend.sendMail(12345, 0, 0, new DistributionCentre("Christchurch", "Christchurch", "New Zealand", 20, 20), new DistributionCentre("Auckland", "Auckland", "New Zealand", 60, 10), Priority.DOMESTIC);
 			return;
 		}
 		

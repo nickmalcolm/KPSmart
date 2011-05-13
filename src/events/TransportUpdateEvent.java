@@ -55,23 +55,19 @@ public class TransportUpdateEvent extends Event {
 	public int getDurationInMinutes() {
 		return durationInMinutes;
 	}
-<<<<<<< HEAD
 
-	public DAY getDay() {
-		return day;
-	}
-
-=======
-	public void setDurationInMinutes(int durationInMinutes) {
-		this.durationInMinutes = durationInMinutes;
-	}
 	public Day getDay() {
 		return day;
 	}
+
+	public void setDurationInMinutes(int durationInMinutes) {
+		this.durationInMinutes = durationInMinutes;
+	}
+	
 	public void setDay(Day day) {
 		this.day = day;
 	}
->>>>>>> 768a8b61d2b36150d3a9420328ade03e1d22fab9
+	
 	public DistributionCentre getOrigin() {
 		return origin;
 	}
