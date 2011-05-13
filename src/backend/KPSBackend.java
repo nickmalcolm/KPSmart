@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
 import java.util.Map;
@@ -149,13 +150,22 @@ public class KPSBackend {
 		isManager = false;
 	}
 	
-	public ArrayList<CriticalRoute> getCriticalRoute(){
-		ArrayList<CriticalRoute> criticalRoutes = new ArrayList<CriticalRoute>();
-		
+	public Map<PrioritisedRoute, Double> getCriticalRoute(){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
+		// loop through every route
 		for (Route route : routes){
-			
+			// loop through every priority in route
+			// for (Priority priority : [list of priorities])
+				// for (Vehicle  vehicle : route.getVehiclesByPriority) {
+				
+					//calculate avg delivery cost from origin->destination w/priority
+				
+					// calculate avg customer revenue from origin->destination w/priority
+				
+					// if avg cost > avg revenue, add new PrioritisedRoute(origin, destination, priority) into Map result
+					// and map Revenue - expenditure to PrioritisedRoute
 		}
-		return criticalRoutes;
+		return result;
 	}
 	
 	/** METHODS FOR CALCULATIONS */
@@ -197,8 +207,7 @@ public class KPSBackend {
 		return sum / numEvents;
 	}	
 	
-	// TODO make view models?
-	public Map<DistributionCentre, Integer> calculateAmountMail(DistributionCentre origin){
+	public Map<PrioritisedRoute, Integer> calculateAmountMail(DistributionCentre origin){
 		// get all distribution centres from origin
 		
 		// calculate total volume of all mails
@@ -207,7 +216,7 @@ public class KPSBackend {
 		
 		// calculate total no. of mails
 		
-		// return map of <destination, MailAmountModel(?)> 
+		// return map of <PrioritisedRoute[origin,dest,priority triple], totalNumberOfItems> 
 		return null;
 	}
 	
