@@ -18,12 +18,12 @@ public class Mail {
 	private double weight;
 	private double volume;
 	
-	private String origin;
-	private String destination;
+	private DistributionCentre origin;
+	private DistributionCentre destination;
 	
 	private Priority priority;
 	
-	public Mail(int ID, double weight, double volume, String origin, String destination, Priority priority) {
+	public Mail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		this.ID = ID;
 		this.weight = weight;
 		this.volume = volume;
@@ -36,11 +36,11 @@ public class Mail {
 		return ID;
 	}
 
-	public String getOrigin() {
+	public DistributionCentre getOrigin() {
 		return origin;
 	}
 
-	public String getDestination() {
+	public DistributionCentre getDestination() {
 		return destination;
 	}
 
@@ -64,8 +64,8 @@ public class Mail {
 	//destination goal node
 	public ArrayList<MailEvent>  calculateRoute(){
 		
-		DistributionCentre dest = dest;	//Need to actually find this probably going to need a list of 
-		DistributionCentre org = org;   // routes in kpsBackend
+		DistributionCentre dest = destination;	//Need to actually find this probably going to need a list of 
+		DistributionCentre org = origin;   // routes in kpsBackend
 		
 		ArrayList<SearchNode> searched = new ArrayList<SearchNode>(); // The set of nodes already evaluated. 
 		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();// The set of tentative nodes to be evaluated.

@@ -208,17 +208,58 @@ public class KPSBackend {
 		return sum / numEvents;
 	}	
 	
-	public Map<PrioritisedRoute, Integer> calculateAmountMail(DistributionCentre origin){
-		// get all distribution centres from origin
-		
-		// calculate total volume of all mails
-		
-		// calculate total weight of all mails
-		
+	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin){
+		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
+
 		// calculate total no. of mails
-		
-		// return map of <PrioritisedRoute[origin,dest,priority triple], totalNumberOfItems> 
-		return null;
+		for (Event event : events){
+			// check if event is a MailEvent
+			if (event instanceof MailEvent){
+				MailEvent mailEvent = (MailEvent) event;
+				Mail mail = mailEvent.getMail();
+				if (mail.getOrigin().equals(origin)){
+					int count = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + 1) : 1;
+					result.put(mail.getOrigin(), count);
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin){
+		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
+
+		// calculate total no. of mails
+		for (Event event : events){
+			// check if event is a MailEvent
+			if (event instanceof MailEvent){
+				MailEvent mailEvent = (MailEvent) event;
+				Mail mail = mailEvent.getMail();
+				if (mail.getOrigin().equals(origin)){
+					double vol = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + mail.getVolume()) : mail.getVolume();
+					result.put(mail.getOrigin(), vol);
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin){
+		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
+
+		// calculate total no. of mails
+		for (Event event : events){
+			// check if event is a MailEvent
+			if (event instanceof MailEvent){
+				MailEvent mailEvent = (MailEvent) event;
+				Mail mail = mailEvent.getMail();
+				if (mail.getOrigin().equals(origin)){
+					double weight = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + mail.getWeight()) : mail.getWeight();
+					result.put(mail.getOrigin(), weight);
+				}
+			}
+		}
+		return result;
 	}
 	
 	public Double calculateExpenditure(){
@@ -244,6 +285,7 @@ public class KPSBackend {
 		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
 		activeMail.add(mail);
 		getMail(ID);
+		// add new MailEvents
 	}
 	
 	//Updates the customer price for a route
