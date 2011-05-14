@@ -102,5 +102,15 @@ public class Vehicle {
 		this.firm = firm;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Vehicle))
+			return false;
+		Vehicle other = (Vehicle) obj;
+		if (this.firm.equals(other.getFirm()) && this.priority.equals(other.getPriority())){ // && this.origin == other.origin && this.destination == other.destination
+			return true;
+		}
+		return false;
+	}
 	
 }
