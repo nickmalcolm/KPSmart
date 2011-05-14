@@ -522,8 +522,16 @@ public class KPSBackend {
 		return displayedEvents;
 	}
 
+	/**
+	 * Returns a list of all events, and updates all vehicles to most current prices.
+	 * @return events
+	 */
 	public List<Event> getAllEvents(){
 		currentTime = events.size() - 1;
+		// apply each event in order to update vehicle costs to most recent version
+		for (Event event : events){
+			applyEvent(event);
+		}
 		return events;
 	}
 	
