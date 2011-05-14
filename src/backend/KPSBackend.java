@@ -171,8 +171,15 @@ public class KPSBackend {
 	}
 	
 	/** METHODS FOR CALCULATIONS */
-	public Double calculateRevenue(List<Event> displayedEvents){
+	public Double calculateRevenue(int eventTime){
 		Double sum = 0.0;
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
 		
 		// loop through events
 		for (Event event : displayedEvents){
@@ -185,12 +192,20 @@ public class KPSBackend {
 		return sum;
 	}
 	
-	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, List<Event> displayedEvents){
+	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, int eventTime){
 		// get all mails corresponding to priority/origin/destination
 		Route route = findRoute(origin, destination);
 		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
 		double sum = 0.0;
 		int numEvents = 0;
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// yuck code! want to buy LINQ query/database...
 		// loop through events and find all mail corresponding to correct vehicle
 		for (Event event : displayedEvents){
@@ -209,9 +224,16 @@ public class KPSBackend {
 		return sum / numEvents;
 	}	
 	
-	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, List<Event> displayedEvents){
+	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
-
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -227,9 +249,16 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, List<Event> displayedEvents){
+	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -245,9 +274,16 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, List<Event> displayedEvents){
+	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -263,8 +299,15 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Double calculateExpenditure(List<Event> displayedEvents){
+	public Double calculateExpenditure(int eventTime){
 		Double sum = 0.0;
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
 		
 		// loop through events
 		for (Event event : displayedEvents){
@@ -363,31 +406,24 @@ public class KPSBackend {
 	}
 	
 	
-	public List<Event> getEvents(String filter){
+	public List<Event> getEvents(int eventTime, String filter){
 		// get list of events
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
 		
 		// add filter to list of events (events.filter(String filter)?)
 		// change displayedEvents to filtered list of events
 		
 		// return list of events
 		
-		return events;
+		return displayedEvents;
 	}
-	
-	public Event stepEventsForward(){
-		currentTime++;
-		if (currentTime >= events.size())
-			currentTime = events.size() - 1;
-		return events.get(currentTime);
-	}
-	
-	public Event stepEventsBackward(){
-		currentTime--;
-		if (currentTime < 0)
-			currentTime = 0;
-		return events.get(currentTime);
-	}
-	
+
 	public List<Event> getAllEvents(){
 		currentTime = events.size() - 1;
 		return events;
