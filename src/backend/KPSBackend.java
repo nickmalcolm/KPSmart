@@ -25,6 +25,7 @@ public class KPSBackend {
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> activeMail;
 	private ArrayList<Event> events;
+	private ArrayList<Event> displayedEvents;
 	private XStream xstream;
 	private String xmlFile;
 	
@@ -174,7 +175,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 		
 		// loop through events
-		for (Event event : events){
+		for (Event event : displayedEvents){
 			// if mail event, add costPerG and costPerCC to total revenue
 			if (event instanceof MailEvent){
 				Mail mail = ((MailEvent)event).getMail();
@@ -192,7 +193,7 @@ public class KPSBackend {
 		int numEvents = 0;
 		// yuck code! want to buy LINQ query/database...
 		// loop through events and find all mail corresponding to correct vehicle
-		for (Event event : events){
+		for (Event event : displayedEvents){
 			// check if event is a MailEvent
 			if (event instanceof MailEvent){
 				for (Vehicle vehicle : vehicles){
@@ -212,7 +213,7 @@ public class KPSBackend {
 		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
 
 		// calculate total no. of mails
-		for (Event event : events){
+		for (Event event : displayedEvents){
 			// check if event is a MailEvent
 			if (event instanceof MailEvent){
 				MailEvent mailEvent = (MailEvent) event;
@@ -230,7 +231,7 @@ public class KPSBackend {
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
 		// calculate total no. of mails
-		for (Event event : events){
+		for (Event event : displayedEvents){
 			// check if event is a MailEvent
 			if (event instanceof MailEvent){
 				MailEvent mailEvent = (MailEvent) event;
@@ -248,7 +249,7 @@ public class KPSBackend {
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
 		// calculate total no. of mails
-		for (Event event : events){
+		for (Event event : displayedEvents){
 			// check if event is a MailEvent
 			if (event instanceof MailEvent){
 				MailEvent mailEvent = (MailEvent) event;
@@ -266,7 +267,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 		
 		// loop through events
-		for (Event event : events){
+		for (Event event : displayedEvents){
 			// if mail event, add costPerG and costPerCC to total revenue
 			if (event instanceof MailEvent){
 				Mail mail = ((MailEvent)event).getMail();
@@ -277,7 +278,7 @@ public class KPSBackend {
 	}
 	
 	public int getNumberOfEvents(){
-		return events.size();
+		return displayedEvents.size();
 	}
 	
 	/** METHODS FOR EVENTS */
@@ -307,7 +308,8 @@ public class KPSBackend {
 		return event;
 	}
 	
-	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInMinutes, Day day, Priority priority, Firm firm) {
+	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInMinutes,
+			Day day, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
 		// if no route found, create one
 		if (route == null){
@@ -362,6 +364,40 @@ public class KPSBackend {
 			}
 		}
 		System.out.println("Mail does not exist");
+	}
+	
+	
+	public List<Event> getEvents(String filter){
+		// get list of events
+		
+		// add filter to list of events (events.filter(String filter)?)
+		// change displayedEvents to filtered list of events
+		
+		// return list of events
+		
+		return events;
+	}
+	
+	public List<Event> stepEventsForward(){
+		// step one event forward
+		// add latest event to list of displayedEvents
+		
+		// return list of displayedEvents
+		
+		return events;
+	}
+	
+	public List<Event> stepEventsBackward(){
+		// step one event backward
+		// add latest event to list of displayedEvents
+		
+		// return list of displayedEvents
+		return events;
+	}
+	
+	public List<Event> getAllEvents(){
+		displayedEvents = events;
+		return events;
 	}
 	
 	public int passwordHasher(String s) {
