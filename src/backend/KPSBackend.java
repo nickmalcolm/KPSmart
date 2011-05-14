@@ -185,9 +185,20 @@ public class KPSBackend {
 		return result;
 	}
 	
-	/** METHODS FOR CALCULATIONS */
-	public Double calculateRevenue(List<Event> displayedEvents){
+	/* METHODS FOR CALCULATIONS */
+	/**
+	 * Calculates company revenue according to a given timeframe.
+	 * @param eventTime	The event timeframe for calculations.
+	 */
+	public Double calculateRevenue(int eventTime){
 		Double sum = 0.0;
+		
+		// select the events within an appropriate timeframe
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		List<Event> displayedEvents = events.subList(0, eventTime);
 		
 		// loop through events
 		for (Event event : displayedEvents){
@@ -196,16 +207,34 @@ public class KPSBackend {
 				Mail mail = ((MailEvent)event).getMail();
 				sum += (event.getVehicle().getCustomerCostPerCC() * mail.getVolume()) + (event.getVehicle().getCustomerCostPerG() * mail.getWeight());
 			}
+			else {
+				applyEvent(event);
+			}
 		}
 		return sum;
 	}
 	
-	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, List<Event> displayedEvents){
+	/**
+	 * Calculates the delivery time for all mails with a given priority for a given route.
+	 * @param priority	The priority of the route.
+	 * @param origin	The origin of the route.
+	 * @param destination	The destination of the route.
+	 * @param eventTime	The event timeframe for calculations.
+	 */
+	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, int eventTime){
 		// get all mails corresponding to priority/origin/destination
 		Route route = findRoute(origin, destination);
 		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
 		double sum = 0.0;
 		int numEvents = 0;
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// yuck code! want to buy LINQ query/database...
 		// loop through events and find all mail corresponding to correct vehicle
 		for (Event event : displayedEvents){
@@ -224,9 +253,21 @@ public class KPSBackend {
 		return sum / numEvents;
 	}	
 	
-	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, List<Event> displayedEvents){
+	/**
+	 * Calculates the total amount of mail from a given origin to each of its destinations.
+	 * @param origin	The origin of the route.
+	 * @param eventTime	The event timeframe for calculations.
+	 */
+	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
-
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -238,13 +279,28 @@ public class KPSBackend {
 					result.put(mail.getOrigin(), count);
 				}
 			}
+			else {
+				applyEvent(event);
+			}
 		}
 		return result;
 	}
 	
-	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, List<Event> displayedEvents){
+	/**
+	 * Calculates the total volume of mail from a given origin to each of its destinations.
+	 * @param origin	The origin of the route.
+	 * @param eventTime	The event timeframe for calculations.
+	 */
+	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -259,10 +315,22 @@ public class KPSBackend {
 		}
 		return result;
 	}
-	
-	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, List<Event> displayedEvents){
+
+	/**
+	 * Calculates the total weight of mail from a given origin to each of its destinations.
+	 * @param origin	The origin of the route.
+	 * @param eventTime	The event timeframe for calculations.
+	 */
+	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
+		
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -278,8 +346,19 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Double calculateExpenditure(List<Event> displayedEvents){
+	/**
+	 * Calculates the total company expenditure within a given timeframe.
+	 * @param eventTime	The event timeframe for calculations.
+	 */
+	public Double calculateExpenditure(int eventTime){
 		Double sum = 0.0;
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
 		
 		// loop through events
 		for (Event event : displayedEvents){
@@ -288,11 +367,39 @@ public class KPSBackend {
 				Mail mail = ((MailEvent)event).getMail();
 				sum += (event.getVehicle().getTransportCostPerCC() * mail.getVolume()) + (event.getVehicle().getTransportCostPerG() * mail.getWeight());
 			}
+			else {
+				applyEvent(event);
+			}
 		}
 		return sum;
 	}
 	
-	/** METHODS FOR EVENTS */
+	/* METHODS FOR EVENTS */
+	/**
+	 * Applies the event changes to the data. Allows for dynamic costs, etc.
+	 * @param event	The event to be applied.
+	 */
+	private void applyEvent(Event event) {
+		if (event instanceof PriceUpdateEvent){
+			event.getVehicle().updateCustomerCost(((PriceUpdateEvent)event).getCostPerG(), ((PriceUpdateEvent)event).getCostPerCC());
+		}
+		else if (event instanceof TransportUpdateEvent){
+			event.getVehicle().updateTransportCost(((TransportUpdateEvent)event).getCostPerG(), ((TransportUpdateEvent)event).getCostPerCC());
+		}
+		else if (event instanceof DiscontinueTransportEvent){
+			// event.getVehicle().getRoute().discontinueTransport(event.getVehicle().getID());
+		}
+	}
+	
+	/**
+	 * Creates a mail and adds all associated MailEvents to the list of events.
+	 * @param ID
+	 * @param weight
+	 * @param volume
+	 * @param origin
+	 * @param destination
+	 * @param priority
+	 */
 	public void sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
 		activeMail.add(mail);
@@ -301,7 +408,16 @@ public class KPSBackend {
 		events.addAll(mail.getEvents());
 	}
 	
-	//Updates the customer price for a route
+	/**
+	 * Updates the customer price for a route given an origin, destination, priority and firm. If the route does not exist,
+	 * or if a vehicle with that priority does not exist, a null event is returned.
+	 * @param origin
+	 * @param destination
+	 * @param pricePerG	The new price per gram charged to the customer.
+	 * @param pricePerCC	The new price per cubic centimetre charged to the customer.
+	 * @param priority
+	 * @param firm	The firm the vehicle belongs to.
+	 */
 	public Event updatePrice(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
 		if (route == null)
@@ -319,6 +435,19 @@ public class KPSBackend {
 		return event;
 	}
 	
+	/**
+	 * Updates the transport cost for a route given an origin, destination, priority and firm. If the route does not exist,
+	 * a new route is created. If a vehicle is not associated with that priority and firm, a new vehicle is created.
+	 * @param origin
+	 * @param destination
+	 * @param pricePerG	The new cost per gram for the company.
+	 * @param pricePerCC	The new cost per cubic centimetre for the company.
+	 * @param frequency The frequency at which the transport delivers.
+	 * @param durationInMinutes	The time taken for the transport to deliver the mail.
+	 * @param day	The day the transport is available.
+	 * @param priority	The prority of mail carried.
+	 * @param firm	The firm the vehicle belongs to.
+	 */
 	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInMinutes,
 			Day day, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
@@ -344,6 +473,15 @@ public class KPSBackend {
 		return event;
 	}
 	
+	/**
+	 * Discontinues a transport vehicle given an origin, destination, priority, firm and day. If no such transport exists, a null event
+	 * is returned.
+	 * @param origin
+	 * @param destination
+	 * @param priority	The prority of mail carried.
+	 * @param firm	The firm the vehicle belongs to.
+	 * @param day	The day the transport is available.
+	 */
 	public Event discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm, Day day) {
 		Route route = findRoute(origin, destination);
 		if (route == null)
@@ -377,34 +515,34 @@ public class KPSBackend {
 		System.out.println("Mail does not exist");
 	}
 	
-	
-	public List<Event> getEvents(String filter){
+	public List<Event> getEvents(int eventTime, String filter){
 		// get list of events
+		
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		
+		List<Event> displayedEvents = events.subList(0, eventTime);
 		
 		// add filter to list of events (events.filter(String filter)?)
 		// change displayedEvents to filtered list of events
 		
 		// return list of events
 		
-		return events;
+		return displayedEvents;
 	}
-	
-	public Event stepEventsForward(){
-		currentTime++;
-		if (currentTime >= events.size())
-			currentTime = events.size() - 1;
-		return events.get(currentTime);
-	}
-	
-	public Event stepEventsBackward(){
-		currentTime--;
-		if (currentTime < 0)
-			currentTime = 0;
-		return events.get(currentTime);
-	}
-	
+
+	/**
+	 * Returns a list of all events, and updates all vehicles to most current prices.
+	 * @return events
+	 */
 	public List<Event> getAllEvents(){
 		currentTime = events.size() - 1;
+		// apply each event in order to update vehicle costs to most recent version
+		for (Event event : events){
+			applyEvent(event);
+		}
 		return events;
 	}
 	
