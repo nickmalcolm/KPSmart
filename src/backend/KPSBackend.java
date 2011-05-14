@@ -25,7 +25,7 @@ public class KPSBackend {
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> activeMail;
 	private ArrayList<Event> events;
-	private ArrayList<Event> displayedEvents;
+	private int currentTime = 0;
 	private XStream xstream;
 	private String xmlFile;
 	
@@ -171,7 +171,7 @@ public class KPSBackend {
 	}
 	
 	/** METHODS FOR CALCULATIONS */
-	public Double calculateRevenue(){
+	public Double calculateRevenue(List<Event> displayedEvents){
 		Double sum = 0.0;
 		
 		// loop through events
@@ -185,7 +185,7 @@ public class KPSBackend {
 		return sum;
 	}
 	
-	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination){
+	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, List<Event> displayedEvents){
 		// get all mails corresponding to priority/origin/destination
 		Route route = findRoute(origin, destination);
 		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
@@ -209,7 +209,7 @@ public class KPSBackend {
 		return sum / numEvents;
 	}	
 	
-	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin){
+	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, List<Event> displayedEvents){
 		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
 
 		// calculate total no. of mails
@@ -227,7 +227,7 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin){
+	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, List<Event> displayedEvents){
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
 		// calculate total no. of mails
@@ -245,7 +245,7 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin){
+	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, List<Event> displayedEvents){
 		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
 
 		// calculate total no. of mails
@@ -263,7 +263,7 @@ public class KPSBackend {
 		return result;
 	}
 	
-	public Double calculateExpenditure(){
+	public Double calculateExpenditure(List<Event> displayedEvents){
 		Double sum = 0.0;
 		
 		// loop through events
@@ -275,10 +275,6 @@ public class KPSBackend {
 			}
 		}
 		return sum;
-	}
-	
-	public int getNumberOfEvents(){
-		return displayedEvents.size();
 	}
 	
 	/** METHODS FOR EVENTS */
@@ -378,25 +374,22 @@ public class KPSBackend {
 		return events;
 	}
 	
-	public List<Event> stepEventsForward(){
-		// step one event forward
-		// add latest event to list of displayedEvents
-		
-		// return list of displayedEvents
-		
-		return events;
+	public Event stepEventsForward(){
+		currentTime++;
+		if (currentTime >= events.size())
+			currentTime = events.size() - 1;
+		return events.get(currentTime);
 	}
 	
-	public List<Event> stepEventsBackward(){
-		// step one event backward
-		// add latest event to list of displayedEvents
-		
-		// return list of displayedEvents
-		return events;
+	public Event stepEventsBackward(){
+		currentTime--;
+		if (currentTime < 0)
+			currentTime = 0;
+		return events.get(currentTime);
 	}
 	
 	public List<Event> getAllEvents(){
-		displayedEvents = events;
+		currentTime = events.size() - 1;
 		return events;
 	}
 	
