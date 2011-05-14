@@ -196,6 +196,9 @@ public class KPSBackend {
 				Mail mail = ((MailEvent)event).getMail();
 				sum += (event.getVehicle().getCustomerCostPerCC() * mail.getVolume()) + (event.getVehicle().getCustomerCostPerG() * mail.getWeight());
 			}
+			else {
+				applyEvent(event);
+			}
 		}
 		return sum;
 	}
@@ -265,6 +268,9 @@ public class KPSBackend {
 					result.put(mail.getOrigin(), count);
 				}
 			}
+			else {
+				applyEvent(event);
+			}
 		}
 		return result;
 	}
@@ -298,7 +304,7 @@ public class KPSBackend {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Calculates the total weight of mail from a given origin to each of its destinations.
 	 * @param origin	The origin of the route.
@@ -350,11 +356,30 @@ public class KPSBackend {
 				Mail mail = ((MailEvent)event).getMail();
 				sum += (event.getVehicle().getTransportCostPerCC() * mail.getVolume()) + (event.getVehicle().getTransportCostPerG() * mail.getWeight());
 			}
+			else {
+				applyEvent(event);
+			}
 		}
 		return sum;
 	}
 	
 	/* METHODS FOR EVENTS */
+	/**
+	 * Applies the event changes to the data. Allows for dynamic costs, etc.
+	 * @param event	The event to be applied.
+	 */
+	private void applyEvent(Event event) {
+		if (event instanceof PriceUpdateEvent){
+			event.getVehicle().updateCustomerCost(((PriceUpdateEvent)event).getCostPerG(), ((PriceUpdateEvent)event).getCostPerCC());
+		}
+		else if (event instanceof TransportUpdateEvent){
+			event.getVehicle().updateTransportCost(((TransportUpdateEvent)event).getCostPerG(), ((TransportUpdateEvent)event).getCostPerCC());
+		}
+		else if (event instanceof DiscontinueTransportEvent){
+			// event.getVehicle().getRoute().discontinueTransport(event.getVehicle().getID());
+		}
+	}
+	
 	/**
 	 * Creates a mail and adds all associated MailEvents to the list of events.
 	 * @param ID
