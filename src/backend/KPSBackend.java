@@ -27,7 +27,6 @@ public class KPSBackend {
 	private ArrayList<Event> events;
 	private int currentTime = 0;
 	private XStream xstream;
-	private String xmlFile;
 	
 	//private String password;
 	private int passwordHash;
@@ -57,6 +56,7 @@ public class KPSBackend {
 			String routeXMLInput;
 			String mailXMLinput;
 			String eventsXMLInput;
+			String distCentreXMLInput;
 			
 			File fileToRead = new File("routesXML.xml");
 			routeXMLInput = readFileToString(fileToRead);
@@ -67,10 +67,14 @@ public class KPSBackend {
 			fileToRead = new File("eventsXML.xml");
 			eventsXMLInput = readFileToString(fileToRead);
 			
+			fileToRead = new File("distCentreXML.xml");
+			distCentreXMLInput = readFileToString(fileToRead);
+			
 		//Finally parses the files back into objects.
 		routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 		activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
 		events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+		distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 		
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
