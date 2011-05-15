@@ -37,6 +37,7 @@ public class KPSBackend {
 		routes = new ArrayList<Route>();
 		activeMail = new ArrayList<Mail>();
 		events = new ArrayList<Event>();
+		//distributionCentres = new TreeSet();
 		//password = "sototessecure";
 		passwordHash = 653306037;
 		isManager = false;
