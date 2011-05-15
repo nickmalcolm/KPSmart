@@ -15,7 +15,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.Border;
 
 import priority.Priority;
-import routes.DistributionCentre;
+import routes.*;
 
 public class KPSMailPanel extends JPanel{
 	
@@ -56,7 +56,15 @@ public class KPSMailPanel extends JPanel{
 	public KPSMailPanel(ActionListener a, Set<DistributionCentre> s) {
 		super();
 		
-		if (s != null) {}
+		if (s != null) {
+			originList = new String[s.size()];
+			destList = new String[s.size()];
+			int i = 0;
+			for (DistributionCentre d : s) {
+				originList[i] = d.getName();
+				destList[i++] = d.getName();
+			}
+		}
 		else {
 			originList = new String[1];
 			destList = new String[1];

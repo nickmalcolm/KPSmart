@@ -37,6 +37,7 @@ public class KPSBackend {
 		routes = new ArrayList<Route>();
 		activeMail = new ArrayList<Mail>();
 		events = new ArrayList<Event>();
+		//distributionCentres = new TreeSet();
 		//password = "sototessecure";
 		passwordHash = 653306037;
 		isManager = false;
@@ -74,6 +75,7 @@ public class KPSBackend {
 		routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 		activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
 		events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+		xstream.alias("DistributionCentre", DistributionCentre.class);
 		distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 		
 		}catch(Exception e){
