@@ -74,7 +74,10 @@ public class KPSBackend {
 		routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 		activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
 		events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+		xstream.alias("DistributionCentre", DistributionCentre.class);
 		distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
+		
+		System.out.println("dist centres gre jguiojgioj orejg" + distributionCentres.toString());
 		
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
