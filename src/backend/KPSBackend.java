@@ -139,6 +139,10 @@ public class KPSBackend {
 		
 	}
 	
+	public Set<DistributionCentre> getDistributionCentres() {
+		return distributionCentres;
+	}
+	
 	//Authenticates a manager to allow for extra options
 	public boolean authenticateManager(String s) {
 		//System.out.println(passwordHasher(s));
