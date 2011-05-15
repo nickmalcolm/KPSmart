@@ -21,7 +21,7 @@ public class KPSFrame extends JFrame {
 	private JPanel panel;
 	private KPSDefaultPanel defaultPanel;
 	private KPSMailPanel mailPanel;
-	private KPSOutput output;
+	private KPSEventsPanel eventsPanel;
 	private KPSMenuBar menuBar;
 	String[] data = {"one", "two", "three"};
 	
@@ -32,27 +32,27 @@ public class KPSFrame extends JFrame {
 		defaultPanel.setName("defaultPanel");
 		mailPanel = new KPSMailPanel(a, s);
 		mailPanel.setName("mailPanel");
-		output = new KPSOutput(data);
+		eventsPanel = new KPSEventsPanel();
+		eventsPanel.setName("eventsPanel");
+		
 		menuBar = new KPSMenuBar(a);
 		
 		panel.add(defaultPanel, "defaultPanel");
 		panel.add(mailPanel, "mailPanel");
+		panel.add(eventsPanel, "eventsPanel");
 		
 		this.setLayout(new BorderLayout());
 		this.add(title, BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
-		//this.add(new JLabel("Output"));
-		//this.add(output, BorderLayout.SOUTH);
 		this.setJMenuBar(menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
 		this.setFocusable(true);
 		this.setResizable(false);
 		this.setVisible(true);
-		//output.setEnabled(false);
 	}
 	
-	public void sendMail(String s) {
+	public void displayPanel(String s) {
 		//panel.setBackground(Color.RED);
 		//panel.add(output);
 		CardLayout cards = (CardLayout) panel.getLayout();

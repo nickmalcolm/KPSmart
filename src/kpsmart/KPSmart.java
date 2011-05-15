@@ -45,6 +45,10 @@ public class KPSmart implements ActionListener{
 			return;
 		}
 		
+		if ("Undo".equals(e.getActionCommand())) {
+			kFrame.displayPanel("eventsPanel");
+		}
+		
 		
 		//EDIT OPTIONS
 		
@@ -55,7 +59,7 @@ public class KPSmart implements ActionListener{
 			//prompt for data
 			
 			//create and send
-			kFrame.sendMail("mailPanel");
+			kFrame.displayPanel("mailPanel");
 			//kBackend.sendMail(12345, 0, 0, new DistributionCentre("Christchurch", "Christchurch", "New Zealand", 20, 20), new DistributionCentre("Auckland", "Auckland", "New Zealand", 60, 10), Priority.DOMESTIC);
 			return;
 		}
