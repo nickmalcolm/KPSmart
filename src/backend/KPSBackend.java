@@ -77,8 +77,6 @@ public class KPSBackend {
 		xstream.alias("DistributionCentre", DistributionCentre.class);
 		distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 		
-		System.out.println("dist centres gre jguiojgioj orejg" + distributionCentres.toString());
-		
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
 			e.printStackTrace(); //Keep this here for debugging
