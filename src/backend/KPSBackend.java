@@ -448,7 +448,7 @@ public class KPSBackend {
 	 * @param priority	The prority of mail carried.
 	 * @param firm	The firm the vehicle belongs to.
 	 */
-	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInMinutes,
+	public Event updateTransport(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, int frequency, int durationInHours,
 			Day day, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
 		// if no route found, create one
@@ -460,7 +460,7 @@ public class KPSBackend {
 		Vehicle vehicle = route.getVehicle(priority, firm);
 		// if no vehicle found, create one
 		if (vehicle == null){
-			vehicle = new Vehicle(route.getVehicles().size(), pricePerG, pricePerCC, frequency, durationInMinutes, priority, firm);
+			vehicle = new Vehicle(route.getVehicles().size(), pricePerG, pricePerCC, frequency, durationInHours, priority, firm);
 			route.addVehicle(vehicle);
 		}
 		// else update the transport cost
@@ -468,7 +468,7 @@ public class KPSBackend {
 			vehicle.updateTransportCost(pricePerG, pricePerCC);
 		}
 		// add to event log TODO change events
-		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
+		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, frequency, durationInHours, day, origin, destination);
 		events.add(event); 
 		return event;
 	}
