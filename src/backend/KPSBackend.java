@@ -411,7 +411,7 @@ public class KPSBackend {
 		activeMail.add(mail);
 		getMail(ID);
 		// add new MailEvents
-		events.addAll(mail.getEvents());
+		//events.addAll(mail.getEvents());
 	}
 	
 	/**
@@ -506,17 +506,18 @@ public class KPSBackend {
 	}
 	
 	public void getMail(int ID) {
+		System.out.println(activeMail.size());
 		for (Mail m : activeMail) {
-			if (m.getID() == ID) {
+			//if (m.getID() == ID) {
 				String answer = "ID: " + m.getID()
-					+ "\nOrigin: " + m.getOrigin()
-					+ "\nDestination: " + m.getDestination()
+					+ "\nOrigin: " + m.getOrigin().getName()
+					+ "\nDestination: " + m.getDestination().getName()
 					+ "\nWeight: " + m.getWeight()
 					+ "\nVolume: " + m.getVolume()
 					+ "\nPriority: " + m.getPriority();
 				System.out.println(answer);
-				return;
-			}
+				//return;
+			//}
 		}
 		System.out.println("Mail does not exist");
 	}

@@ -32,7 +32,7 @@ public class Mail {
 		this.origin = origin;
 		this.destination = destination;
 		this.priority = priority;
-		this.events = calculateRoute();
+		//this.events = calculateRoute();
 	}
 	
 	public int getID() {
