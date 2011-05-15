@@ -1,8 +1,11 @@
 package events;
 
+import java.util.Date;
+
 import priority.Priority;
 import routes.DistributionCentre;
 import routes.Firm;
+import routes.Vehicle;
 
 public class DiscontinueTransportEvent extends Event {
 	
@@ -19,9 +22,9 @@ public class DiscontinueTransportEvent extends Event {
 	 * @param origin
 	 * @param destination
 	 */
-	public DiscontinueTransportEvent(Firm firm, Priority priority,
+	public DiscontinueTransportEvent(Vehicle vehicle, Date timestamp, Firm firm, Priority priority,
 			DistributionCentre origin, DistributionCentre destination) {
-		super();
+		super(vehicle, timestamp);
 		this.firm = firm;
 		this.priority = priority;
 		this.origin = origin;
