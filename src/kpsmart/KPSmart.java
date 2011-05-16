@@ -44,32 +44,26 @@ public class KPSmart implements ActionListener{
 			System.out.println(kBackend.testMethod());
 			return;
 		}
-		
-		
-		//EDIT OPTIONS
-		
-		//MAIL OPTIONS
+				
+		//ACTION OPTIONS
 		if ("Send Mail".equals(e.getActionCommand())) {
 			//JOptionPane.showMessageDialog(kFrame, "Theoretically, you are sending new mail.");
 			
 			//prompt for data
 			
 			//create and send
-			kFrame.sendMail("mailPanel");
+			kFrame.displayPanel("mailPanel");
 			//kBackend.sendMail(12345, 0, 0, new DistributionCentre("Christchurch", "Christchurch", "New Zealand", 20, 20), new DistributionCentre("Auckland", "Auckland", "New Zealand", 60, 10), Priority.DOMESTIC);
 			return;
 		}
 		
-		//VIEW OPTIONS
-		if ("Sign out as manager".equals(e.getActionCommand())) {
-			kFrame.notManager();
-			return;
+		if ("View Business Figures".equals(e.getActionCommand())) {
+			kFrame.displayPanel("eventsPanel");
 		}
 		
 		if ("Sign in as manager".equals(e.getActionCommand())) {
 			kPasswordField = new JPasswordField(10);
 			JOptionPane.showMessageDialog(kFrame, kPasswordField, "Password Required", JOptionPane.WARNING_MESSAGE);
-		//}
 		
 			String pass = String.valueOf(kPasswordField.getPassword());
 			if(kBackend.authenticateManager(pass)) {
@@ -78,6 +72,14 @@ public class KPSmart implements ActionListener{
 				return;
 			}
 			
+		}
+		
+		if ("Sign out as manager".equals(e.getActionCommand())) {
+			kFrame.notManager();
+			if ("eventsPanel".equals(kFrame.getPanel())) {
+				kFrame.displayPanel("defaultPanel");
+			}
+			return;
 		}
 		
 		//HELP OPTIONS

@@ -4,21 +4,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 import java.util.Set;
 
-import javax.swing.JFileChooser;
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+import priority.Priority;
+import routes.DistributionCentre;
+import routes.Firm;
+import routes.Route;
+import routes.Vehicle;
 
 import com.thoughtworks.xstream.XStream;
 
-import events.*;
-import priority.*;
-import routes.*;
+import events.DiscontinueTransportEvent;
+import events.Event;
+import events.MailEvent;
+import events.PriceUpdateEvent;
+import events.TransportUpdateEvent;
 
 public class KPSBackend {
 	private Set<DistributionCentre> distributionCentres;
@@ -26,13 +34,16 @@ public class KPSBackend {
 	private ArrayList<Mail> activeMail;
 	private ArrayList<Event> events;
 	private XStream xstream;
+
+	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+	private Date currentDate = new Date();
 	
 	//private String password;
 	private int passwordHash;
 	private boolean isManager;
-	
+
 	public KPSBackend() {
-		
+
 		routes = new ArrayList<Route>();
 		activeMail = new ArrayList<Mail>();
 		events = new ArrayList<Event>();
@@ -40,13 +51,13 @@ public class KPSBackend {
 		//password = "sototessecure";
 		passwordHash = 653306037;
 		isManager = false;
-		
+
 	}
-	
+
 	public String testMethod() {
 		return "This is a test";
 	}
-	
+
 	//Parses the XML record(s) and retains their contents in memory
 	@SuppressWarnings("unchecked")
 	public void parseXMLRecord() {
@@ -57,32 +68,32 @@ public class KPSBackend {
 			String mailXMLinput;
 			String eventsXMLInput;
 			String distCentreXMLInput;
-			
+
 			File fileToRead = new File("routesXML.xml");
 			routeXMLInput = readFileToString(fileToRead);
-			
+
 			fileToRead = new File("mailXML.xml");
 			mailXMLinput = readFileToString(fileToRead);
-			
+
 			fileToRead = new File("eventsXML.xml");
 			eventsXMLInput = readFileToString(fileToRead);
-			
+
 			fileToRead = new File("distCentreXML.xml");
 			distCentreXMLInput = readFileToString(fileToRead);
-			
-		//Finally parses the files back into objects.
-		routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
-		activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
-		events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
-		xstream.alias("DistributionCentre", DistributionCentre.class);
-		distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
-		
+
+			//Finally parses the files back into objects.
+			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
+			activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
+			events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+			xstream.alias("DistributionCentre", DistributionCentre.class);
+			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
+
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
 			e.printStackTrace(); //Keep this here for debugging
 		}
 	}
-	
+
 	//Method to read the disk file and put into a string.
 	public String readFileToString(File f){
 		if (f!=null){
@@ -100,7 +111,7 @@ public class KPSBackend {
 		}
 		else return null;
 	}
-	
+
 	//Creates the XML record. Returns true if record is created successfully.
 	public boolean createXMLRecord(){
 		xstream = new XStream();
@@ -108,7 +119,7 @@ public class KPSBackend {
 			String routesXML = xstream.toXML(routes);
 			String mailXML = xstream.toXML(activeMail);
 			String eventsXML = xstream.toXML(events);
-			
+
 			//Then save (and hash?) XML file
 			//Save routes file
 			FileWriter fileWriter = new FileWriter("routesXML.xml");
@@ -116,34 +127,34 @@ public class KPSBackend {
 			bufWriter.write(routesXML);
 			bufWriter.close();
 			fileWriter.close();
-			
+
 			//Save mail file
 			fileWriter = new FileWriter("mailXML.xml");
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(mailXML);
 			bufWriter.close();
 			fileWriter.close();
-			
+
 			//Save events file
 			fileWriter = new FileWriter("eventsXML.xml");
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(eventsXML);
 			bufWriter.close();
 			fileWriter.close();
-			
+
 			return true;
 		}catch (Exception e) {
 			System.out.println("Exception!: " +e+"\n ");
 			e.printStackTrace(); //Keep this here for debugging
 			return false;
 		}
-		
+
 	}
-	
+
 	public Set<DistributionCentre> getDistributionCentres() {
 		return distributionCentres;
 	}
-	
+
 	//Authenticates a manager to allow for extra options
 	public boolean authenticateManager(String s) {
 		//System.out.println(passwordHasher(s));
@@ -151,45 +162,45 @@ public class KPSBackend {
 		if (passwordHash == passwordHasher(s)) {
 			isManager = true;
 		}
-		
+
 		return isManager;
-		
+
 	}
-	
+
 	//Releases the manager mode and removes extra options
 	public void deauthenticateManager() {
 		isManager = false;
 	}
-	
+
 	public Map<PrioritisedRoute, Double> getCriticalRoute(){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 		// loop through every route
 		for (Route route : routes){
 			// loop through every priority in route
 			for (Priority priority : Priority.values()){
-			// for (Priority priority : [list of priorities])
-				 for (Vehicle  vehicle : route.getVehiclesByPriority(priority)) {
-				
+				// for (Priority priority : [list of priorities])
+				for (Vehicle  vehicle : route.getVehiclesByPriority(priority)) {
+
 					//calculate avg delivery cost from origin->destination w/priority
-					 int avgDelivCost = 0;
-				
+					int avgDelivCost = 0;
+
 					// calculate avg customer revenue from origin->destination w/priority
-					 int avgCustCost = 0;
-				
+					int avgCustCost = 0;
+
 					// if avg cost > avg revenue, add new PrioritisedRoute(origin, destination, priority) into Map result
-					 if(avgDelivCost > avgCustCost){
-						 PrioritisedRoute newCritRoute = new PrioritisedRoute();
-						 newCritRoute.setPriority(priority);
-						 newCritRoute.setRoute(route);
-						 result.put(newCritRoute,(double) (avgDelivCost-avgCustCost));
-					 }
-					 }
-					// and map Revenue - expenditure to PrioritisedRoute
-		}
+					if(avgDelivCost > avgCustCost){
+						PrioritisedRoute newCritRoute = new PrioritisedRoute();
+						newCritRoute.setPriority(priority);
+						newCritRoute.setRoute(route);
+						result.put(newCritRoute,(double) (avgDelivCost-avgCustCost));
+					}
+				}
+				// and map Revenue - expenditure to PrioritisedRoute
+			}
 		}
 		return result;
 	}
-	
+
 	/* METHODS FOR CALCULATIONS */
 	/**
 	 * Calculates company revenue according to a given timeframe.
@@ -197,14 +208,14 @@ public class KPSBackend {
 	 */
 	public Double calculateRevenue(int eventTime){
 		Double sum = 0.0;
-		
+
 		// select the events within an appropriate timeframe
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// loop through events
 		for (Event event : displayedEvents){
 			// if mail event, add costPerG and costPerCC to total revenue
@@ -218,7 +229,7 @@ public class KPSBackend {
 		}
 		return sum;
 	}
-	
+
 	/**
 	 * Calculates the delivery time for all mails with a given priority for a given route.
 	 * @param priority	The priority of the route.
@@ -232,14 +243,14 @@ public class KPSBackend {
 		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
 		double sum = 0.0;
 		int numEvents = 0;
-		
+
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		
+
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// yuck code! want to buy LINQ query/database...
 		// loop through events and find all mail corresponding to correct vehicle
 		for (Event event : displayedEvents){
@@ -257,7 +268,7 @@ public class KPSBackend {
 		// return avg delivery time
 		return sum / numEvents;
 	}	
-	
+
 	/**
 	 * Calculates the total amount of mail from a given origin to each of its destinations.
 	 * @param origin	The origin of the route.
@@ -265,14 +276,14 @@ public class KPSBackend {
 	 */
 	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
 		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
-		
+
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		
+
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -290,7 +301,7 @@ public class KPSBackend {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Calculates the total volume of mail from a given origin to each of its destinations.
 	 * @param origin	The origin of the route.
@@ -303,9 +314,9 @@ public class KPSBackend {
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		
+
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -333,9 +344,9 @@ public class KPSBackend {
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		
+
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// calculate total no. of mails
 		for (Event event : displayedEvents){
 			// check if event is a MailEvent
@@ -350,21 +361,21 @@ public class KPSBackend {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Calculates the total company expenditure within a given timeframe.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
 	public Double calculateExpenditure(int eventTime){
 		Double sum = 0.0;
-		
+
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		
+
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// loop through events
 		for (Event event : displayedEvents){
 			// if mail event, add costPerG and costPerCC to total revenue
@@ -378,7 +389,7 @@ public class KPSBackend {
 		}
 		return sum;
 	}
-	
+
 	/* METHODS FOR EVENTS */
 	/**
 	 * Applies the event changes to the data. Allows for dynamic costs, etc.
@@ -395,7 +406,7 @@ public class KPSBackend {
 			// event.getVehicle().getRoute().discontinueTransport(event.getVehicle().getID());
 		}
 	}
-	
+
 	/**
 	 * Creates a mail and adds all associated MailEvents to the list of events.
 	 * @param ID
@@ -412,7 +423,7 @@ public class KPSBackend {
 		// add new MailEvents
 		//events.addAll(mail.getEvents());
 	}
-	
+
 	/**
 	 * Updates the customer price for a route given an origin, destination, priority and firm. If the route does not exist,
 	 * or if a vehicle with that priority does not exist, a null event is returned.
@@ -427,19 +438,19 @@ public class KPSBackend {
 		Route route = findRoute(origin, destination);
 		if (route == null)
 			return null;
-		
+
 		Vehicle vehicle = route.getVehicle(priority, firm);
 		if (vehicle == null)
 			return null;
-		
+
 		vehicle.updateCustomerCost(pricePerG, pricePerCC);
-		
+
 		// add to event log
-		Event event = new PriceUpdateEvent(pricePerCC, pricePerG); // TODO: add details to event
+		Event event = new PriceUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}
-	
+
 	/**
 	 * Updates the transport cost for a route given an origin, destination, priority and firm. If the route does not exist,
 	 * a new route is created. If a vehicle is not associated with that priority and firm, a new vehicle is created.
@@ -461,7 +472,7 @@ public class KPSBackend {
 			route = new Route(origin, destination);
 			routes.add(route);
 		}
-		
+
 		Vehicle vehicle = route.getVehicle(priority, firm);
 		// if no vehicle found, create one
 		if (vehicle == null){
@@ -473,11 +484,11 @@ public class KPSBackend {
 			vehicle.updateTransportCost(pricePerG, pricePerCC);
 		}
 		// add to event log TODO change events
-		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
+		Event event = new TransportUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
 		events.add(event); 
 		return event;
 	}
-	
+
 	/**
 	 * Discontinues a transport vehicle given an origin, destination, priority, firm and day. If no such transport exists, a null event
 	 * is returned.
@@ -491,51 +502,51 @@ public class KPSBackend {
 		Route route = findRoute(origin, destination);
 		if (route == null)
 			return null;
-		
+
 		Vehicle vehicle = route.getVehicle(priority, firm);
 		if (vehicle == null)
 			return null;
-		
+
 		route.discontinueTransport(vehicle.getID());
-		
+
 		// add to event log
-		Event event = new DiscontinueTransportEvent(firm, priority, destination, destination); // TODO: add details to event
+		Event event = new DiscontinueTransportEvent(vehicle, currentDate, firm, priority, destination, destination); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}
-	
+
 	public void getMail(int ID) {
 		System.out.println(activeMail.size());
 		for (Mail m : activeMail) {
 			//if (m.getID() == ID) {
-				String answer = "ID: " + m.getID()
-					+ "\nOrigin: " + m.getOrigin().getName()
-					+ "\nDestination: " + m.getDestination().getName()
-					+ "\nWeight: " + m.getWeight()
-					+ "\nVolume: " + m.getVolume()
-					+ "\nPriority: " + m.getPriority();
-				System.out.println(answer);
-				//return;
+			String answer = "ID: " + m.getID()
+			+ "\nOrigin: " + m.getOrigin().getName()
+			+ "\nDestination: " + m.getDestination().getName()
+			+ "\nWeight: " + m.getWeight()
+			+ "\nVolume: " + m.getVolume()
+			+ "\nPriority: " + m.getPriority();
+			System.out.println(answer);
+			//return;
 			//}
 		}
 		System.out.println("Mail does not exist");
 	}
-	
+
 	public List<Event> getEvents(int eventTime, String filter){
 		// get list of events
-		
+
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		
+
 		List<Event> displayedEvents = events.subList(0, eventTime);
-		
+
 		// add filter to list of events (events.filter(String filter)?)
 		// change displayedEvents to filtered list of events
-		
+
 		// return list of events
-		
+
 		return displayedEvents;
 	}
 
@@ -550,14 +561,14 @@ public class KPSBackend {
 		}
 		return events;
 	}
-	
+
 	public int passwordHasher(String s) {
 		int hashed = s.hashCode();
 		hashed = (int) Math.floor((hashed*3621873+1321798)/Math.PI);
 		return hashed;
 	}
-	
-	
+
+
 	// Helper methods
 	/**
 	 * Finds the route corresponding to the origin and destination.
@@ -570,4 +581,181 @@ public class KPSBackend {
 		// route not found, return null
 		return null;
 	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public ArrayList<MailEvent>  CalculateRoute(DistributionCentre o,DistributionCentre d){
+
+
+		DistributionCentre destination = d;	
+		DistributionCentre origin = o;   
+
+		ArrayList<DistributionCentre> searched = new ArrayList<DistributionCentre>(); // The set of nodes already evaluated. 
+		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();// The set of tentative nodes to be evaluated.
+
+		SearchNode search = new SearchNode(origin, null, 0 , destination);
+		fringe.offer(search); //Queue our starting node.
+
+
+		while(fringe.size() != 0){
+
+			SearchNode tempNode = fringe.poll(); 	//Remove node closest
+			searched.add(tempNode.current);//Temp node is now in visited set and removed from fringe
+			
+			if(tempNode.getCurrent().equals(destination)){	//Goal node has been reached
+				////////////return Reconstruct(tempNode);/**************************?*/
+				return Reconstruct(tempNode);
+			}
+
+			for(DistributionCentre r : tempNode.getConnectingNodes()){
+				if(searched.contains(r)){	//if node has been visited then carry on
+					continue;
+				}
+
+				
+				if(!fringe.contains(r)){//if y not in fringe, add it
+					
+					double pathToNode = estimate(origin , tempNode.getCurrent()) ; // Path distance is measued as a direct line
+					SearchNode tempSearchNode = new SearchNode(r ,tempNode, pathToNode,destination);
+					fringe.add(tempSearchNode);
+				}	
+				
+			}
+		}
+
+		return null;
+
+
+	}
+
+	public  ArrayList<MailEvent> Reconstruct(SearchNode s){
+
+		
+		return null;
+	}
+	
+	
+	
+	//Finding route
+	//Nodes = distribution centers
+	//edges = vehciles
+	//origin = start node
+	//destination goal node
+	
+	private class SearchNode implements Comparable<SearchNode>{
+		
+
+		private DistributionCentre current;
+		private SearchNode previous ; 
+		private double pathLength ; 
+		private double estimate;
+		private double total;
+		private ArrayList<Route> routesFromNode = new ArrayList<Route>(); ;
+		
+		public SearchNode(DistributionCentre current , SearchNode previous , double pathLength , DistributionCentre goal ){
+			this.current = current;
+			this.previous = previous;
+			this.pathLength = pathLength;
+			estimate = estimate(current,goal);
+			total = estimate + pathLength;
+	 
+		}
+		
+		public ArrayList<Route>  getRoutes() {
+			return routesFromNode;
+		}
+		public DistributionCentre getCurrent() {
+			return current;
+		}
+		public SearchNode getPrevious() {
+			return previous;
+		}
+		public double getPathLength() {
+			return pathLength;
+		} 
+		public double getEstimate() {
+			return estimate;
+		} 
+		public double getTotal() {
+			return total;
+		}
+		public ArrayList<DistributionCentre> getConnectingNodes(){
+			ArrayList<DistributionCentre> connected = new ArrayList<DistributionCentre>();
+			//go through all routes that come off this node
+			for(Route r : routes){
+				//make sure they arnt of greater priority than the mail was sent with
+				//*****************TODO****************************
+				if(r.getD1().equals(current)){ 
+					connected.add(r.getD2());
+					routesFromNode.add(r);
+				}else if(r.getD2().equals(current)){ 
+					connected.add(r.getD1());
+					routesFromNode.add(r);
+				}
+			}
+			return connected;
+		}
+
+		//Find the shortest route based on the estimated distance to go added
+		//to the current distance to get to this node.
+		public int compareTo(SearchNode s) {
+				if (this.total < s.getTotal()) return -1;
+				if (this.total > s.getTotal()) return 1;
+				return 0;
+		}
+		
+
+		
+	}
+ 
+	//Pythagoras' Theorum 
+	public static double estimate(DistributionCentre start, DistributionCentre goal) {
+
+		double lat_dif = Math.max(start.lat(), goal.lat()) - Math.min(start.lat(), goal.lat());
+		double lon_dif = Math.max(start.lon(), goal.lon()) - Math.min(start.lon(), goal.lon());
+
+		double x = 111 * lat_dif;
+		double y = 88.649 * lon_dif;
+		
+		double z = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+		
+		if (goal.lon() < start.lon()) z = z * -1;
+
+		return z;
+
+	}
+
 }
+
