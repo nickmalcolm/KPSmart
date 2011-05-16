@@ -25,7 +25,6 @@ public class KPSBackend {
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> activeMail;
 	private ArrayList<Event> events;
-	private int currentTime = 0;
 	private XStream xstream;
 	
 	//private String password;
@@ -545,7 +544,6 @@ public class KPSBackend {
 	 * @return events
 	 */
 	public List<Event> getAllEvents(){
-		currentTime = events.size() - 1;
 		// apply each event in order to update vehicle costs to most recent version
 		for (Event event : events){
 			applyEvent(event);
