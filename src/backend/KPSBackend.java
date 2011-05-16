@@ -4,24 +4,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.PriorityQueue;
-import java.util.Scanner;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 import java.util.Set;
 
-import javax.swing.JFileChooser;
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
-
-
+import priority.Priority;
+import routes.DistributionCentre;
+import routes.Firm;
+import routes.Route;
+import routes.Vehicle;
 
 import com.thoughtworks.xstream.XStream;
 
-import events.*;
-import priority.*;
-import routes.*;
+import events.DiscontinueTransportEvent;
+import events.Event;
+import events.MailEvent;
+import events.PriceUpdateEvent;
+import events.TransportUpdateEvent;
 
 public class KPSBackend {
 	private Set<DistributionCentre> distributionCentres;
@@ -31,6 +36,9 @@ public class KPSBackend {
 	private int currentTime = 0;
 	private XStream xstream;
 
+	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+	private Date currentDate = new Date();
+	
 	//private String password;
 	private int passwordHash;
 	private boolean isManager;
@@ -439,7 +447,7 @@ public class KPSBackend {
 		vehicle.updateCustomerCost(pricePerG, pricePerCC);
 
 		// add to event log
-		Event event = new PriceUpdateEvent(pricePerCC, pricePerG); // TODO: add details to event
+		Event event = new PriceUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}
@@ -477,7 +485,7 @@ public class KPSBackend {
 			vehicle.updateTransportCost(pricePerG, pricePerCC);
 		}
 		// add to event log TODO change events
-		Event event = new TransportUpdateEvent(pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
+		Event event = new TransportUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
 		events.add(event); 
 		return event;
 	}
@@ -503,7 +511,7 @@ public class KPSBackend {
 		route.discontinueTransport(vehicle.getID());
 
 		// add to event log
-		Event event = new DiscontinueTransportEvent(firm, priority, destination, destination); // TODO: add details to event
+		Event event = new DiscontinueTransportEvent(vehicle, currentDate, firm, priority, destination, destination); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}
