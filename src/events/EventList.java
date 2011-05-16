@@ -12,6 +12,12 @@ public class EventList<T extends Event> extends ArrayList<T>{
 	
 	private boolean dirty = false;
 
+	/**
+	 * Returns a subset of this list which are only an instance
+	 * of the class specified.
+	 * @param klass - A Class object
+	 * @return
+	 */
 	public EventList<T> showOnly(Class klass){
 		
 		EventList<T> newList = new EventList<T>();
