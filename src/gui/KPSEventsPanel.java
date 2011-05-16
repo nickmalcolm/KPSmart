@@ -9,9 +9,11 @@ import javax.swing.*;
 
 public class KPSEventsPanel extends JPanel implements KPSPanel{
 	
+	private String testString = "Your mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\n";
+	
 	//Events panel
 	private JPanel eventsPanel;
-	private JTextField displayedEventsField;
+	private JTextArea displayedEventsField;
 	private JScrollPane displayedEvents;
 	private JTextField totalEventsField;
 	private JButton forward;
@@ -24,14 +26,16 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 	private JLabel expenditureLabel;
 	private JTextField expenditureField;
 	private JLabel averageDeliveryLabel;
-	private JTextField averageDeliveryField;
+	private JTextArea averageDeliveryField;
+	private JScrollPane averageDelivery;
 	private JLabel amountOfMailLabel;
-	private JTextField amountOfMailField;
+	private JTextArea amountOfMailField;
+	private JScrollPane amountOfMail;
 	
 	//Critical routes panel
 	private JPanel criticalPanel;
 	private JLabel criticalRoutesLabel;
-	private JTextField criticalRoutesField;
+	private JTextArea criticalRoutesField;
 	private JScrollPane criticalRoutes;
 	
 	
@@ -44,8 +48,9 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		eventsPanel = new JPanel();
 		eventsPanel.setPreferredSize(new Dimension(350, 590));
 		
-		displayedEventsField = new JTextField();
+		displayedEventsField = new JTextArea();
 		displayedEventsField.setEditable(false);
+		displayedEventsField.setText(testString);
 		displayedEvents = new JScrollPane(displayedEventsField);
 		displayedEvents.setPreferredSize(new Dimension(340, 525));
 		
@@ -70,14 +75,15 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		
 		//Business figures
 		businessPanel = new JPanel();
-		businessPanel.setPreferredSize(new Dimension(235, 170));
+		businessPanel.setPreferredSize(new Dimension(235, 590));
 		Box businessBox = new Box(BoxLayout.Y_AXIS);
-		businessBox.setPreferredSize(new Dimension(225, 160));
+		businessBox.setPreferredSize(new Dimension(225, 80));
 		
 		revenueLabel = new JLabel("Revenue:");
 		revenueLabel.setFont(new Font("Arial", 0, 12));
 		revenueField = new JTextField();
 		revenueField.setEditable(false);
+		revenueField.setText("A");
 		revenueField.setAlignmentX(LEFT_ALIGNMENT);
 		businessBox.add(revenueLabel);
 		businessBox.add(revenueField);
@@ -87,57 +93,68 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		expenditureLabel.setFont(new Font("Arial", 0, 12));
 		expenditureField = new JTextField();
 		expenditureField.setEditable(false);
+		expenditureField.setText("B");
 		expenditureField.setAlignmentX(LEFT_ALIGNMENT);
 		businessBox.add(expenditureLabel);
 		businessBox.add(expenditureField);
 		businessBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
+		Box businessTriplesBox = new Box(BoxLayout.Y_AXIS);
+		businessTriplesBox.setPreferredSize(new Dimension(225, 300));
+		
 		averageDeliveryLabel = new JLabel("Average Delivery Time:");
 		averageDeliveryLabel.setFont(new Font("Arial", 0, 12));
-		averageDeliveryField = new JTextField();
+		averageDeliveryField = new JTextArea();
 		averageDeliveryField.setEditable(false);
-		averageDeliveryField.setAlignmentX(LEFT_ALIGNMENT);
-		businessBox.add(averageDeliveryLabel);
-		businessBox.add(averageDeliveryField);
-		businessBox.add(Box.createRigidArea(new Dimension(0, 5)));
+		averageDeliveryField.setText(testString);
+		averageDelivery = new JScrollPane(averageDeliveryField);
+		averageDelivery.setAlignmentX(LEFT_ALIGNMENT);
+		businessTriplesBox.add(averageDeliveryLabel);
+		businessTriplesBox.add(averageDelivery);
+		businessTriplesBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		amountOfMailLabel = new JLabel("Amount of Mail:");
 		amountOfMailLabel.setFont(new Font("Arial", 0, 12));
-		amountOfMailField = new JTextField();
+		amountOfMailField = new JTextArea();
 		amountOfMailField.setEditable(false);
-		amountOfMailField.setAlignmentX(LEFT_ALIGNMENT);
-		businessBox.add(amountOfMailLabel);
-		businessBox.add(amountOfMailField);
-		businessBox.add(Box.createRigidArea(new Dimension(0, 5)));
+		amountOfMailField.setText(testString);
+		amountOfMail = new JScrollPane(amountOfMailField);
+		amountOfMail.setAlignmentX(LEFT_ALIGNMENT);
+		businessTriplesBox.add(amountOfMailLabel);
+		businessTriplesBox.add(amountOfMail);
+		//businessTriplesBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
-		businessPanel.add(businessBox);
+		Box completeBusiness = new Box(BoxLayout.Y_AXIS);
+		completeBusiness.add(businessBox);
+		completeBusiness.add(businessTriplesBox);
+		businessPanel.add(completeBusiness);
 		
 		//Critical routes
-		criticalPanel = new JPanel();
-		criticalPanel.setPreferredSize(new Dimension(235, 420));
+		//criticalPanel = new JPanel();
+		//criticalPanel.setPreferredSize(new Dimension(235, 220));
 		Box criticalBox = new Box(BoxLayout.Y_AXIS);
-		criticalBox.setPreferredSize(new Dimension(225, 410));
+		criticalBox.setPreferredSize(new Dimension(225, 195));
 		
 		criticalRoutesLabel = new JLabel("Critical Routes:");
 		criticalRoutesLabel.setFont(new Font("Arial", 0, 12));
 		criticalRoutesLabel.setAlignmentX(LEFT_ALIGNMENT);
-		criticalRoutesField = new JTextField();
+		criticalRoutesField = new JTextArea();
 		criticalRoutesField.setEditable(false);
-		criticalRoutes = new JScrollPane();
+		criticalRoutesField.setText(testString);
+		criticalRoutes = new JScrollPane(criticalRoutesField);
 		//criticalRoutes.setPreferredSize(new Dimension(225, 380));
 		criticalRoutes.setAlignmentX(LEFT_ALIGNMENT);
-		criticalRoutes.add(criticalRoutesField);
 		
 		criticalBox.add(criticalRoutesLabel);
 		criticalBox.add(criticalRoutes);
 		
-		criticalPanel.add(criticalBox);
+		businessPanel.add(criticalBox);
 		
 		Box leftSide = new Box(BoxLayout.Y_AXIS);
 		leftSide.add(eventsPanel);
 		Box rightSide = new Box(BoxLayout.Y_AXIS);
 		rightSide.add(businessPanel);
-		rightSide.add(criticalPanel);
+		//rightSide.add(criticalPanel);
 		Box completeBox = new Box(BoxLayout.X_AXIS);
 		completeBox.add(leftSide);
 		completeBox.add(Box.createRigidArea(new Dimension(5, 0)));

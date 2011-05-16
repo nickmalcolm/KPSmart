@@ -44,15 +44,8 @@ public class KPSmart implements ActionListener{
 			System.out.println(kBackend.testMethod());
 			return;
 		}
-		
-		if ("Undo".equals(e.getActionCommand())) {
-			kFrame.displayPanel("eventsPanel");
-		}
-		
-		
-		//EDIT OPTIONS
-		
-		//MAIL OPTIONS
+				
+		//ACTION OPTIONS
 		if ("Send Mail".equals(e.getActionCommand())) {
 			//JOptionPane.showMessageDialog(kFrame, "Theoretically, you are sending new mail.");
 			
@@ -64,16 +57,13 @@ public class KPSmart implements ActionListener{
 			return;
 		}
 		
-		//VIEW OPTIONS
-		if ("Sign out as manager".equals(e.getActionCommand())) {
-			kFrame.notManager();
-			return;
+		if ("View Business Figures".equals(e.getActionCommand())) {
+			kFrame.displayPanel("eventsPanel");
 		}
 		
 		if ("Sign in as manager".equals(e.getActionCommand())) {
 			kPasswordField = new JPasswordField(10);
 			JOptionPane.showMessageDialog(kFrame, kPasswordField, "Password Required", JOptionPane.WARNING_MESSAGE);
-		//}
 		
 			String pass = String.valueOf(kPasswordField.getPassword());
 			if(kBackend.authenticateManager(pass)) {
@@ -82,6 +72,14 @@ public class KPSmart implements ActionListener{
 				return;
 			}
 			
+		}
+		
+		if ("Sign out as manager".equals(e.getActionCommand())) {
+			kFrame.notManager();
+			if ("eventsPanel".equals(kFrame.getPanel())) {
+				kFrame.displayPanel("defaultPanel");
+			}
+			return;
 		}
 		
 		//HELP OPTIONS
