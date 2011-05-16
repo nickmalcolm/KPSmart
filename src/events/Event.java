@@ -28,4 +28,8 @@ public abstract class Event implements EventInterface{
 		return o.getTimestamp().compareTo(timestamp);
 	}
 	
+	public String toString(){
+		return timestamp.toString();
+	}
+	
 }
