@@ -182,17 +182,17 @@ public class KPSBackend {
 				for (Vehicle  vehicle : route.getVehiclesByPriority(priority)) {
 
 					//calculate avg delivery cost from origin->destination w/priority
-					int avgDelivCost = 0;
+					double avgDelivCost =  (vehicle.getTransportCostPerCC()+vehicle.getTransportCostPerG());
 
 					// calculate avg customer revenue from origin->destination w/priority
-					int avgCustCost = 0;
+					double avgCustCost =  (vehicle.getCustomerCostPerCC()+vehicle.getCustomerCostPerG());
 
 					// if avg cost > avg revenue, add new PrioritisedRoute(origin, destination, priority) into Map result
 					if(avgDelivCost > avgCustCost){
 						PrioritisedRoute newCritRoute = new PrioritisedRoute();
 						newCritRoute.setPriority(priority);
 						newCritRoute.setRoute(route);
-						result.put(newCritRoute,(double) (avgDelivCost-avgCustCost));
+						result.put(newCritRoute, (avgDelivCost-avgCustCost));
 					}
 				}
 				// and map Revenue - expenditure to PrioritisedRoute
