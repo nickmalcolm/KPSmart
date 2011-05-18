@@ -172,8 +172,23 @@ public class KPSBackend {
 		isManager = false;
 	}
 
-	public Map<PrioritisedRoute, Double> getCriticalRoute(){
+	public Map<PrioritisedRoute, Double> getCriticalRoute(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
+		
+		// select the events within an appropriate timeframe
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		List<Event> displayedEvents = events.subList(0, eventTime);
+
+		// loop through events
+		for (Event event : displayedEvents){
+			if (!(event instanceof MailEvent)){
+				applyEvent(event);
+			}
+		}
+		
 		// loop through every route
 		for (Route route : routes){
 			// loop through every priority in route
