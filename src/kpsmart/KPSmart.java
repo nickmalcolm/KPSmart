@@ -122,5 +122,10 @@ public class KPSmart implements ActionListener{
 		if ("Cancel".equals(e.getActionCommand())) {
 			kFrame.resetAll();
 		}
+		
+		//EXit BUTTON HANDLING
+		if ("Exit".equals(e.getActionCommand())) {
+			System.exit(0);
+		}
 	}
 }
