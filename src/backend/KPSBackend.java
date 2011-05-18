@@ -417,8 +417,11 @@ public class KPSBackend {
 	 * @param priority
 	 */
 	public void sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
-		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
-		activeMail.add(mail);
+		Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
+		ArrayList<MailEvent> tempMailEvents = CalculateRoute(tempMail);
+		System.out.println("created arraylist of mail events");
+		tempMail.setEvents(tempMailEvents);
+		activeMail.add(tempMail);
 		getMail(ID);
 		// add new MailEvents
 		//events.addAll(mail.getEvents());
@@ -616,11 +619,11 @@ public class KPSBackend {
 	
 	
 	
-	public ArrayList<MailEvent>  CalculateRoute(DistributionCentre o,DistributionCentre d){
+	public ArrayList<MailEvent> CalculateRoute(Mail m){
 
 
-		DistributionCentre destination = d;	
-		DistributionCentre origin = o;   
+		DistributionCentre destination = m.getDestination();	
+		DistributionCentre origin = m.getOrigin();   
 
 		ArrayList<DistributionCentre> searched = new ArrayList<DistributionCentre>(); // The set of nodes already evaluated. 
 		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();// The set of tentative nodes to be evaluated.
@@ -636,10 +639,12 @@ public class KPSBackend {
 			
 			if(tempNode.getCurrent().equals(destination)){	//Goal node has been reached
 				////////////return Reconstruct(tempNode);/**************************?*/
+				System.out.println("Remaking path");
 				return Reconstruct(tempNode);
 			}
 
 			for(DistributionCentre r : tempNode.getConnectingNodes()){
+				System.out.println("part1 Astar");
 				if(searched.contains(r)){	//if node has been visited then carry on
 					continue;
 				}
@@ -650,6 +655,7 @@ public class KPSBackend {
 					double pathToNode = estimate(origin , tempNode.getCurrent()) ; // Path distance is measued as a direct line
 					SearchNode tempSearchNode = new SearchNode(r ,tempNode, pathToNode,destination);
 					fringe.add(tempSearchNode);
+					System.out.println("part1 Astar");
 				}	
 				
 			}
