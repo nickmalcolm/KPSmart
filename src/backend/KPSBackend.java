@@ -252,12 +252,8 @@ public class KPSBackend {
 	 * @param destination	The destination of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, int eventTime){
-		// get all mails corresponding to priority/origin/destination
-		Route route = findRoute(origin, destination);
-		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
-		double sum = 0.0;
-		int numEvents = 0;
+	public Map<PrioritisedRoute, Double> calculateDeliveryTimes(int eventTime){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -267,21 +263,37 @@ public class KPSBackend {
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
 		// yuck code! want to buy LINQ query/database...
-		// loop through events and find all mail corresponding to correct vehicle
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				for (Vehicle vehicle : vehicles){
-					// check if event is on the correct route/priority
-					if (((MailEvent)event).getVehicle().equals(vehicle)){
-						sum += vehicle.getDuration();
-						numEvents++;
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				double sum = 0.0;
+				int numEvents = 0;
+				// loop through each vehicle in priority
+				for (Vehicle  vehicle : route.getVehiclesByPriority(priority)) {
+					// loop through events and find all mail corresponding to correct vehicle
+					for (Event event : displayedEvents){
+						// check if event is a MailEvent
+						if (event instanceof MailEvent){
+							// check if event is on the correct route/priority
+							if (((MailEvent)event).getVehicle().equals(vehicle)){
+								sum += vehicle.getDuration();
+								numEvents++;
+							}
+						}
+						else {
+							applyEvent(event);
+						}
 					}
 				}
+				result.put(pRoute, (sum / numEvents));
 			}
 		}
 		// return avg delivery time
-		return sum / numEvents;
+		return result;
 	}	
 
 	/**
@@ -289,8 +301,8 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
-		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
+	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
+		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -299,21 +311,32 @@ public class KPSBackend {
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
-		// calculate total no. of mails
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				MailEvent mailEvent = (MailEvent) event;
-				Mail mail = mailEvent.getMail();
-				if (mail.getOrigin().equals(origin)){
-					int count = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + 1) : 1;
-					result.put(mail.getOrigin(), count);
+		// yuck code! want to buy LINQ query/database...
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				int mailCount = 0;
+				// loop through events and find all mail corresponding to correct vehicle
+				for (Event event : displayedEvents){
+					if (event instanceof MailEvent){
+						MailEvent mailEvent = (MailEvent) event;
+						Mail mail = mailEvent.getMail();
+						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
+							mailCount++;
+						}
+					}
+					else {
+						applyEvent(event);
+					}
 				}
-			}
-			else {
-				applyEvent(event);
+				result.put(pRoute, mailCount);
 			}
 		}
+		// return avg delivery time
 		return result;
 	}
 
@@ -322,8 +345,8 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
-		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
+	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -332,18 +355,32 @@ public class KPSBackend {
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
-		// calculate total no. of mails
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				MailEvent mailEvent = (MailEvent) event;
-				Mail mail = mailEvent.getMail();
-				if (mail.getOrigin().equals(origin)){
-					double vol = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + mail.getVolume()) : mail.getVolume();
-					result.put(mail.getOrigin(), vol);
+		// yuck code! want to buy LINQ query/database...
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				double vol = 0;
+				// loop through events and find all mail corresponding to correct vehicle
+				for (Event event : displayedEvents){
+					if (event instanceof MailEvent){
+						MailEvent mailEvent = (MailEvent) event;
+						Mail mail = mailEvent.getMail();
+						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
+							vol = vol + mail.getVolume();
+						}
+					}
+					else {
+						applyEvent(event);
+					}
 				}
+				result.put(pRoute, vol);
 			}
 		}
+		// return avg delivery time
 		return result;
 	}
 
@@ -352,8 +389,8 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
-		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
+	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -362,18 +399,32 @@ public class KPSBackend {
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
-		// calculate total no. of mails
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				MailEvent mailEvent = (MailEvent) event;
-				Mail mail = mailEvent.getMail();
-				if (mail.getOrigin().equals(origin)){
-					double weight = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + mail.getWeight()) : mail.getWeight();
-					result.put(mail.getOrigin(), weight);
+		// yuck code! want to buy LINQ query/database...
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				double vol = 0;
+				// loop through events and find all mail corresponding to correct vehicle
+				for (Event event : displayedEvents){
+					if (event instanceof MailEvent){
+						MailEvent mailEvent = (MailEvent) event;
+						Mail mail = mailEvent.getMail();
+						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
+							vol = vol + mail.getWeight();
+						}
+					}
+					else {
+						applyEvent(event);
+					}
 				}
+				result.put(pRoute, vol);
 			}
 		}
+		// return avg delivery time
 		return result;
 	}
 
