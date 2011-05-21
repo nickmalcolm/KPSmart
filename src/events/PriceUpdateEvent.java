@@ -1,5 +1,9 @@
 package events;
 
+import java.util.Date;
+
+import routes.Vehicle;
+
 public class PriceUpdateEvent extends Event {
 	
 	private double costPerCC;
@@ -10,8 +14,8 @@ public class PriceUpdateEvent extends Event {
 	 * @param costPerCC
 	 * @param costPerG
 	 */
-	public PriceUpdateEvent(double costPerCC, double costPerG) {
-		super();
+	public PriceUpdateEvent(Vehicle vehicle, Date timestamp, double costPerCC, double costPerG) {
+		super(vehicle, timestamp);
 		this.costPerCC = costPerCC;
 		this.costPerG = costPerG;
 	}

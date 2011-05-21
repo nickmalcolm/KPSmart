@@ -1,6 +1,9 @@
 package events;
 
+import java.util.Date;
+
 import routes.DistributionCentre;
+import routes.Vehicle;
 import backend.Day;
 
 public class TransportUpdateEvent extends Event {
@@ -26,10 +29,10 @@ public class TransportUpdateEvent extends Event {
 	 * @param origin - the DistributionCentre from which the transport departs
 	 * @param destination - the DistributionCentre at which the transport arrives
 	 */
-	public TransportUpdateEvent(double costPerCC, double costPerG,
+	public TransportUpdateEvent(Vehicle vehicle, Date timestamp, double costPerCC, double costPerG,
 			int frequency, int durationInMinutes, Day day,
 			DistributionCentre origin, DistributionCentre destination) {
-		super();
+		super(vehicle, timestamp);
 		this.costPerCC = costPerCC;
 		this.costPerG = costPerG;
 		this.frequency = frequency;

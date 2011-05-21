@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ import javax.swing.border.Border;
 import priority.Priority;
 import routes.*;
 
-public class KPSMailPanel extends JPanel{
+public class KPSMailPanel extends JPanel implements KPSPanel{
 	
 	private Box mailPanelTitle;
 	//private JLabel mailPanelLabel;
@@ -27,7 +28,7 @@ public class KPSMailPanel extends JPanel{
 	private Box buttonsBox;
 	
 	private JLabel idLabel;
-	private JFormattedTextField idField;
+	private JTextField idField;
 	
 	private JLabel addressDetailsLabel;
 	private JTextField addressField;
@@ -88,7 +89,7 @@ public class KPSMailPanel extends JPanel{
 		
 		idLabel = new JLabel("ID:");
 		idLabel.setFont(new Font("Arial", 0, 14));
-		idField = new JFormattedTextField("RANDOM ID HERE");
+		idField = new JTextField((String.valueOf((int)(Math.random()*100000000))));
 		idField.setEditable(false);
 		idField.setAlignmentX(LEFT_ALIGNMENT);
 		contentsBox.add(idLabel);
@@ -179,6 +180,28 @@ public class KPSMailPanel extends JPanel{
 		this.add(contentsPanel, BorderLayout.CENTER);
 		this.setPreferredSize(new Dimension(600, 600));
 		this.setBackground(Color.GRAY);
+	}
+	
+	public ArrayList returnInfo() {
+		ArrayList info = new ArrayList();
+		info.add(this.idField.getText());
+		info.add(this.addressField.getText());
+		info.add(this.weightSlider.getValue());
+		info.add(this.volumeSlider.getValue());
+		info.add(this.origins.getSelectedItem());
+		info.add(this.destinations.getSelectedItem());
+		info.add(this.priorities.getSelectedItem());
+		return info;
+	}
+	
+	public void reset() {
+		idField.setText((String.valueOf((int)(Math.random()*100000000))));
+		addressField.setText("");
+		weightSlider.setValue(0);
+		volumeSlider.setValue(0);
+		origins.setSelectedIndex(0);
+		destinations.setSelectedIndex(0);
+		priorities.setSelectedIndex(0);
 	}
 
 }
