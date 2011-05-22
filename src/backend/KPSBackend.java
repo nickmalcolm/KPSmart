@@ -510,7 +510,7 @@ public class KPSBackend {
 		route.discontinueTransport(vehicle.getID());
 
 		// add to event log
-		Event event = new DiscontinueTransportEvent(vehicle, currentDate, firm, priority, destination, destination); // TODO: add details to event
+		Event event = new DiscontinueTransportEvent(vehicle, currentDate, destination, destination); // TODO: add details to event
 		events.add(event); 
 		return event;
 	}

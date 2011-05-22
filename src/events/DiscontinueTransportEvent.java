@@ -17,16 +17,14 @@ public class DiscontinueTransportEvent extends Event {
 	
 	/**
 	 * 
-	 * @param firm
-	 * @param priority
 	 * @param origin
 	 * @param destination
 	 */
-	public DiscontinueTransportEvent(Vehicle vehicle, Date timestamp, Firm firm, Priority priority,
+	public DiscontinueTransportEvent(Vehicle vehicle, Date timestamp,
 			DistributionCentre origin, DistributionCentre destination) {
 		super(vehicle, timestamp);
-		this.firm = firm;
-		this.priority = priority;
+		this.firm = vehicle.getFirm();
+		this.priority = vehicle.getPriority();
 		this.origin = origin;
 		this.destination = destination;
 	}
