@@ -35,7 +35,6 @@ public class KPSmart implements ActionListener{
 	
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand());
 		

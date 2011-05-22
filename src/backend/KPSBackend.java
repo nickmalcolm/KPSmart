@@ -172,8 +172,23 @@ public class KPSBackend {
 		isManager = false;
 	}
 
-	public Map<PrioritisedRoute, Double> getCriticalRoute(){
+	public Map<PrioritisedRoute, Double> getCriticalRoute(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
+		
+		// select the events within an appropriate timeframe
+		if (eventTime > events.size() - 1)
+			eventTime = events.size() - 1;
+		else if (eventTime < 0)
+			eventTime = 0;
+		List<Event> displayedEvents = events.subList(0, eventTime);
+
+		// loop through events
+		for (Event event : displayedEvents){
+			if (!(event instanceof MailEvent)){
+				applyEvent(event);
+			}
+		}
+		
 		// loop through every route
 		for (Route route : routes){
 			// loop through every priority in route
@@ -237,12 +252,8 @@ public class KPSBackend {
 	 * @param destination	The destination of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Double calculateDeliveryTimes(Priority priority, DistributionCentre origin, DistributionCentre destination, int eventTime){
-		// get all mails corresponding to priority/origin/destination
-		Route route = findRoute(origin, destination);
-		List<Vehicle> vehicles = route.getVehiclesByPriority(priority);
-		double sum = 0.0;
-		int numEvents = 0;
+	public Map<PrioritisedRoute, Double> calculateDeliveryTimes(int eventTime){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -252,21 +263,37 @@ public class KPSBackend {
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
 		// yuck code! want to buy LINQ query/database...
-		// loop through events and find all mail corresponding to correct vehicle
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				for (Vehicle vehicle : vehicles){
-					// check if event is on the correct route/priority
-					if (((MailEvent)event).getVehicle().equals(vehicle)){
-						sum += vehicle.getDuration();
-						numEvents++;
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				double sum = 0.0;
+				int numEvents = 0;
+				// loop through each vehicle in priority
+				for (Vehicle  vehicle : route.getVehiclesByPriority(priority)) {
+					// loop through events and find all mail corresponding to correct vehicle
+					for (Event event : displayedEvents){
+						// check if event is a MailEvent
+						if (event instanceof MailEvent){
+							// check if event is on the correct route/priority
+							if (((MailEvent)event).getVehicle().equals(vehicle)){
+								sum += vehicle.getDuration();
+								numEvents++;
+							}
+						}
+						else {
+							applyEvent(event);
+						}
 					}
 				}
+				result.put(pRoute, (sum / numEvents));
 			}
 		}
 		// return avg delivery time
-		return sum / numEvents;
+		return result;
 	}	
 
 	/**
@@ -274,8 +301,8 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<DistributionCentre, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
-		Map<DistributionCentre, Integer> result = new HashMap<DistributionCentre, Integer>();
+	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
+		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -284,21 +311,32 @@ public class KPSBackend {
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
-		// calculate total no. of mails
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				MailEvent mailEvent = (MailEvent) event;
-				Mail mail = mailEvent.getMail();
-				if (mail.getOrigin().equals(origin)){
-					int count = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + 1) : 1;
-					result.put(mail.getOrigin(), count);
+		// yuck code! want to buy LINQ query/database...
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				int mailCount = 0;
+				// loop through events and find all mail corresponding to correct vehicle
+				for (Event event : displayedEvents){
+					if (event instanceof MailEvent){
+						MailEvent mailEvent = (MailEvent) event;
+						Mail mail = mailEvent.getMail();
+						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
+							mailCount++;
+						}
+					}
+					else {
+						applyEvent(event);
+					}
 				}
-			}
-			else {
-				applyEvent(event);
+				result.put(pRoute, mailCount);
 			}
 		}
+		// return avg delivery time
 		return result;
 	}
 
@@ -307,8 +345,8 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<DistributionCentre, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
-		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
+	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -317,18 +355,32 @@ public class KPSBackend {
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
-		// calculate total no. of mails
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				MailEvent mailEvent = (MailEvent) event;
-				Mail mail = mailEvent.getMail();
-				if (mail.getOrigin().equals(origin)){
-					double vol = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + mail.getVolume()) : mail.getVolume();
-					result.put(mail.getOrigin(), vol);
+		// yuck code! want to buy LINQ query/database...
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				double vol = 0;
+				// loop through events and find all mail corresponding to correct vehicle
+				for (Event event : displayedEvents){
+					if (event instanceof MailEvent){
+						MailEvent mailEvent = (MailEvent) event;
+						Mail mail = mailEvent.getMail();
+						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
+							vol = vol + mail.getVolume();
+						}
+					}
+					else {
+						applyEvent(event);
+					}
 				}
+				result.put(pRoute, vol);
 			}
 		}
+		// return avg delivery time
 		return result;
 	}
 
@@ -337,8 +389,8 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<DistributionCentre, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
-		Map<DistributionCentre, Double> result = new HashMap<DistributionCentre, Double>();
+	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
+		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.size() - 1)
 			eventTime = events.size() - 1;
@@ -347,18 +399,32 @@ public class KPSBackend {
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
 
-		// calculate total no. of mails
-		for (Event event : displayedEvents){
-			// check if event is a MailEvent
-			if (event instanceof MailEvent){
-				MailEvent mailEvent = (MailEvent) event;
-				Mail mail = mailEvent.getMail();
-				if (mail.getOrigin().equals(origin)){
-					double weight = result.get(mail.getOrigin()) != null ? (result.get(mail.getOrigin()) + mail.getWeight()) : mail.getWeight();
-					result.put(mail.getOrigin(), weight);
+		// yuck code! want to buy LINQ query/database...
+		// loop through every route
+		for (Route route : routes){
+			// loop through every priority in route
+			for (Priority priority : Priority.values()){
+				PrioritisedRoute pRoute = new PrioritisedRoute();
+				pRoute.setRoute(route);
+				pRoute.setPriority(priority);
+				double vol = 0;
+				// loop through events and find all mail corresponding to correct vehicle
+				for (Event event : displayedEvents){
+					if (event instanceof MailEvent){
+						MailEvent mailEvent = (MailEvent) event;
+						Mail mail = mailEvent.getMail();
+						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
+							vol = vol + mail.getWeight();
+						}
+					}
+					else {
+						applyEvent(event);
+					}
 				}
+				result.put(pRoute, vol);
 			}
 		}
+		// return avg delivery time
 		return result;
 	}
 
@@ -417,8 +483,11 @@ public class KPSBackend {
 	 * @param priority
 	 */
 	public void sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
-		Mail mail = new Mail(ID, weight, volume, origin, destination, priority);
-		activeMail.add(mail);
+		Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
+		ArrayList<MailEvent> tempMailEvents = CalculateRoute(tempMail);
+		System.out.println("created arraylist of mail events");
+		tempMail.setEvents(tempMailEvents);
+		activeMail.add(tempMail);
 		getMail(ID);
 		// add new MailEvents
 		//events.addAll(mail.getEvents());
@@ -616,11 +685,11 @@ public class KPSBackend {
 	
 	
 	
-	public ArrayList<MailEvent>  CalculateRoute(DistributionCentre o,DistributionCentre d){
+	public ArrayList<MailEvent> CalculateRoute(Mail m){
 
 
-		DistributionCentre destination = d;	
-		DistributionCentre origin = o;   
+		DistributionCentre destination = m.getDestination();	
+		DistributionCentre origin = m.getOrigin();   
 
 		ArrayList<DistributionCentre> searched = new ArrayList<DistributionCentre>(); // The set of nodes already evaluated. 
 		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();// The set of tentative nodes to be evaluated.
@@ -636,10 +705,12 @@ public class KPSBackend {
 			
 			if(tempNode.getCurrent().equals(destination)){	//Goal node has been reached
 				////////////return Reconstruct(tempNode);/**************************?*/
+				System.out.println("Remaking path");
 				return Reconstruct(tempNode);
 			}
 
 			for(DistributionCentre r : tempNode.getConnectingNodes()){
+				System.out.println("part1 Astar");
 				if(searched.contains(r)){	//if node has been visited then carry on
 					continue;
 				}
@@ -650,6 +721,7 @@ public class KPSBackend {
 					double pathToNode = estimate(origin , tempNode.getCurrent()) ; // Path distance is measued as a direct line
 					SearchNode tempSearchNode = new SearchNode(r ,tempNode, pathToNode,destination);
 					fringe.add(tempSearchNode);
+					System.out.println("part1 Astar");
 				}	
 				
 			}

@@ -35,7 +35,7 @@ public class Mail {
 		this.origin = origin;
 		this.destination = destination;
 		this.priority = priority;
-		this.events = KPSBackend.CalculateRoute(origin , destination);
+		 
 	}
 	
 	public int getID() {
@@ -64,6 +64,9 @@ public class Mail {
 
 	public ArrayList<MailEvent> getEvents() {
 		return events;
+	}
+	public void setEvents(ArrayList<MailEvent> m) {
+		events = m;
 	}
 	
 
