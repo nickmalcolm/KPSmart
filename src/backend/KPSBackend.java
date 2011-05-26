@@ -647,7 +647,7 @@ public class KPSBackend {
 	/**
 	 * Finds the firms currently in the system.
 	 */
-	private List<Firm> findFirms(){
+	public List<Firm> findFirms(){
 		List<Firm> result = new ArrayList<Firm>();
 		for (Route route : this.routes){
 			for (Vehicle vehicle : route.getVehicles()){
