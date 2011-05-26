@@ -24,6 +24,7 @@ import com.thoughtworks.xstream.XStream;
 
 import events.DiscontinueTransportEvent;
 import events.Event;
+import events.EventList;
 import events.MailEvent;
 import events.PriceUpdateEvent;
 import events.TransportUpdateEvent;
@@ -32,7 +33,7 @@ public class KPSBackend {
 	private Set<DistributionCentre> distributionCentres;
 	private ArrayList<Route> routes;
 	private ArrayList<Mail> allMail;
-	private ArrayList<Event> events;
+	private EventList<Event> events;
 	private XStream xstream;
 
 	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
@@ -46,7 +47,7 @@ public class KPSBackend {
 
 		routes = new ArrayList<Route>();
 		allMail = new ArrayList<Mail>();
-		events = new ArrayList<Event>();
+		events = new EventList<Event>();
 		//distributionCentres = new TreeSet();
 		//password = "sototessecure";
 		passwordHash = 653306037;
@@ -84,7 +85,7 @@ public class KPSBackend {
 			//Finally parses the files back into objects.
 			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 			allMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
-			events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+			events = (EventList<Event>)xstream.fromXML(eventsXMLInput);
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 
@@ -509,7 +510,7 @@ public class KPSBackend {
 		vehicle.updateCustomerCost(pricePerG, pricePerCC);
 
 		// add to event log
-		Event event = new PriceUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG); // TODO: add details to event
+		Event event = new PriceUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG);
 		events.add(event); 
 		return event;
 	}
@@ -560,21 +561,21 @@ public class KPSBackend {
 	 * @param firm	The firm the vehicle belongs to.
 	 * @param day	The day the transport is available.
 	 */
-	public Event discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm, Day day) {
+	public void discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
 		if (route == null)
-			return null;
+			return;
+		// iterate through all vehicles corresponding to priority and firm
+		for (Vehicle vehicle : route.getVehiclesByPriority(priority)){
+			if (vehicle.getFirm().equals(firm)){
+				// discontinue those vehicles
+				route.discontinueTransport(vehicle.getID());
 
-		Vehicle vehicle = route.getVehicle(priority, firm);
-		if (vehicle == null)
-			return null;
-
-		route.discontinueTransport(vehicle.getID());
-
-		// add to event log
-		Event event = new DiscontinueTransportEvent(vehicle, currentDate, destination, destination); // TODO: add details to event
-		events.add(event); 
-		return event;
+				// add to event log
+				Event event = new DiscontinueTransportEvent(vehicle, currentDate, destination, destination);
+				events.add(event); 
+			}
+		}
 	}
 
 	public void getMail(int ID) {
@@ -603,11 +604,6 @@ public class KPSBackend {
 			eventTime = 0;
 
 		List<Event> displayedEvents = events.subList(0, eventTime);
-
-		// add filter to list of events (events.filter(String filter)?)
-		// change displayedEvents to filtered list of events
-
-		// return list of events
 
 		return displayedEvents;
 	}
