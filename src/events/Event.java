@@ -22,7 +22,6 @@ public abstract class Event implements EventInterface{
 		return timestamp;
 	}
 
-	@Override
 	public int compareTo(EventInterface o) {
 		// TODO Auto-generated method stub
 		return o.getTimestamp().compareTo(timestamp);
