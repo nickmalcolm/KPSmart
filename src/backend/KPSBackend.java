@@ -31,7 +31,7 @@ import events.TransportUpdateEvent;
 public class KPSBackend {
 	private Set<DistributionCentre> distributionCentres;
 	private ArrayList<Route> routes;
-	private ArrayList<Mail> activeMail;
+	private ArrayList<Mail> allMail;
 	private ArrayList<Event> events;
 	private XStream xstream;
 
@@ -45,7 +45,7 @@ public class KPSBackend {
 	public KPSBackend() {
 
 		routes = new ArrayList<Route>();
-		activeMail = new ArrayList<Mail>();
+		allMail = new ArrayList<Mail>();
 		events = new ArrayList<Event>();
 		//distributionCentres = new TreeSet();
 		//password = "sototessecure";
@@ -83,7 +83,7 @@ public class KPSBackend {
 
 			//Finally parses the files back into objects.
 			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
-			activeMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
+			allMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
 			events = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
@@ -117,7 +117,7 @@ public class KPSBackend {
 		xstream = new XStream();
 		try{
 			String routesXML = xstream.toXML(routes);
-			String mailXML = xstream.toXML(activeMail);
+			String mailXML = xstream.toXML(allMail);
 			String eventsXML = xstream.toXML(events);
 
 			//Then save (and hash?) XML file
@@ -487,10 +487,10 @@ public class KPSBackend {
 		ArrayList<MailEvent> tempMailEvents = CalculateRoute(tempMail);
 		System.out.println("created arraylist of mail events");
 		tempMail.setEvents(tempMailEvents);
-		activeMail.add(tempMail);
+		allMail.add(tempMail);
 		getMail(ID);
 		// add new MailEvents
-		//events.addAll(mail.getEvents());
+		events.addAll(tempMail.getEvents());
 	}
 
 	/**
@@ -504,13 +504,7 @@ public class KPSBackend {
 	 * @param firm	The firm the vehicle belongs to.
 	 */
 	public Event updatePrice(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, Priority priority, Firm firm) {
-		Route route = findRoute(origin, destination);
-		if (route == null)
-			return null;
-
-		Vehicle vehicle = route.getVehicle(priority, firm);
-		if (vehicle == null)
-			return null;
+		Vehicle vehicle = getVehicle(origin, destination, priority, firm);
 
 		vehicle.updateCustomerCost(pricePerG, pricePerCC);
 
@@ -552,7 +546,6 @@ public class KPSBackend {
 		else {
 			vehicle.updateTransportCost(pricePerG, pricePerCC);
 		}
-		// add to event log TODO change events
 		Event event = new TransportUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
 		events.add(event); 
 		return event;
@@ -585,8 +578,8 @@ public class KPSBackend {
 	}
 
 	public void getMail(int ID) {
-		System.out.println(activeMail.size());
-		for (Mail m : activeMail) {
+		System.out.println(allMail.size());
+		for (Mail m : allMail) {
 			//if (m.getID() == ID) {
 			String answer = "ID: " + m.getID()
 			+ "\nOrigin: " + m.getOrigin().getName()
@@ -639,6 +632,33 @@ public class KPSBackend {
 
 
 	// Helper methods
+	private Vehicle getVehicle(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm){
+		Route route = findRoute(origin, destination);
+		if (route == null)
+			return null;
+
+		Vehicle vehicle = route.getVehicle(priority, firm);
+		if (vehicle == null)
+			return null;
+		
+		return vehicle;
+	}
+	
+	/**
+	 * Finds the firms currently in the system.
+	 */
+	public List<Firm> findFirms(){
+		List<Firm> result = new ArrayList<Firm>();
+		for (Route route : this.routes){
+			for (Vehicle vehicle : route.getVehicles()){
+				if (!result.contains(vehicle.getFirm())){
+					result.add(vehicle.getFirm());
+				}
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * Finds the route corresponding to the origin and destination.
 	 */
@@ -650,40 +670,6 @@ public class KPSBackend {
 		// route not found, return null
 		return null;
 	}
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public ArrayList<MailEvent> CalculateRoute(Mail m){
 

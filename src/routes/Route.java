@@ -48,8 +48,13 @@ public class Route {
 	}
 	
 	public List<Vehicle> getVehiclesByPriority(Priority priority){
-		//TODO
-		return null;
+		List<Vehicle> result = new ArrayList<Vehicle>();
+		for (Vehicle vehicle : vehicles){
+			if (vehicle.getPriority() == priority){
+				result.add(vehicle);
+			}
+		}
+		return result;
 	}
 
 	public DistributionCentre getD1() {
