@@ -50,8 +50,6 @@ public class MailEvent extends Event {
 		return getMail().getPriority();
 	}
 
-
-	@Override
 	public Date getDate() {
 		// TODO Auto-generated method stub
 		return null;
