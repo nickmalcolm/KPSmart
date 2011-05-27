@@ -20,10 +20,6 @@ import routes.*;
 
 public class KPSMailPanel extends JPanel implements KPSPanel{
 	
-	private Box mailPanelTitle;
-	//private JLabel mailPanelLabel;
-	private JLabel mailPanelInstructions;
-	
 	private Box contentsBox;
 	private Box buttonsBox;
 	
@@ -73,17 +69,6 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 			destList[0] = "ERROR LOADING DESTINATIONS";
 		}
 		
-		mailPanelTitle = new Box(BoxLayout.Y_AXIS);
-		//mailPanelLabel = new JLabel("SEND MAIL");
-		//mailPanelLabel.setFont(new Font("Arial", 1, 42));
-		//mailPanelLabel.setAlignmentX(CENTER_ALIGNMENT);
-		mailPanelInstructions = new JLabel("Please enter the correct details below and push the OK button.");
-		mailPanelInstructions.setFont(new Font("Arial", 0, 16));
-		mailPanelInstructions.setAlignmentX(CENTER_ALIGNMENT);
-		//mailPanelTitle.add(mailPanelLabel);
-	
-		mailPanelTitle.add(mailPanelInstructions);
-		
 		contentsBox = new Box(BoxLayout.Y_AXIS);
 		buttonsBox = new Box(BoxLayout.X_AXIS);
 		
@@ -92,6 +77,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		idField = new JTextField((String.valueOf((int)(Math.random()*100000000))));
 		idField.setEditable(false);
 		idField.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(idLabel);
 		contentsBox.add(idField);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
@@ -100,6 +86,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		addressDetailsLabel.setFont(new Font("Arial", 0, 14));
 		addressField = new JTextField();
 		addressField.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(addressDetailsLabel);
 		contentsBox.add(addressField);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
@@ -114,6 +101,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		weightSlider.setPaintTicks(true);
 		weightSlider.setPaintLabels(true);
 		weightSlider.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(weightLabel);
 		contentsBox.add(weightSlider);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
@@ -128,6 +116,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		volumeSlider.setPaintTicks(true);
 		volumeSlider.setPaintLabels(true);
 		volumeSlider.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(volumeLabel);
 		contentsBox.add(volumeSlider);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
@@ -136,6 +125,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		originLabel.setFont(new Font("Arial", 0, 14));
 		origins = new JComboBox(originList);
 		origins.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(originLabel);
 		contentsBox.add(origins);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
@@ -144,6 +134,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		destLabel.setFont(new Font("Arial", 0, 14));
 		destinations = new JComboBox(destList);
 		destinations.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(destLabel);
 		contentsBox.add(destinations);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
@@ -152,15 +143,16 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		priorityLabel.setFont(new Font("Arial", 0, 14));
 		priorities = new JComboBox(priorityList);
 		priorities.setAlignmentX(LEFT_ALIGNMENT);
+		
 		contentsBox.add(priorityLabel);
 		contentsBox.add(priorities);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
 		
-		okButton = new JButton("OK");
+		okButton = new JButton("Send Mail");
 		okButton.addActionListener(actionlistener);
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(actionlistener);
-		//okButton.setAlignmentX(CENTER_ALIGNMENT);
+
 		buttonsBox.add(okButton);
 		buttonsBox.add(Box.createRigidArea(new Dimension(5,0)));
 		buttonsBox.add(cancelButton);
@@ -176,7 +168,6 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		contentsPanel.add(mailPanelTitle);
 		contentsPanel.add(completeBox, BorderLayout.CENTER);
 		
-		//this.add(mailPanelTitle, BorderLayout.CENTER); 
 		this.add(contentsPanel, BorderLayout.CENTER);
 		this.setPreferredSize(new Dimension(600, 600));
 		this.setBackground(Color.GRAY);

@@ -697,7 +697,7 @@ public class KPSBackend {
 		ArrayList<MailEvent> mailEvents = new ArrayList<MailEvent>();
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
 		
-		//HAve a goal search node now go back through nodes making a mail event for each route
+		//HAve a goal search node, now go back through nodes making a mail event for each route
 		for(SearchNode s = goalNode ; s.getPreviousSearchNode() != null ; s.getPreviousSearchNode()){
 			//Make Mail for mail event eg mail between 2 nodes
 			Mail tempMail = new Mail(ID, weight, volume, s.getPreviousSearchNode().getCurrentDistributionCentre()
