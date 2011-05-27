@@ -1,5 +1,6 @@
 package routes;
 
+import backend.Day;
 import priority.*;
 
 public class Vehicle {
@@ -14,11 +15,13 @@ public class Vehicle {
 	private int frequency;
 	private int duration;
 	
+	private Day transportDay;
+	
 	private Priority priority;
 	
 	private Firm firm;
 	
-	public Vehicle(int ID, double pricePerG, double pricePerCC, int frequency, int duration, Priority priority, Firm firm) {	
+	public Vehicle(int ID, double pricePerG, double pricePerCC, int frequency, int duration, Priority priority, Firm firm,Day day) {	
 		this.ID = ID;
 		this.customerCostPerG = pricePerG;
 		this.customerCostPerCC = pricePerCC;
@@ -26,6 +29,8 @@ public class Vehicle {
 		this.duration = duration;
 		this.priority = priority;
 		this.firm = firm;
+		this.transportDay = day;
+		
 	}
 	
 	public double calculateProfitPerG() {
@@ -48,6 +53,10 @@ public class Vehicle {
 
 	public int getID() {
 		return ID;
+	}
+	
+	public Day getDay() {
+		return transportDay;
 	}
 
 	public void setID(int iD) {

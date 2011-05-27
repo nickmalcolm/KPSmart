@@ -2,6 +2,8 @@ package events;
 
 import java.util.Date;
 
+import backend.Day;
+
 import priority.Priority;
 import routes.DistributionCentre;
 import routes.Firm;
@@ -13,7 +15,7 @@ public class DiscontinueTransportEvent extends Event {
 	private Priority priority;
 	private DistributionCentre origin;
 	private DistributionCentre destination;
-	
+
 	
 	/**
 	 * 
@@ -27,6 +29,7 @@ public class DiscontinueTransportEvent extends Event {
 		this.priority = vehicle.getPriority();
 		this.origin = origin;
 		this.destination = destination;
+
 	}
 	
 	
@@ -41,6 +44,13 @@ public class DiscontinueTransportEvent extends Event {
 	}
 	public DistributionCentre getDestination() {
 		return destination;
+	}
+
+
+	@Override
+	public Date getDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

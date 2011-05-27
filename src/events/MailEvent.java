@@ -5,17 +5,19 @@ import java.util.Date;
 import priority.Priority;
 import routes.DistributionCentre;
 import routes.Vehicle;
+import backend.Day;
 import backend.Mail;
 
 public class MailEvent extends Event {
 
 
 	private Mail mail; // the mail the MailEvent is associated with
+	private Day day;
 	
-	
-	public MailEvent(Vehicle vehicle, Date timestamp, Mail mail) {
-		super(vehicle, timestamp);
+	public MailEvent(Vehicle vehicle,Day day , Mail mail) {
+		super(vehicle, null);
 		this.mail = mail;
+		this.day = day;
 	}
 
 
@@ -47,5 +49,14 @@ public class MailEvent extends Event {
 	public Priority getPriority() {
 		return getMail().getPriority();
 	}
+
+
+	@Override
+	public Date getDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
