@@ -800,9 +800,18 @@ public class KPSBackend {
 			this.current = current;
 			this.previous = previous;
 			this.vehicle = v;
-			routeCost = (vehicle.getCustomerCostPerCC()*volume) + (vehicle.getCustomerCostPerG()*wieght);
-			totalPathCost = previous.totalPathCost + routeCost;
-
+			if (vehicle == null){
+				routeCost = 0;
+			}
+			else {
+				routeCost = (vehicle.getCustomerCostPerCC()*volume) + (vehicle.getCustomerCostPerG()*wieght);
+			}
+			if (previous == null){
+				totalPathCost = 0;
+			}
+			else {
+				totalPathCost = previous.totalPathCost + routeCost;
+			}
 		}
 
 
