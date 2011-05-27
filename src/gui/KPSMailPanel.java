@@ -93,11 +93,11 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		
 		weightLabel = new JLabel("Weight:");
 		weightLabel.setFont(new Font("Arial", 0, 14));
-		weightSlider = new JSlider(0, 50, 0);
+		weightSlider = new JSlider(0, 350, 0);
 		weightSlider.setMinimumSize(new Dimension(0,0));
 		weightSlider.setMaximumSize(addressField.getMaximumSize());
-		weightSlider.setMajorTickSpacing(10);
-		weightSlider.setMinorTickSpacing(1);
+		weightSlider.setMajorTickSpacing(50);
+		weightSlider.setMinorTickSpacing(10);
 		weightSlider.setPaintTicks(true);
 		weightSlider.setPaintLabels(true);
 		weightSlider.setAlignmentX(LEFT_ALIGNMENT);
@@ -148,7 +148,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		contentsBox.add(priorities);
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
 		
-		okButton = new JButton("Send Mail");
+		okButton = new JButton("Send");
 		okButton.addActionListener(actionlistener);
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(actionlistener);
@@ -165,7 +165,6 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		
 		JPanel contentsPanel = new JPanel();
 		contentsPanel.setPreferredSize(new Dimension(590,590));
-		contentsPanel.add(mailPanelTitle);
 		contentsPanel.add(completeBox, BorderLayout.CENTER);
 		
 		this.add(contentsPanel, BorderLayout.CENTER);

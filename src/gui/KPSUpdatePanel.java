@@ -1,11 +1,14 @@
 package gui;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.util.*;
 
 import javax.swing.*;
+
+import backend.Day;
 
 import priority.Priority;
 
@@ -16,7 +19,6 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 	private Box completeBox;
 	
 	//Labels
-	
 	private JLabel customerOriginsLabel;
 	private JLabel customerDestinationsLabel;
 	private JLabel customerFirmLabel;
@@ -59,16 +61,17 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 	private Box transportFieldsBox;
 	private Box transportLeftBox;
 	private Box transportRightBox;
+	private Box transportDayBox;
 	private Box transportButtonBox;
 	private JComboBox transportOrigins;
 	private JComboBox transportDestinations;
 	private JComboBox transportFirms;
 	private JComboBox transportPriority;
+	private JComboBox transportDay;
 	private JTextField transportPriceCC;
 	private JTextField transportPriceG;
 	private JTextField transportFreqeuency;
 	private JTextField transportDuration;
-	private JTextField transportDay;
 	private JButton  transportButton;
 	private JButton transportCancel;
 	
@@ -90,6 +93,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 	private String[] destList;
 	private String[] firmList;
 	private Priority[] priorityList = Priority.values();
+	private Day[] dayList = Day.values();
 
 	public KPSUpdatePanel(ActionListener actionlistener, Set<DistributionCentre> centres, List<Firm> firms) {
 		super();
@@ -198,12 +202,14 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		customerLeftBox = new Box(BoxLayout.Y_AXIS);
 		customerRightBox = new Box(BoxLayout.Y_AXIS); 
 		customerButtonBox = new Box(BoxLayout.X_AXIS);
+		
 		customerOrigins = new JComboBox(originList);
 		customerDestinations = new JComboBox(destList);
 		customerFirms = new JComboBox(firmList);
 		customerPriority = new JComboBox(priorityList);
 		customerPriceCC = new JTextField();
 		customerPriceG = new JTextField();
+		
 		customerButton = new JButton("Update Customer Cost");
 		customerButton.addActionListener(actionlistener);
 		customerCancel = new JButton("Cancel");
@@ -238,6 +244,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		customerButtonBox.add(customerCancel);
 		
 		customerFieldsBox.add(customerLeftBox);
+		customerFieldsBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		customerFieldsBox.add(customerRightBox);
 		customerCompleteBox.add(customerFieldsBox);
 		customerCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -245,7 +252,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		//completeBox.add(customerCompleteBox);
 		
 		JPanel customerPanel = new JPanel();
-		customerPanel.setPreferredSize(new Dimension(590,195));
+		customerPanel.setPreferredSize(new Dimension(590,180));
 		customerPanel.add(customerCompleteBox, BorderLayout.CENTER);
 		completeBox.add(customerPanel);
 		completeBox.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -255,16 +262,19 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		transportFieldsBox = new Box(BoxLayout.X_AXIS);
 		transportLeftBox = new Box(BoxLayout.Y_AXIS);
 		transportRightBox = new Box(BoxLayout.Y_AXIS); 
+		transportDayBox = new Box(BoxLayout.Y_AXIS);
 		transportButtonBox = new Box(BoxLayout.X_AXIS);
+		
 		transportOrigins = new JComboBox(originList);
 		transportDestinations = new JComboBox(destList);
 		transportFirms = new JComboBox(firmList);
 		transportPriority = new JComboBox(priorityList);
 		transportPriceCC = new JTextField();
 		transportPriceG = new JTextField();
-		transportDay = new JTextField();
+		transportDay = new JComboBox(dayList);
 		transportFreqeuency = new JTextField();
 		transportDuration = new JTextField();
+		
 		transportButton = new JButton("Update Transport Cost");
 		transportButton.addActionListener(actionlistener);
 		transportCancel = new JButton("Cancel");
@@ -304,6 +314,10 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		transportRightBox.add(transportDurationLabel);
 		transportRightBox.add(transportDuration);
 		
+		transportDayBox.add(transportDayLabel);
+		transportDayBox.add(transportDay);
+		transportDayBox.setAlignmentX(CENTER_ALIGNMENT);
+		
 		transportButtonBox.add(transportButton);
 		transportButtonBox.add(transportCancel);
 		
@@ -311,11 +325,13 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		transportFieldsBox.add(transportRightBox);
 		transportCompleteBox.add(transportFieldsBox);
 		transportCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
+		transportCompleteBox.add(transportDayBox);
+		transportCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		transportCompleteBox.add(transportButtonBox);
 		//completeBox.add(transportCompleteBox);
 		
 		JPanel transportPanel = new JPanel();
-		transportPanel.setPreferredSize(new Dimension(590,230));
+		transportPanel.setPreferredSize(new Dimension(590,260));
 		transportPanel.add(transportCompleteBox, BorderLayout.CENTER);
 		completeBox.add(transportPanel);
 		completeBox.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -363,7 +379,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		//completeBox.add(customerCompleteBox);
 		
 		JPanel discontinuePanel = new JPanel();
-		discontinuePanel.setPreferredSize(new Dimension(590,155));
+		discontinuePanel.setPreferredSize(new Dimension(590,140));
 		discontinuePanel.add(discontinueCompleteBox, BorderLayout.CENTER);
 		completeBox.add(discontinuePanel);
 		//completeBox.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -372,9 +388,45 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		this.setBackground(Color.GRAY);
 		
 	}
+	
+	public ArrayList returnCustomerPriceUpdateInfo() {
+		return null;
+	}
+	
+	public ArrayList returnTransportCostUpdateInfo() {
+		return null;
+	}
+	
+	public ArrayList returnDiscontinueTransportInfo() {
+		return null;
+	}
 
 	public void reset() {
-		// TODO Auto-generated method stub
+		
+		//Update Customer Cost Fields
+		customerOrigins.setSelectedIndex(0);
+		customerDestinations.setSelectedIndex(0);
+		customerFirms.setSelectedIndex(0);
+		customerPriority.setSelectedIndex(0);
+		customerPriceCC.setText("");
+		customerPriceG.setText("");
+		
+		//Update Transport Costs Fields
+		transportOrigins.setSelectedIndex(0);
+		transportDestinations.setSelectedIndex(0);
+		transportFirms.setSelectedIndex(0);
+		transportPriority.setSelectedIndex(0);
+		transportPriceCC.setText("");
+		transportPriceG.setText("");
+		transportFreqeuency.setText("");
+		transportDuration.setText("");
+		transportDay.setSelectedIndex(0);
+
+		//Discontinue Transport Fields
+		discontinueOrigins.setSelectedIndex(0);
+		discontinueDestinations.setSelectedIndex(0);
+		discontinueFirms.setSelectedIndex(0);
+		discontinuePriority.setSelectedIndex(0);
 	}
 
 }

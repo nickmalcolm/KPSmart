@@ -87,11 +87,10 @@ public class KPSmart implements ActionListener{
 			return;
 		}
 		
-		//OK BUTTON HANDLING
-		if ("OK".equals(e.getActionCommand())) {
-			System.out.println(kFrame.getPanel("mailPanel")); //For testing
+		//SEND MAIL HANDLING
+		if ("Send".equals(e.getActionCommand())) {
 			
-			//MAIL PANEL
+			//Check for mail panel
 			if (kFrame.getPanel("mailPanel")) {
 
 				ArrayList<Object> info = kFrame.returnMailPanelInfo();

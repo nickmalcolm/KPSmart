@@ -94,6 +94,18 @@ public class KPSFrame extends JFrame {
 	public ArrayList returnMailPanelInfo() {
 		return mailPanel.returnInfo();
 	}
+	
+	public ArrayList returnCustomerPriceUpdateInfo() {
+		return null;
+	}
+	
+	public ArrayList returnTransportCostUpdateInfo() {
+		return null;
+	}
+	
+	public ArrayList returnDiscontinueTransportInfo() {
+		return null;
+	}
 
 	public void manager() {
 		menuBar.manager();	
