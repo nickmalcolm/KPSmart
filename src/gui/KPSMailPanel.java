@@ -54,7 +54,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 	private JButton okButton;
 	private JButton cancelButton;
 	
-	public KPSMailPanel(ActionListener a, Set<DistributionCentre> s) {
+	public KPSMailPanel(ActionListener actionlistener, Set<DistributionCentre> s) {
 		super();
 		
 		if (s != null) {
@@ -69,8 +69,8 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		else {
 			originList = new String[1];
 			destList = new String[1];
-			originList[0] = "Your mum's house";
-			destList[0] = "TROLOLOL!";
+			originList[0] = "ERROR LOADING ORIGINS";
+			destList[0] = "ERROR LOADING DESTINATIONS";
 		}
 		
 		mailPanelTitle = new Box(BoxLayout.Y_AXIS);
@@ -157,9 +157,9 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		contentsBox.add(Box.createRigidArea(new Dimension(0,5)));
 		
 		okButton = new JButton("OK");
-		okButton.addActionListener(a);
+		okButton.addActionListener(actionlistener);
 		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(a);
+		cancelButton.addActionListener(actionlistener);
 		//okButton.setAlignmentX(CENTER_ALIGNMENT);
 		buttonsBox.add(okButton);
 		buttonsBox.add(Box.createRigidArea(new Dimension(5,0)));

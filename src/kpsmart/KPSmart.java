@@ -6,6 +6,7 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -28,7 +29,7 @@ public class KPSmart implements ActionListener{
 	
 		kBackend = new KPSBackend();
 		kBackend.parseXMLRecord();
-		kFrame = new KPSFrame(this, kBackend.getDistributionCentres());
+		kFrame = new KPSFrame(this, kBackend.getDistributionCentres(), kBackend.findFirms());
 		kPasswordField = new JPasswordField(10);
 		//KPSpasswordField.setActionCommand("OK");
 		//KPSpasswordField.addActionListener(this);
@@ -46,14 +47,12 @@ public class KPSmart implements ActionListener{
 				
 		//ACTION OPTIONS
 		if ("Send Mail".equals(e.getActionCommand())) {
-			//JOptionPane.showMessageDialog(kFrame, "Theoretically, you are sending new mail.");
-			
-			//prompt for data
-			
-			//create and send
 			kFrame.displayPanel("mailPanel");
-			//kBackend.sendMail(12345, 0, 0, new DistributionCentre("Christchurch", "Christchurch", "New Zealand", 20, 20), new DistributionCentre("Auckland", "Auckland", "New Zealand", 60, 10), Priority.DOMESTIC);
 			return;
+		}
+		
+		if ("Update Costs".equals(e.getActionCommand())) {
+			kFrame.displayPanel("updatePanel");
 		}
 		
 		if ("View Business Figures".equals(e.getActionCommand())) {
@@ -75,7 +74,7 @@ public class KPSmart implements ActionListener{
 		
 		if ("Sign out as manager".equals(e.getActionCommand())) {
 			kFrame.notManager();
-			if ("eventsPanel".equals(kFrame.getPanel())) {
+			if (kFrame.getPanel("eventsPanel")) {
 				kFrame.displayPanel("defaultPanel");
 			}
 			return;
@@ -90,10 +89,10 @@ public class KPSmart implements ActionListener{
 		
 		//OK BUTTON HANDLING
 		if ("OK".equals(e.getActionCommand())) {
-			System.out.println(kFrame.getPanel()); //For testing
+			System.out.println(kFrame.getPanel("mailPanel")); //For testing
 			
 			//MAIL PANEL
-			if ("mailPanel".equals(kFrame.getPanel())) {
+			if (kFrame.getPanel("mailPanel")) {
 				ArrayList<Object> info = kFrame.returnMailPanelInfo();
 				for (Object o : info) {
 					System.out.println(String.valueOf(o));

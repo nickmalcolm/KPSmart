@@ -18,6 +18,7 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	
 	private JMenu actionMenu;
 	private JMenuItem aSend;
+	private JMenuItem aUpdateCosts;
 	private JMenuItem aBusinessFigures;
 	private JMenuItem aAuthenticate;
 	private JMenuItem aDeauthenticate;
@@ -50,6 +51,10 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 			aSend = new JMenuItem("Send Mail", KeyEvent.VK_M);
 			aSend.addActionListener(a);
 			actionMenu.add(aSend);
+			
+			aUpdateCosts = new JMenuItem("Update Costs", KeyEvent.VK_U);
+			aUpdateCosts.addActionListener(a);
+			actionMenu.add(aUpdateCosts);
 			
 			aBusinessFigures = new JMenuItem("View Business Figures", KeyEvent.VK_V);
 			aBusinessFigures.addActionListener(a);

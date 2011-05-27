@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import routes.DistributionCentre;
+import routes.Firm;
 
 public class KPSFrame extends JFrame {
 	
@@ -22,24 +24,30 @@ public class KPSFrame extends JFrame {
 	private KPSDefaultPanel defaultPanel;
 	private KPSMailPanel mailPanel;
 	private KPSEventsPanel eventsPanel;
+	private KPSUpdatePanel updatePanel;
 	private KPSMenuBar menuBar;
+	private String currentPanel;
 	String[] data = {"one", "two", "three"};
 	
-	public KPSFrame(ActionListener a, Set<DistributionCentre> s) {
+	public KPSFrame(ActionListener actionlistener, Set<DistributionCentre> centres, List<Firm> firms) {
 		title = new KPSTitlePanel();
 		panel = new JPanel(new CardLayout());
 		defaultPanel = new KPSDefaultPanel();
 		defaultPanel.setName("defaultPanel");
-		mailPanel = new KPSMailPanel(a, s);
+		mailPanel = new KPSMailPanel(actionlistener, centres);
 		mailPanel.setName("mailPanel");
 		eventsPanel = new KPSEventsPanel();
 		eventsPanel.setName("eventsPanel");
+		updatePanel = new KPSUpdatePanel(actionlistener, centres, firms);
+		updatePanel.setName("updatePanel");
+		currentPanel = defaultPanel.getName();
 		
-		menuBar = new KPSMenuBar(a);
+		menuBar = new KPSMenuBar(actionlistener);
 		
 		panel.add(defaultPanel, "defaultPanel");
 		panel.add(mailPanel, "mailPanel");
 		panel.add(eventsPanel, "eventsPanel");
+		panel.add(updatePanel, "updatePanel");
 		
 		this.setLayout(new BorderLayout());
 		this.add(title, BorderLayout.NORTH);
@@ -57,6 +65,7 @@ public class KPSFrame extends JFrame {
 		//panel.add(output);
 		CardLayout cards = (CardLayout) panel.getLayout();
 		cards.show(panel, s);
+		currentPanel = s;
 	}
 	
 	public void resetMailPanel() {
@@ -78,14 +87,8 @@ public class KPSFrame extends JFrame {
 		}
 	}
 	
-	public String getPanel() {
-		Component tmp = panel.getComponent(0);
-		for (Component c : panel.getComponents()) {
-			if (panel.getComponentZOrder(c) > panel.getComponentZOrder(tmp)) {
-				tmp = c;
-			}
-		}
-		return tmp.getName();
+	public boolean getPanel(String panelName) {
+		return currentPanel.equals(panelName);
 	}
 	
 	public ArrayList returnMailPanelInfo() {
