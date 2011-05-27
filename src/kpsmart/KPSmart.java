@@ -116,7 +116,6 @@ public class KPSmart implements ActionListener{
 				kBackend.sendMail(id, weight, volume, origin, destination, priority);
 				kFrame.resetMailPanel();
 			}	
-			System.out.println("3");
 		}
 		
 		//CANCEL BUTTON HANDLING
