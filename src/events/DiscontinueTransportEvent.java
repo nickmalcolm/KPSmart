@@ -46,8 +46,6 @@ public class DiscontinueTransportEvent extends Event {
 		return destination;
 	}
 
-
-	@Override
 	public Date getDate() {
 		// TODO Auto-generated method stub
 		return null;

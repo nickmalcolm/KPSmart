@@ -29,7 +29,6 @@ public class PriceUpdateEvent extends Event {
 		return costPerG;
 	}
 
-	@Override
 	public Date getDate() {
 		// TODO Auto-generated method stub
 		return null;
