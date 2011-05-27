@@ -91,9 +91,10 @@ public class KPSmart implements ActionListener{
 		//OK BUTTON HANDLING
 		if ("OK".equals(e.getActionCommand())) {
 			System.out.println(kFrame.getPanel()); //For testing
-			
+			System.out.println("1");
 			//MAIL PANEL
 			if ("mailPanel".equals(kFrame.getPanel())) {
+				System.out.println("2");
 				ArrayList<Object> info = kFrame.returnMailPanelInfo();
 				for (Object o : info) {
 					System.out.println(String.valueOf(o));
@@ -112,9 +113,11 @@ public class KPSmart implements ActionListener{
 					if (dist.getName().equals(o)) { origin = dist; }
 					if (dist.getName().equals(d)) { destination = dist; }
 				}
+				System.out.println("part 1 of mail sending - in kpsmart");
 				kBackend.sendMail(id, weight, volume, origin, destination, priority);
 				kFrame.resetMailPanel();
-			}		
+			}	
+			System.out.println("3");
 		}
 		
 		//CANCEL BUTTON HANDLING

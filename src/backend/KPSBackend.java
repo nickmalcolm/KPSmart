@@ -482,15 +482,24 @@ public class KPSBackend {
 	 * @param destination
 	 * @param priority
 	 */
-	public void sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
-		Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
-		ArrayList<MailEvent> tempMailEvents = CalculateRoute(tempMail);
+	public int sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
+		System.out.println("Sending mail started");
+		ArrayList<MailEvent> mailEvents = CreateMailEvents(ID,weight,volume,origin,destination,priority);
+		if(mailEvents == null){
+			//Didnt find a route by air 
+			return 1 ;
+		}
 		System.out.println("created arraylist of mail events");
-		tempMail.setEvents(tempMailEvents);
+		//Make a piece of mail
+		Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
+		//Add mail events to it
+		tempMail.setEvents(mailEvents);
+		//Add mail to all mail
 		allMail.add(tempMail);
 		getMail(ID);
 		// add new MailEvents
 		events.addAll(tempMail.getEvents());
+		return 0;
 	}
 
 	/**
@@ -539,14 +548,14 @@ public class KPSBackend {
 		Vehicle vehicle = route.getVehicle(priority, firm);
 		// if no vehicle found, create one
 		if (vehicle == null){
-			vehicle = new Vehicle(route.getVehicles().size(), pricePerG, pricePerCC, frequency, durationInMinutes, priority, firm);
+			vehicle = new Vehicle(route.getVehicles().size(), pricePerG, pricePerCC, frequency, durationInMinutes, priority, firm ,day);
 			route.addVehicle(vehicle);
 		}
 		// else update the transport cost
 		else {
 			vehicle.updateTransportCost(pricePerG, pricePerCC);
 		}
-		Event event = new TransportUpdateEvent(vehicle, currentDate, pricePerCC, pricePerG, frequency, durationInMinutes, day, origin, destination);
+		Event event = new TransportUpdateEvent(vehicle, pricePerCC, pricePerG, frequency, durationInMinutes, currentDate, origin, destination);
 		events.add(event); 
 		return event;
 	}
@@ -671,149 +680,197 @@ public class KPSBackend {
 		return null;
 	}
 	
-	public ArrayList<MailEvent> CalculateRoute(Mail m){
+	
+	// need to return a total cost
+	//an arraylist of nodes on a route
+	//need to calculate a route without weigth and volume
+	
+	
+	public  ArrayList<Route> returnRoutesInPath(){
+		return null;
+	}
+	
+	
+	
+	//Creates mail eveents for travel between 2 node, connected or unconnected
+	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
+		
+		ArrayList<MailEvent> mailEvents = new ArrayList<MailEvent>();
+		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
+		
+		//HAve a goal search node now go back through nodes making a mail event for each route
+		for(SearchNode s = goalNode ; s.getPreviousSearchNode() != null ; s.getPreviousSearchNode()){
+			//Make Mail for mail event eg mail between 2 nodes
+			Mail tempMail = new Mail(ID, weight, volume, s.getPreviousSearchNode().getCurrentDistributionCentre()
+					, s.getCurrentDistributionCentre(), priority);
+			//Make a mail event and add mail to it
+			MailEvent tenpMailEvent = new MailEvent(s.getVehicle(), s.getVehicle().getDay(), tempMail);
+			//add event to array to add to overall mail
+			mailEvents.add(tenpMailEvent);
+		}
+		
+		return mailEvents;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-
-		DistributionCentre destination = m.getDestination();	
-		DistributionCentre origin = m.getOrigin();   
+	//Calculates path between nodes
+	public SearchNode  CalculateRoute(DistributionCentre o,DistributionCentre d , Double Weight, Double Volume , Priority p){
+		DistributionCentre destination = d;	
+		DistributionCentre origin = o;
+		Double wieght = Weight;
+		Double volume = Volume;
+		Priority priority = p;
 
 		ArrayList<DistributionCentre> searched = new ArrayList<DistributionCentre>(); // The set of nodes already evaluated. 
-		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();// The set of tentative nodes to be evaluated.
+		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();			  // Fringe nodes
 
-		SearchNode search = new SearchNode(origin, null, 0 , destination);
+		SearchNode search = new SearchNode(origin, null, wieght, volume, null);
 		fringe.offer(search); //Queue our starting node.
 
 
 		while(fringe.size() != 0){
 
 			SearchNode tempNode = fringe.poll(); 	//Remove node closest
-			searched.add(tempNode.current);//Temp node is now in visited set and removed from fringe
-			
-			if(tempNode.getCurrent().equals(destination)){	//Goal node has been reached
-				////////////return Reconstruct(tempNode);/**************************?*/
-				System.out.println("Remaking path");
-				return Reconstruct(tempNode);
+			searched.add(tempNode.current);			//Temp node added to visited 
+
+			if(tempNode.getCurrentDistributionCentre().equals(destination)){	//Goal node has been reached
+				//Returning final searchNode to do stuff with
+				return tempNode;
 			}
 
-			for(DistributionCentre r : tempNode.getConnectingNodes()){
-				System.out.println("part1 Astar");
+			for(DistributionCentre r : tempNode.getConnectingNodes(p)){
 				if(searched.contains(r)){	//if node has been visited then carry on
 					continue;
 				}
 
-				
-				if(!fringe.contains(r)){//if y not in fringe, add it
-					
-					double pathToNode = estimate(origin , tempNode.getCurrent()) ; // Path distance is measued as a direct line
-					SearchNode tempSearchNode = new SearchNode(r ,tempNode, pathToNode,destination);
-					fringe.add(tempSearchNode);
-					System.out.println("part1 Astar");
+
+				if(!fringe.contains(r)){	//if y not in fringe, add it
+					// find vehicle to attach to node
+					Route tempRoute = findRoute(r, tempNode.getCurrentDistributionCentre());
+					//For air travel
+					// only use air route if air priority					
+					if(priority == Priority.INTERNATIONAL_AIR){
+						for(Vehicle v : tempRoute.getVehicles()){
+							if (v.getPriority().equals(Priority.INTERNATIONAL_AIR)){		
+								SearchNode tempSearchNode = new SearchNode(r, tempNode, wieght, volume, v);
+							}
+
+						}
+					}
+					else{
+						for(Vehicle v : tempRoute.getVehicles()){
+							SearchNode tempSearchNode = new SearchNode(r, tempNode, wieght, volume, v);								
+						}
+					}
 				}	
-				
+
 			}
 		}
 
+		//NO ROUTE EXISTS 
 		return null;
-
 
 	}
 
-	public  ArrayList<MailEvent> Reconstruct(SearchNode s){
 
-		
-		return null;
-	}
-	
-	
-	
-	//Finding route
-	//Nodes = distribution centers
-	//edges = vehciles
-	//origin = start node
-	//destination goal node
-	
+
+
+
+
+	//For finding route
 	private class SearchNode implements Comparable<SearchNode>{
-		
 
-		private DistributionCentre current;
-		private SearchNode previous ; 
-		private double pathLength ; 
-		private double estimate;
-		private double total;
-		private ArrayList<Route> routesFromNode = new ArrayList<Route>(); ;
-		
-		public SearchNode(DistributionCentre current , SearchNode previous , double pathLength , DistributionCentre goal ){
+
+		private DistributionCentre current; 
+		private SearchNode previous ; 		
+		private double totalPathCost ; //Total cost to this distribution center
+		private double routeCost;		//cost from previous distribution center
+		private Vehicle vehicle;
+
+		public SearchNode(DistributionCentre current , SearchNode previous , double wieght , Double volume , Vehicle v ){
 			this.current = current;
 			this.previous = previous;
-			this.pathLength = pathLength;
-			estimate = estimate(current,goal);
-			total = estimate + pathLength;
-	 
+			this.vehicle = v;
+			routeCost = (vehicle.getCustomerCostPerCC()*volume) + (vehicle.getCustomerCostPerG()*wieght);
+			totalPathCost = previous.totalPathCost + routeCost;
+
 		}
-		
-		public ArrayList<Route>  getRoutes() {
-			return routesFromNode;
-		}
-		public DistributionCentre getCurrent() {
+
+
+		public DistributionCentre getCurrentDistributionCentre() {
 			return current;
 		}
-		public SearchNode getPrevious() {
+		public SearchNode getPreviousSearchNode() {
 			return previous;
 		}
-		public double getPathLength() {
-			return pathLength;
+		public double getTotalPathCost() {
+			return totalPathCost;
 		} 
-		public double getEstimate() {
-			return estimate;
-		} 
-		public double getTotal() {
-			return total;
+		public double getRouteCost() {
+			return routeCost;
 		}
-		public ArrayList<DistributionCentre> getConnectingNodes(){
+		public Vehicle getVehicle() {
+			return vehicle;
+		}
+		//Gets all connecting nodes that are valid (eg air nodes if air priority)
+		public ArrayList<DistributionCentre> getConnectingNodes(Priority pri){
+
+			Priority p = pri;
+			ArrayList<Route> routesFromNode = new ArrayList<Route>();
 			ArrayList<DistributionCentre> connected = new ArrayList<DistributionCentre>();
-			//go through all routes that come off this node
+			ArrayList<DistributionCentre> connectedByAir = new ArrayList<DistributionCentre>();
+			//Find all nodes that connect to this node
 			for(Route r : routes){
-				//make sure they arnt of greater priority than the mail was sent with
-				//*****************TODO****************************
-				if(r.getD1().equals(current)){ 
+				if(r.getD1()== current){
 					connected.add(r.getD2());
-					routesFromNode.add(r);
-				}else if(r.getD2().equals(current)){ 
+				}
+				if(r.getD2() == current){
 					connected.add(r.getD1());
-					routesFromNode.add(r);
 				}
 			}
+			//If Priority is air find nodes that can be reached by plane
+			if(p == Priority.INTERNATIONAL_AIR){
+				//Go through all centers that connect to here
+				for(DistributionCentre d : connected){
+					//get the routes
+					Route r = findRoute(current, d);
+					//for those routes see if they have an air vehicle
+					for(Vehicle v : r.getVehicles()){
+						if(v.getPriority().equals(Priority.INTERNATIONAL_AIR)){  //THIS DOSNET EXIST YET I THINK ITS WHATS NEEDED
+							//if they do add the dist center to air centers
+							connectedByAir.add(d);
+						}
+					}
+				}
+				return connectedByAir;
+			}
+
+
 			return connected;
 		}
 
-		//Find the shortest route based on the estimated distance to go added
-		//to the current distance to get to this node.
+		//For priority queue , compared vaule is total cost so far
 		public int compareTo(SearchNode s) {
-				if (this.total < s.getTotal()) return -1;
-				if (this.total > s.getTotal()) return 1;
-				return 0;
+			if (this.totalPathCost < s.getTotalPathCost()) return -1;
+			if (this.totalPathCost > s.getTotalPathCost()) return 1;
+			return 0;
 		}
-		
 
-		
-	}
- 
-	//Pythagoras' Theorum 
-	public static double estimate(DistributionCentre start, DistributionCentre goal) {
 
-		double lat_dif = Math.max(start.lat(), goal.lat()) - Math.min(start.lat(), goal.lat());
-		double lon_dif = Math.max(start.lon(), goal.lon()) - Math.min(start.lon(), goal.lon());
-
-		double x = 111 * lat_dif;
-		double y = 88.649 * lon_dif;
-		
-		double z = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
-		
-		if (goal.lon() < start.lon()) z = z * -1;
-
-		return z;
 
 	}
+
+
 
 }
 

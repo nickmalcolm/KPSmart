@@ -2,6 +2,8 @@ package events;
 
 import java.util.Date;
 
+import backend.Day;
+
 import routes.Vehicle;
 
 public class PriceUpdateEvent extends Event {
@@ -25,6 +27,12 @@ public class PriceUpdateEvent extends Event {
 	}
 	public double getCostPerG() {
 		return costPerG;
+	}
+
+	@Override
+	public Date getDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

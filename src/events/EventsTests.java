@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import backend.Day;
+
 public class EventsTests extends TestCase{
 	MailEvent old;
 	MailEvent newer;
@@ -17,8 +19,8 @@ public class EventsTests extends TestCase{
 	EventList<Event> list;
 	
 	protected void setUp() throws ParseException{
-		old = new MailEvent(null, DateFormat.getDateInstance(DateFormat.SHORT).parse("11/28/2010"), null);
-		newer = new MailEvent(null, DateFormat.getDateInstance(DateFormat.SHORT).parse("11/31/2010"), null);
+		old = new MailEvent(null, Day.MONDAY, null);
+		newer = new MailEvent(null, Day.TUESDAY, null);
 		p1 = new PriceUpdateEvent(null, DateFormat.getDateInstance(DateFormat.SHORT).parse("11/12/2010"), 0, 0);
 		p2 = new PriceUpdateEvent(null, DateFormat.getDateInstance(DateFormat.SHORT).parse("11/08/2010"), 0, 0);
 		list = new EventList<Event>();
