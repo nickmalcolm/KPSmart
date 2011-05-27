@@ -85,7 +85,10 @@ public class KPSBackend {
 			//Finally parses the files back into objects.
 			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 			allMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
-			events = (EventList<Event>)xstream.fromXML(eventsXMLInput);
+			ArrayList<Event> arrayEvents = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+			for (Event event : arrayEvents){
+				events.add(event);
+			}
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 
