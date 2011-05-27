@@ -165,7 +165,7 @@ public class KPSMailPanel extends JPanel implements KPSPanel{
 		
 		JPanel contentsPanel = new JPanel();
 		contentsPanel.setPreferredSize(new Dimension(590,590));
-		contentsPanel.add(mailPanelTitle);
+		//contentsPanel.add(mailPanelTitle);
 		contentsPanel.add(completeBox, BorderLayout.CENTER);
 		
 		this.add(contentsPanel, BorderLayout.CENTER);

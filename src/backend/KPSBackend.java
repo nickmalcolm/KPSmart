@@ -503,6 +503,7 @@ public class KPSBackend {
 		getMail(ID);
 		// add new MailEvents
 		events.addAll(tempMail.getEvents());
+		//FOund route and created mail
 		return 0;
 	}
 
@@ -680,21 +681,26 @@ public class KPSBackend {
 	}
 	
 	
-	// need to return a total cost
-	//an arraylist of nodes on a route
-	//need to calculate a route without weigth and volume
+ 
+ 
 	
 	
-	public  ArrayList<Route> returnRoutesInPath(){
-		return null;
+ 
+	
+	//Total cost of a piece of mail.
+	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
+		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
+		double cost = goalNode.getTotalPathCost();
+		return cost;
 	}
 	
 	
 	
 	//Creates mail eveents for travel between 2 node, connected or unconnected
 	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
-		
+		//to be added to a peice of mail later.
 		ArrayList<MailEvent> mailEvents = new ArrayList<MailEvent>();
+		//the search node that was at the destination.
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
 		
 		//HAve a goal search node, now go back through nodes making a mail event for each route
