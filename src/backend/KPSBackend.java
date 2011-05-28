@@ -91,7 +91,7 @@ public class KPSBackend {
 			}
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
-
+			System.out.println("noroutes="+routes.size());
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
 			e.printStackTrace(); //Keep this here for debugging
@@ -489,9 +489,14 @@ public class KPSBackend {
 	public int sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		System.out.println("Sending mail started");
 		ArrayList<MailEvent> mailEvents = CreateMailEvents(ID,weight,volume,origin,destination,priority);
+
 		if(mailEvents == null){
 			//Didnt find a route by air 
 			return 1 ;
+		}
+		System.out.println("mailevents: " + mailEvents.size());
+		for (Event event : mailEvents){
+			System.out.println(event.getClass() + ", " + event.getVehicle());
 		}
 		System.out.println("created arraylist of mail events");
 		//Make a piece of mail
@@ -503,6 +508,10 @@ public class KPSBackend {
 		getMail(ID);
 		// add new MailEvents
 		events.addAll(tempMail.getEvents());
+		System.out.println("events: " + events.getSize());
+		for (Event event : events){
+			System.out.println(event.getClass() + ", " + event.getVehicle());
+		}
 		//FOund route and created mail
 		return 0;
 	}
@@ -605,7 +614,6 @@ public class KPSBackend {
 			//return;
 			//}
 		}
-		System.out.println("Mail does not exist");
 	}
 
 	public List<Event> getEvents(int eventTime, String filter){
@@ -675,6 +683,9 @@ public class KPSBackend {
 		for (Route route : this.routes){
 			if (route.getD1().equals(origin) && route.getD2().equals(destination))
 				return route;
+			else if (route.getD2().equals(origin) && route.getD1().equals(destination))
+				return route;
+			
 		}
 		// route not found, return null
 		return null;
@@ -704,7 +715,7 @@ public class KPSBackend {
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
 		
 		//HAve a goal search node, now go back through nodes making a mail event for each route
-		for(SearchNode s = goalNode ; s.getPreviousSearchNode() != null ; s.getPreviousSearchNode()){
+		for(SearchNode s = goalNode ; s != null && s.getPreviousSearchNode() != null ; s.getPreviousSearchNode()){
 			//Make Mail for mail event eg mail between 2 nodes
 			Mail tempMail = new Mail(ID, weight, volume, s.getPreviousSearchNode().getCurrentDistributionCentre()
 					, s.getCurrentDistributionCentre(), priority);
@@ -716,18 +727,6 @@ public class KPSBackend {
 		
 		return mailEvents;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	//Calculates path between nodes
 	public SearchNode  CalculateRoute(DistributionCentre o,DistributionCentre d , Double Weight, Double Volume , Priority p){
 		DistributionCentre destination = d;	
@@ -768,13 +767,14 @@ public class KPSBackend {
 						for(Vehicle v : tempRoute.getVehicles()){
 							if (v.getPriority().equals(Priority.INTERNATIONAL_AIR)){		
 								SearchNode tempSearchNode = new SearchNode(r, tempNode, wieght, volume, v);
+								fringe.add(tempSearchNode);
 							}
-
 						}
 					}
 					else{
 						for(Vehicle v : tempRoute.getVehicles()){
-							SearchNode tempSearchNode = new SearchNode(r, tempNode, wieght, volume, v);								
+							SearchNode tempSearchNode = new SearchNode(r, tempNode, wieght, volume, v);		
+							fringe.add(tempSearchNode);
 						}
 					}
 				}	
@@ -786,11 +786,6 @@ public class KPSBackend {
 		return null;
 
 	}
-
-
-
-
-
 
 	//For finding route
 	private class SearchNode implements Comparable<SearchNode>{
@@ -845,10 +840,10 @@ public class KPSBackend {
 			ArrayList<DistributionCentre> connectedByAir = new ArrayList<DistributionCentre>();
 			//Find all nodes that connect to this node
 			for(Route r : routes){
-				if(r.getD1()== current){
+				if(r.getD1().equals(current)){
 					connected.add(r.getD2());
 				}
-				if(r.getD2() == current){
+				if(r.getD2().equals(current)){
 					connected.add(r.getD1());
 				}
 			}
