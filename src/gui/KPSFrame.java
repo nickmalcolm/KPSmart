@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 import java.util.List;
 
@@ -13,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import backend.PrioritisedRoute;
+import events.Event;
 
 import routes.DistributionCentre;
 import routes.Firm;
@@ -92,6 +96,25 @@ public class KPSFrame extends JFrame {
 	
 	public ArrayList returnMailPanelInfo() {
 		return mailPanel.returnInfo();
+	}
+	
+	public int returnEventTime() {
+		return eventsPanel.returnEventTime();
+	}
+	
+	public void populateEvents(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+		eventsPanel.populate(totalNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, events);
+		
+	}
+	
+	public void updateEvents(Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+		eventsPanel.updateInfo(deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, events);
 	}
 	
 	public ArrayList returnCustomerPriceUpdateInfo() {

@@ -19,4 +19,9 @@ public class PrioritisedRoute {
 	public Priority getPriority() {
 		return priority;
 	}
+	
+	@Override
+	public String toString(){
+		return route.getD1().getName() + " - " + route.getD2().getName() + " (" + priority + ")";
+	}
 }
