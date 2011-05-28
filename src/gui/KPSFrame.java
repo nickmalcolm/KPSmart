@@ -94,6 +94,10 @@ public class KPSFrame extends JFrame {
 		return mailPanel.returnInfo();
 	}
 	
+	public int returnEventTime() {
+		return eventsPanel.returnEventTime();
+	}
+	
 	public ArrayList returnCustomerPriceUpdateInfo() {
 		return updatePanel.returnCustomerPriceUpdateInfo();
 	}
