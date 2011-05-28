@@ -23,7 +23,7 @@ public class PrioritisedRoute {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Firm))
+		if (!(obj instanceof PrioritisedRoute))
 			return false;
 		PrioritisedRoute other = (PrioritisedRoute) obj;
 		if (this.route.equals(other.getRoute()) && this.priority == other.getPriority()){
