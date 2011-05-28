@@ -191,11 +191,29 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 			mailString += "Volume of mail: " + volumeOfMail.get(r) + "\n";
 		}
 		
+		amountOfMailField.setText(mailString);
+		
 	}
 	
 	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString += e.toString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
+		
+		String mailString = "";
+		for (PrioritisedRoute r : amountOfMail.keySet()) {
+			mailString += r.toString();
+			mailString += "Amount of mail: " + amountOfMail.get(r) + "\n";
+			mailString += "Weight of mail: " + weightOfMail.get(r) + "\n";
+			mailString += "Volume of mail: " + volumeOfMail.get(r) + "\n";
+		}
+		
+		amountOfMailField.setText(mailString);
 		
 	}
 	
