@@ -55,6 +55,13 @@ public class MailEvent extends Event {
 		return null;
 	}
 
+	@Override
+	public String displayString() {
+		String str = "Mail Event: \n" +
+				"\t"+mail.displayString()+"\n"+
+				"\tDay: "+day.toString();
+		return str;
+	}
 
 
 }

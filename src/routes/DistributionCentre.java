@@ -57,4 +57,8 @@ public class DistributionCentre {
 		return false;
 	}
 
+	public String displayString() {
+		return "\t"+city+", "+country;
+	}
+
 }
