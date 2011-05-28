@@ -94,7 +94,7 @@ public class KPSBackend {
 			
 			// TODO REMOVE DUMMY EVENTS.
 			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
-			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(1), currentDate, 20, 20);
+			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
 			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
 			
 			events.add(event1);
