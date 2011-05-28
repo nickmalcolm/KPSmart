@@ -99,7 +99,7 @@ public class KPSBackend {
 			// TODO REMOVE DUMMY EVENTS.
 			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
 			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
-			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
+			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
 			
 			events.add(event1);
 			events.add(event2);
@@ -194,7 +194,7 @@ public class KPSBackend {
 
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -243,7 +243,7 @@ public class KPSBackend {
 
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -273,7 +273,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 
@@ -322,7 +322,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -365,7 +365,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -408,7 +408,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -450,7 +450,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -631,7 +631,7 @@ public class KPSBackend {
 	public List<Event> getEvents(int eventTime){
 		// get list of events
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 
@@ -706,13 +706,6 @@ public class KPSBackend {
 		return null;
 	}
 
-
-
-
-
-
-
-
 	//Total cost of a piece of mail.
 	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
@@ -722,8 +715,6 @@ public class KPSBackend {
 		double cost = goalNode.getTotalPathCost();
 		return cost;
 	}
-
-
 
 	//Creates mail eveents for travel between 2 node, connected or unconnected
 	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
