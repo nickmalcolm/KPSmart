@@ -690,6 +690,9 @@ public class KPSBackend {
 	//Total cost of a piece of mail.
 	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
+		if(goalNode == null){
+			return 0.0;
+		}
 		double cost = goalNode.getTotalPathCost();
 		return cost;
 	}
@@ -766,7 +769,7 @@ public class KPSBackend {
 					// only use air route if air priority					
 					if(priority == Priority.INTERNATIONAL_AIR){
 						for(Vehicle v : tempRoute.getVehicles()){
-							if (v.getPriority().equals(Priority.INTERNATIONAL_AIR)){		
+							if ((v.getPriority().equals(Priority.INTERNATIONAL_AIR)) ||(v.getPriority().equals(Priority.DOMESTIC))){		
 								SearchNode tempSearchNode = new SearchNode(r, tempNode, wieght, volume, v);
 							}
 
