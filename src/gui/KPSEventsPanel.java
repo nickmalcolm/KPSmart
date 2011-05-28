@@ -172,15 +172,21 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 	}
 	
 	public void populate(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
-			Map<PrioritisedRoute, Double> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
 		
 		eventTime = totalNumberOfEvents;
 		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString = eventsString + e.toString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
+		
 	}
 	
 	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
-			Map<PrioritisedRoute, Double> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
 		
 	}
