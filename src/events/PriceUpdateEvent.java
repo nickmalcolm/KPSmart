@@ -34,6 +34,15 @@ public class PriceUpdateEvent extends Event {
 		return null;
 	}
 	
-	
+	@Override
+	public String displayString() {
+		String str = "Price Update Event: \n" +
+				"\tVehicle: "+super.getVehicle()+"\n"+
+				"\tPrice per CC: "+costPerCC+"\n"+
+				"\tPrice per G: "+costPerG+"\n"
+				;
+		
+		return str;
+	}
 
 }
