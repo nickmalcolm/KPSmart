@@ -60,7 +60,7 @@ public class KPSmart implements ActionListener{
 			int i = kBackend.getNumberOfEvents();
 			kFrame.populateEvents(i, kBackend.calculateDeliveryTimes(i), kBackend.calculateAmountOfMail(i),
 					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
-					kBackend.getCriticalRoute(i), kBackend.getEvents(i));
+					kBackend.getCriticalRoute(i), kBackend.getEvents(i), kBackend.calculateRevenue(i), kBackend.calculateExpenditure(i));
 			kFrame.displayPanel("eventsPanel");
 		}
 		
@@ -120,6 +120,29 @@ public class KPSmart implements ActionListener{
 				kBackend.sendMail(id, weight, volume, origin, destination, priority);
 				kFrame.resetMailPanel();
 			}	
+		}
+		
+		//EVENT DISPLAY UPDATE HANDLING
+		if ("<".equals(e.getActionCommand())) {
+			int eventTime = kFrame.returnEventTime();
+			eventTime--;
+			if (eventTime >= 0) {
+			kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
+					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
+					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), kBackend.calculateExpenditure(eventTime));
+			}
+			else eventTime = 0;
+		}
+		
+		if (">".equals(e.getActionCommand())) {
+			int eventTime = kFrame.returnEventTime();
+			eventTime++;
+			if (eventTime <= kBackend.getNumberOfEvents()) {
+				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
+					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
+					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), kBackend.calculateExpenditure(eventTime));
+			}
+			else eventTime = kBackend.getNumberOfEvents();
 		}
 		
 		//CUSTOMER PRICE UPDATE HANDLING

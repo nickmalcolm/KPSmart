@@ -3,6 +3,8 @@ package routes;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.PrioritisedRoute;
+
 import priority.Priority;
 
 public class Route {
@@ -24,7 +26,7 @@ public class Route {
 	}
 	
 	public void discontinueTransport(int ID) {
-		
+		// TODO WHAT.
 	}
 	
 	public Vehicle getVehicle(int ID) {
@@ -82,6 +84,15 @@ public class Route {
 		
 	}
 	
-
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Route))
+			return false;
+		Route other = (Route) obj;
+		if (this.d1.equals(other.getD1()) && this.d2.equals(other.getD2())){
+			return true;
+		}
+		return false;
+	}
 	
 }

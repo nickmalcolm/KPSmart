@@ -40,7 +40,7 @@ public class KPSFrame extends JFrame {
 		defaultPanel.setName("defaultPanel");
 		mailPanel = new KPSMailPanel(actionlistener, centres);
 		mailPanel.setName("mailPanel");
-		eventsPanel = new KPSEventsPanel();
+		eventsPanel = new KPSEventsPanel(actionlistener);
 		eventsPanel.setName("eventsPanel");
 		updatePanel = new KPSUpdatePanel(actionlistener, centres, firms);
 		updatePanel.setName("updatePanel");
@@ -102,21 +102,25 @@ public class KPSFrame extends JFrame {
 		return eventsPanel.returnEventTime();
 	}
 	
+	public void setEventTime(int eventTime) {
+		eventsPanel.setEventTime(eventTime);
+	}
+	
 	public void populateEvents(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
-			List<Event> events) {
+			List<Event> events, double revenue, double expenditure) {
 		
-		eventsPanel.populate(totalNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events);
+		eventsPanel.populate(totalNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events, revenue, expenditure);
 		
 	}
 	
 	public void updateEvents(Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
-			List<Event> events) {
+			List<Event> events, double revenue, double expenditure) {
 		
-		eventsPanel.updateInfo(deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events);
+		eventsPanel.updateInfo(deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events, revenue, expenditure);
 	}
 	
 	public ArrayList returnCustomerPriceUpdateInfo() {

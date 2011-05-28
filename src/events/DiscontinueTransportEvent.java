@@ -51,8 +51,6 @@ public class DiscontinueTransportEvent extends Event {
 		return null;
 	}
 
-
-	@Override
 	public String displayString() {
 		String str = "Discontinue Transport Event: \n" +
 				"\tFirm: "+firm.getName()+"\n"+

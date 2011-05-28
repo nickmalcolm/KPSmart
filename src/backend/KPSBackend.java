@@ -96,14 +96,14 @@ public class KPSBackend {
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
-//			// TODO REMOVE DUMMY EVENTS.
-//			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
-//			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
-//			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
-//			
-//			events.add(event1);
-//			events.add(event2);
-//			events.add(event3);
+			// TODO REMOVE DUMMY EVENTS.
+			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
+			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
+			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
+			
+			events.add(event1);
+			events.add(event2);
+			events.add(event3);
 			// END TODO
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
@@ -750,7 +750,7 @@ public class KPSBackend {
 			//add event to array to add to overall mail
 			mailEvents.add(tempMailEvent);
 		}
-		
+
 		return mailEvents;
 	}
 	//Calculates path between nodes
@@ -809,7 +809,6 @@ public class KPSBackend {
 		}
 
 		//NO ROUTE EXISTS 
-		System.out.println("NO ROUTE!!!");
 		return null;
 
 	}

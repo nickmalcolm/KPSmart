@@ -18,8 +18,8 @@ public class Mail {
 	
 	private int ID;
 	
-	private double weight;
-	private double volume;
+	private double weight = 0;
+	private double volume = 0;
 	
 	private DistributionCentre origin;
 	private DistributionCentre destination;
