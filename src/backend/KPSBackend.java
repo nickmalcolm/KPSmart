@@ -82,6 +82,10 @@ public class KPSBackend {
 			fileToRead = new File("distCentreXML.xml");
 			distCentreXMLInput = readFileToString(fileToRead);
 
+			
+			xstream.alias("DistributionCentre", DistributionCentre.class);
+			xstream.alias("transportDay", Day.class);
+			
 			//Finally parses the files back into objects.
 			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 			allMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
@@ -89,7 +93,6 @@ public class KPSBackend {
 			for (Event event : arrayEvents){
 				events.add(event);
 			}
-			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			System.out.println("noroutes="+routes.size());
 		}catch(Exception e){
