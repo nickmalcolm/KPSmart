@@ -93,17 +93,22 @@ public class KPSBackend {
 			for (Event event : arrayEvents){
 				events.add(event);
 			}
-			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
 			// TODO REMOVE DUMMY EVENTS.
+<<<<<<< HEAD
+		//	Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+		//	Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(1), currentDate, 20, 20);
+		//	Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+=======
 			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
 			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
 			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+>>>>>>> 97d2a7cfa6a66a5a0c1ed777f1ffe95af30cbb4d
 			
-			events.add(event1);
-			events.add(event2);
-			events.add(event3);
+		//	events.add(event1);
+		//	events.add(event2);
+		//	events.add(event3);
 			// END TODO
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");

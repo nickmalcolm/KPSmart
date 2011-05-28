@@ -173,21 +173,53 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 	
 	public void populate(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
-			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
+			List<Event> events) {
 		
 		eventTime = totalNumberOfEvents;
 		
 		String eventsString = "";
 		for (Event e : events) {
-			eventsString = eventsString + e.toString() + "\n";
+			eventsString += e.toString() + "\n";
 		}
 		displayedEventsField.setText(eventsString);
+		
+		String mailString = "";
+		for (PrioritisedRoute r : amountOfMail.keySet()) {
+			mailString += r.toString() + "\n";
+			mailString += "Amount of mail: " + amountOfMail.get(r) + "\n";
+			mailString += "Weight of mail: " + weightOfMail.get(r) + "\n";
+			mailString += "Volume of mail: " + volumeOfMail.get(r) + "\n";
+		}
+		amountOfMailField.setText(mailString);
+		
+		String criticalString = "";
+		for (PrioritisedRoute r : criticalRoutes.keySet()) {
+			criticalString += r.toString();
+			criticalString += "=> " + criticalRoutes.get(r);
+		}
 		
 	}
 	
 	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
-			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
+			List<Event> events) {
+		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString += e.toString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
+		
+		String mailString = "";
+		for (PrioritisedRoute r : amountOfMail.keySet()) {
+			mailString += r.toString();
+			mailString += "Amount of mail: " + amountOfMail.get(r) + "\n";
+			mailString += "Weight of mail: " + weightOfMail.get(r) + "\n";
+			mailString += "Volume of mail: " + volumeOfMail.get(r) + "\n";
+		}
+		amountOfMailField.setText(mailString);
 		
 	}
 	
