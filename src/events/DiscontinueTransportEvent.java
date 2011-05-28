@@ -51,4 +51,17 @@ public class DiscontinueTransportEvent extends Event {
 		return null;
 	}
 
+
+	@Override
+	public String displayString() {
+		String str = "Discontinue Transport Event: \n" +
+				"\tFirm: "+firm.getName()+"\n"+
+				"\tPriority: "+priority.toString()+"\n"+
+				"\tOrigin: "+origin.getCity()+", "+origin.getCountry()+"\n"+
+				"\tDestination: "+destination.getCity()+", "+destination.getCountry()+"\n"
+				;
+		
+		return str;
+	}
+
 }

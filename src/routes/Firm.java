@@ -16,6 +16,10 @@ public class Firm {
 		this.name = name;
 	}
 	
+	public String toString(){
+		return name;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Firm))

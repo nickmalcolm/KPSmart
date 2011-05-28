@@ -93,17 +93,22 @@ public class KPSBackend {
 			for (Event event : arrayEvents){
 				events.add(event);
 			}
-			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
 			// TODO REMOVE DUMMY EVENTS.
+<<<<<<< HEAD
+		//	Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+		//	Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(1), currentDate, 20, 20);
+		//	Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+=======
 			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
 			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
 			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+>>>>>>> 97d2a7cfa6a66a5a0c1ed777f1ffe95af30cbb4d
 			
-			events.add(event1);
-			events.add(event2);
-			events.add(event3);
+		//	events.add(event1);
+		//	events.add(event2);
+		//	events.add(event3);
 			// END TODO
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
@@ -504,8 +509,11 @@ public class KPSBackend {
 			return 1 ;
 		}
 		System.out.println("mailevents: " + mailEvents.size());
+		for (Event event : mailEvents){
+			System.out.println(event.getClass() + ", \ncost to cust:" + (event.getVehicle().getCustomerCostPerCC()*volume + event.getVehicle().getCustomerCostPerG()*weight));
+			System.out.println("cost to us: " + (event.getVehicle().getTransportCostPerCC()*volume + event.getVehicle().getTransportCostPerG()*weight));
+		}
 		System.out.println("created arraylist of mail events");
-
 		if (mailEvents.size() > 0){
 			//Make a piece of mail
 			Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
@@ -524,7 +532,6 @@ public class KPSBackend {
 			}
 			//FOund route and created mail
 			return 0;
-
 		}
 		return 1;
 	}
@@ -738,17 +745,9 @@ public class KPSBackend {
 			Mail tempMail = new Mail(ID, weight, volume, s.getPreviousSearchNode().getCurrentDistributionCentre()
 					, s.getCurrentDistributionCentre(), priority);
 			//Make a mail event and add mail to it
-			MailEvent tempMailEvent = new MailEvent(s.getVehicle(), s.getVehicle().getDay(), tempMail);
-		
-			
-			//Step 3 -- ...........?
-			//Step 4 -- Profit *Trollface.jpeg*
-			
-			tempMailEvent.setProfitOnRoute(s.getProfit());	
-			tempMailEvent.setRoute(findRoute(s.getCurrentDistributionCentre(), s.getPreviousSearchNode().getCurrentDistributionCentre()));
-			System.out.println(" PROFIT = " + tempMailEvent.getProfitOnRoute());
+			MailEvent tenpMailEvent = new MailEvent(s.getVehicle(), s.getVehicle().getDay(), tempMail);
 			//add event to array to add to overall mail
-			mailEvents.add(tempMailEvent);
+			mailEvents.add(tenpMailEvent);
 		}
 
 		return mailEvents;
@@ -822,14 +821,9 @@ public class KPSBackend {
 		private double totalPathCost ; //Total cost to this distribution center
 		private double routeCost;		//cost from previous distribution center
 		private Vehicle vehicle;
-		private double routeProfit;		//What we make / lose on a route (critical routes)
-		private double wieght;
-		private double volume;
-		
+
 		public SearchNode(DistributionCentre current , SearchNode previous , double wieght , Double volume , Vehicle v ){
 			this.current = current;
-			this.volume = volume;
-			this.wieght = wieght;
 			this.previous = previous;
 			this.vehicle = v;
 			if (vehicle == null){
@@ -837,8 +831,6 @@ public class KPSBackend {
 			}
 			else {
 				routeCost = (vehicle.getCustomerCostPerCC()*volume) + (vehicle.getCustomerCostPerG()*wieght);
-				
-			System.out.println();
 			}
 			if (previous == null){
 				totalPathCost = 0;
@@ -846,8 +838,6 @@ public class KPSBackend {
 			else {
 				totalPathCost = previous.totalPathCost + routeCost;
 			}
-			
-			
 		}
 
 
@@ -862,10 +852,6 @@ public class KPSBackend {
 		} 
 		public double getRouteCost() {
 			return routeCost;
-		}
-		public double getProfit() { 
-			routeProfit = routeCost - ((vehicle.getTransportCostPerCC()*volume) + (vehicle.getTransportCostPerG()*wieght));
-			return routeCost;		
 		}
 		public Vehicle getVehicle() {
 			return vehicle;

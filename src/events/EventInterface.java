@@ -8,4 +8,6 @@ public interface EventInterface extends Comparable<EventInterface> {
 	
 	public Date getDate();
 	
+	public String displayString();
+	
 }

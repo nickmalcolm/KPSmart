@@ -88,6 +88,21 @@ public class TransportUpdateEvent extends Event {
 		return null;
 	}
 
+	@Override
+	public String displayString() {
+		String str = "Discontinue Transport Event: \n" +
+				"\tVehicle: "+super.getVehicle()+"\n"+
+				"\tCost per CC: "+costPerCC+"\n"+
+				"\tCost per g: "+costPerG+"\n"+
+				"\tFrequency: "+frequency+"\n"+
+				"\tDuration: "+durationInMinutes+"min \n"+
+				"\tOrigin: "+origin.displayString()+"\n"+
+				"\tDestination: "+destination.displayString()+"\n"
+				;
+		
+		return str;
+	}
+
 
 
 }
