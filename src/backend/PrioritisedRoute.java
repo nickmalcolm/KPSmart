@@ -1,6 +1,7 @@
 package backend;
 
 import priority.Priority;
+import routes.Firm;
 import routes.Route;
 
 public class PrioritisedRoute {
@@ -18,6 +19,17 @@ public class PrioritisedRoute {
 	}
 	public Priority getPriority() {
 		return priority;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof PrioritisedRoute))
+			return false;
+		PrioritisedRoute other = (PrioritisedRoute) obj;
+		if (this.route.equals(other.getRoute()) && this.priority == other.getPriority()){
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

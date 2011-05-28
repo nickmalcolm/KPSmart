@@ -4,6 +4,7 @@ import java.util.Date;
 
 import priority.Priority;
 import routes.DistributionCentre;
+import routes.Route;
 import routes.Vehicle;
 import backend.Day;
 import backend.Mail;
@@ -13,6 +14,8 @@ public class MailEvent extends Event {
 
 	private Mail mail; // the mail the MailEvent is associated with
 	private Day day;
+	private Route route;
+	private double profitOnRoute = 0.0;
 	
 	public MailEvent(Vehicle vehicle,Day day , Mail mail) {
 		super(vehicle, null);
@@ -24,7 +27,22 @@ public class MailEvent extends Event {
 	public Mail getMail() {
 		return mail;
 	}
-
+	
+	public double getProfitOnRoute() {
+		return profitOnRoute;
+	}
+	
+	public void setProfitOnRoute(double price) {
+		profitOnRoute = price;
+	}
+	
+	public Route getRoute() {
+		return route;
+	}
+	
+	public void setRoute(Route r) {
+		route = r;
+	}
 
 	public double getVolume() {
 		return getMail().getVolume();

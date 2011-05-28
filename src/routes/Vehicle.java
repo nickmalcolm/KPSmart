@@ -7,10 +7,10 @@ public class Vehicle {
 	
 	private int ID;
 	
-	private double customerCostPerG;
-	private double customerCostPerCC;
-	private double transportCostPerG;
-	private double transportCostPerCC;
+	private double customerCostPerG = 0.0;
+	private double customerCostPerCC = 0.0;
+	private double transportCostPerG = 0.0;
+	private double transportCostPerCC = 0.0;
 	
 	private int frequency;
 	private int duration;
@@ -109,6 +109,10 @@ public class Vehicle {
 
 	public void setFirm(Firm firm) {
 		this.firm = firm;
+	}
+	
+	public String toString(){
+		return firm+" "+ID;
 	}
 	
 	@Override
