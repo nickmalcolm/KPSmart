@@ -57,6 +57,10 @@ public class KPSmart implements ActionListener{
 		}
 		
 		if ("View Business Figures".equals(e.getActionCommand())) {
+			int i = kBackend.getNumberOfEvents();
+			kFrame.populateEvents(i, kBackend.calculateDeliveryTimes(i), kBackend.calculateAmountOfMail(i),
+					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
+					kBackend.getEvents(i));
 			kFrame.displayPanel("eventsPanel");
 		}
 		

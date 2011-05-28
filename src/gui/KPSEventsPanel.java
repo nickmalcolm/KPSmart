@@ -179,7 +179,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		
 	}
 	
-	public void update(Map<PrioritisedRoute, Double> deliveryTimes, 
+	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Double> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
 		
