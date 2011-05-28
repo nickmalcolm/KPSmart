@@ -91,7 +91,16 @@ public class KPSBackend {
 			}
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
-			System.out.println("noroutes="+routes.size());
+			
+			// TODO REMOVE DUMMY EVENTS.
+			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(1), currentDate, 20, 20);
+			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+			
+			events.add(event1);
+			events.add(event2);
+			events.add(event3);
+			// END TODO
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
 			e.printStackTrace(); //Keep this here for debugging
