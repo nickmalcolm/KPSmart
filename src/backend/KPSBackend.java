@@ -180,11 +180,11 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 		
 		// select the events within an appropriate timeframe
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -229,11 +229,11 @@ public class KPSBackend {
 		Double sum = 0.0;
 
 		// select the events within an appropriate timeframe
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -259,12 +259,12 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateDeliveryTimes(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -308,12 +308,11 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -352,12 +351,11 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -396,12 +394,11 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -439,12 +436,11 @@ public class KPSBackend {
 	public Double calculateExpenditure(int eventTime){
 		Double sum = 0.0;
 
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
-
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -507,9 +503,11 @@ public class KPSBackend {
 		allMail.add(tempMail);
 		getMail(ID);
 		// add new MailEvents
-		events.addAll(tempMail.getEvents());
+		for (Event event : tempMail.getEvents()){
+			events.add(event);
+		}
 		System.out.println("events: " + events.getSize());
-		for (Event event : events){
+		for (Event event : events.getList()){
 			System.out.println(event.getClass() + ", " + event.getVehicle());
 		}
 		//FOund route and created mail
@@ -619,12 +617,12 @@ public class KPSBackend {
 	public List<Event> getEvents(int eventTime, String filter){
 		// get list of events
 
-		if (eventTime > events.size() - 1)
-			eventTime = events.size() - 1;
+		if (eventTime > events.getSize() - 1)
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 
-		List<Event> displayedEvents = events.subList(0, eventTime);
+		List<Event> displayedEvents = events.getList().subList(0, eventTime);
 
 		return displayedEvents;
 	}
@@ -635,7 +633,7 @@ public class KPSBackend {
 	 */
 	public List<Event> getAllEvents(){
 		// apply each event in order to update vehicle costs to most recent version
-		for (Event event : events){
+		for (Event event : events.getList()){
 			applyEvent(event);
 		}
 		return events;
@@ -718,7 +716,7 @@ public class KPSBackend {
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
 		
 		//HAve a goal search node, now go back through nodes making a mail event for each route
-		for(SearchNode s = goalNode ; s != null && s.getPreviousSearchNode() != null ; s.getPreviousSearchNode()){
+		for(SearchNode s = goalNode ; s != null && s.getPreviousSearchNode() != null ; s = s.getPreviousSearchNode()){
 			//Make Mail for mail event eg mail between 2 nodes
 			Mail tempMail = new Mail(ID, weight, volume, s.getPreviousSearchNode().getCurrentDistributionCentre()
 					, s.getCurrentDistributionCentre(), priority);

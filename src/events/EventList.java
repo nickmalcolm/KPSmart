@@ -31,6 +31,10 @@ public class EventList<T extends Event> extends ArrayList<T>{
 		return newList;
 	}
 	
+	public ArrayList<T> getList(){
+		return list;
+	}
+	
 	public boolean add(T event){
 		dirty = true;
 		return list.add(event);
