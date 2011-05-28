@@ -38,7 +38,7 @@ public class KPSBackend {
 
 	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 	private Date currentDate = new Date();
-	
+
 	//private String password;
 	private int passwordHash;
 	private boolean isManager;
@@ -178,7 +178,7 @@ public class KPSBackend {
 
 	public Map<PrioritisedRoute, Double> getCriticalRoute(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
-		
+
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
 			eventTime = events.getSize() - 1;
@@ -192,7 +192,7 @@ public class KPSBackend {
 				applyEvent(event);
 			}
 		}
-		
+
 		// loop through every route
 		for (Route route : routes){
 			// loop through every priority in route
@@ -408,21 +408,21 @@ public class KPSBackend {
 				PrioritisedRoute pRoute = new PrioritisedRoute();
 				pRoute.setRoute(route);
 				pRoute.setPriority(priority);
-				double vol = 0;
+				double weight = 0;
 				// loop through events and find all mail corresponding to correct vehicle
 				for (Event event : displayedEvents){
 					if (event instanceof MailEvent){
 						MailEvent mailEvent = (MailEvent) event;
 						Mail mail = mailEvent.getMail();
 						if (mail.getOrigin().equals(route.getD1()) && mail.getDestination().equals(route.getD2()) && mail.getPriority().equals(priority)){
-							vol = vol + mail.getWeight();
+							weight = weight + mail.getWeight();
 						}
 					}
 					else {
 						applyEvent(event);
 					}
 				}
-				result.put(pRoute, vol);
+				result.put(pRoute, weight);
 			}
 		}
 		// return avg delivery time
@@ -491,28 +491,29 @@ public class KPSBackend {
 			return 1 ;
 		}
 		System.out.println("mailevents: " + mailEvents.size());
-		for (Event event : mailEvents){
-			System.out.println(event.getClass() + ", " + event.getVehicle());
-		}
 		System.out.println("created arraylist of mail events");
-		//Make a piece of mail
-		Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
-		//Add mail events to it
-		tempMail.setEvents(mailEvents);
-		//Add mail to all mail
-		allMail.add(tempMail);
-		getMail(ID);
-		// add new MailEvents
-		for (Event event : tempMail.getEvents()){
-			events.add(event);
+
+		if (mailEvents.size() > 0){
+			//Make a piece of mail
+			Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
+			//Add mail events to it
+			tempMail.setEvents(mailEvents);
+			//Add mail to all mail
+			allMail.add(tempMail);
+			getMail(ID);
+			// add new MailEvents
+			for (Event event : tempMail.getEvents()){
+				events.add(event);
+			}
+			System.out.println("events: " + events.getSize());
+			for (Event event : events.getList()){
+				System.out.println(event.getClass() + ", " + event.getVehicle());
+			}
+			//FOund route and created mail
+			return 0;
+
 		}
-		System.out.println("events: " + events.getSize());
-		for (Event event : events.getList()){
-			System.out.println(event.getClass() + ", " + event.getVehicle());
-			
-		}
-		//FOund route and created mail
-		return 0;
+		return 1;
 	}
 
 	/**
@@ -527,7 +528,9 @@ public class KPSBackend {
 	 */
 	public Event updatePrice(DistributionCentre origin, DistributionCentre destination, double pricePerG, double pricePerCC, Priority priority, Firm firm) {
 		Vehicle vehicle = getVehicle(origin, destination, priority, firm);
-
+		if (vehicle == null){
+			return null;
+		}
 		vehicle.updateCustomerCost(pricePerG, pricePerCC);
 
 		// add to event log
@@ -602,7 +605,6 @@ public class KPSBackend {
 	public void getMail(int ID) {
 		System.out.println(allMail.size());
 		for (Mail m : allMail) {
-			//if (m.getID() == ID) {
 			String answer = "ID: " + m.getID()
 			+ "\nOrigin: " + m.getOrigin().getName()
 			+ "\nDestination: " + m.getDestination().getName()
@@ -610,14 +612,11 @@ public class KPSBackend {
 			+ "\nVolume: " + m.getVolume()
 			+ "\nPriority: " + m.getPriority();
 			System.out.println(answer);
-			//return;
-			//}
 		}
 	}
 
-	public List<Event> getEvents(int eventTime, String filter){
+	public List<Event> getEvents(int eventTime){
 		// get list of events
-
 		if (eventTime > events.getSize() - 1)
 			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
@@ -640,6 +639,10 @@ public class KPSBackend {
 		return events;
 	}
 
+	public int getNumberOfEvents(){
+		return events.getSize();
+	}
+
 	public int passwordHasher(String s) {
 		int hashed = s.hashCode();
 		hashed = (int) Math.floor((hashed*3621873+1321798)/Math.PI);
@@ -656,10 +659,10 @@ public class KPSBackend {
 		Vehicle vehicle = route.getVehicle(priority, firm);
 		if (vehicle == null)
 			return null;
-		
+
 		return vehicle;
 	}
-	
+
 	/**
 	 * Finds the firms currently in the system.
 	 */
@@ -674,7 +677,7 @@ public class KPSBackend {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Finds the route corresponding to the origin and destination.
 	 */
@@ -684,19 +687,19 @@ public class KPSBackend {
 				return route;
 			else if (route.getD2().equals(origin) && route.getD1().equals(destination))
 				return route;
-			
+
 		}
 		// route not found, return null
 		return null;
 	}
-	
-	
- 
- 
-	
-	
- 
-	
+
+
+
+
+
+
+
+
 	//Total cost of a piece of mail.
 	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
@@ -706,16 +709,16 @@ public class KPSBackend {
 		double cost = goalNode.getTotalPathCost();
 		return cost;
 	}
-	
-	
-	
+
+
+
 	//Creates mail eveents for travel between 2 node, connected or unconnected
 	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		//to be added to a peice of mail later.
 		ArrayList<MailEvent> mailEvents = new ArrayList<MailEvent>();
 		//the search node that was at the destination.
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
-		
+
 		//HAve a goal search node, now go back through nodes making a mail event for each route
 		for(SearchNode s = goalNode ; s != null && s.getPreviousSearchNode() != null ; s = s.getPreviousSearchNode()){
 			//Make Mail for mail event eg mail between 2 nodes
@@ -734,7 +737,7 @@ public class KPSBackend {
 			//add event to array to add to overall mail
 			mailEvents.add(tempMailEvent);
 		}
-		
+
 		return mailEvents;
 	}
 	//Calculates path between nodes
