@@ -103,7 +103,7 @@ public class KPSFrame extends JFrame {
 	}
 	
 	public void populateEvents(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
-			Map<PrioritisedRoute, Double> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
 		
 		eventsPanel.populate(totalNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, events);
@@ -111,7 +111,7 @@ public class KPSFrame extends JFrame {
 	}
 	
 	public void updateEvents(Map<PrioritisedRoute, Double> deliveryTimes, 
-			Map<PrioritisedRoute, Double> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
 		
 		eventsPanel.updateInfo(deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, events);
