@@ -88,7 +88,6 @@ public class TransportUpdateEvent extends Event {
 		return null;
 	}
 
-	@Override
 	public String displayString() {
 		String str = "Discontinue Transport Event: \n" +
 				"\tVehicle: "+super.getVehicle()+"\n"+

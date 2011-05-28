@@ -34,7 +34,6 @@ public class PriceUpdateEvent extends Event {
 		return null;
 	}
 	
-	@Override
 	public String displayString() {
 		String str = "Price Update Event: \n" +
 				"\tVehicle: "+super.getVehicle()+"\n"+

@@ -54,8 +54,7 @@ public class MailEvent extends Event {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
+	
 	public String displayString() {
 		String str = "Mail Event: \n" +
 				"\t"+mail.displayString()+"\n"+

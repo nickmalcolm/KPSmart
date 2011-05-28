@@ -93,9 +93,9 @@ public class KPSBackend {
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
 			// TODO REMOVE DUMMY EVENTS.
-			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
 			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
-			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_AIR));
+			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
 			
 			events.add(event1);
 			events.add(event2);
@@ -374,7 +374,7 @@ public class KPSBackend {
 				PrioritisedRoute pRoute = new PrioritisedRoute();
 				pRoute.setRoute(route);
 				pRoute.setPriority(priority);
-				double vol = 0;
+				double vol = 0.0;
 				// loop through events and find all mail corresponding to correct vehicle
 				for (Event event : displayedEvents){
 					if (event instanceof MailEvent){
