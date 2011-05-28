@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import priority.Priority;
 import routes.DistributionCentre;
+import routes.Firm;
 
 import gui.*;
 import backend.*;
@@ -111,10 +112,89 @@ public class KPSmart implements ActionListener{
 					if (dist.getName().equals(o)) { origin = dist; }
 					if (dist.getName().equals(d)) { destination = dist; }
 				}
-				System.out.println("part 1 of mail sending - in kpsmart");
+
 				kBackend.sendMail(id, weight, volume, origin, destination, priority);
 				kFrame.resetMailPanel();
 			}	
+		}
+		
+		//CUSTOMER PRICE UPDATE HANDLING
+		if ("Update Customer Cost".equals(e.getActionCommand())) {
+			ArrayList info = kFrame.returnCustomerPriceUpdateInfo();
+			if (info != null) {
+				int i = 0;
+				DistributionCentre origin = null;
+				DistributionCentre destination = null;
+				String o = String.valueOf(info.get(i++));
+				String d = String.valueOf(info.get(i++));
+				Firm firm = new Firm((String)info.get(i++));
+				Priority priority = (Priority)info.get(i++);
+				double customerPriceCC = Double.valueOf(String.valueOf(info.get(i++)));
+				double customerPriceG = Double.valueOf(String.valueOf(info.get(i)));
+				
+				for (DistributionCentre dist : kBackend.getDistributionCentres()) {
+					if (dist.getName().equals(o)) { origin = dist; }
+					if (dist.getName().equals(d)) { destination = dist; }
+				}
+				
+				kBackend.updatePrice(origin, destination, customerPriceG, customerPriceCC, priority, firm);
+				System.out.println("UPDATE CUSTOMER SUCCESSFUL");
+				kFrame.resetUpdatePanel();
+			}
+
+		}
+		
+		//TRANSPORT COST UPDATE HANDLING
+		if ("Update Transport Cost".equals(e.getActionCommand())) {
+			ArrayList info = kFrame.returnTransportCostUpdateInfo();
+			if (info != null) {
+				int i = 0;
+				DistributionCentre origin = null;
+				DistributionCentre destination = null;
+				String o = String.valueOf(info.get(i++));
+				String d = String.valueOf(info.get(i++));
+				Firm firm = new Firm((String)info.get(i++));
+				Priority priority = (Priority)info.get(i++);
+				double transportPriceCC = Double.valueOf(String.valueOf(info.get(i++)));
+				double transportPriceG = Double.valueOf(String.valueOf(info.get(i++)));
+				int frequency = Integer.valueOf(String.valueOf(info.get(i++)));;
+				int duration = Integer.valueOf(String.valueOf(info.get(i++)));;;
+				Day day = (Day)info.get(i);
+				
+				for (DistributionCentre dist : kBackend.getDistributionCentres()) {
+					if (dist.getName().equals(o)) { origin = dist; }
+					if (dist.getName().equals(d)) { destination = dist; }
+				}
+				
+				kBackend.updateTransport(origin, destination, transportPriceG, transportPriceCC, frequency, duration, day, priority, firm);
+				System.out.println("UPDATE TRANSPORT SUCCESSFUL");
+				kFrame.resetUpdatePanel();
+			}
+
+		}
+		
+		//DISCONTINUE TRANSPORT HANDLING
+		if ("Discontinue Transport".equals(e.getActionCommand())) {
+			ArrayList info = kFrame.returnDiscontinueTransportInfo();
+			if (info != null) {
+				int i = 0;
+				DistributionCentre origin = null;
+				DistributionCentre destination = null;
+				String o = String.valueOf(info.get(i++));
+				String d = String.valueOf(info.get(i++));
+				Firm firm = new Firm((String)info.get(i++));
+				Priority priority = (Priority)info.get(i++);
+				
+				for (DistributionCentre dist : kBackend.getDistributionCentres()) {
+					if (dist.getName().equals(o)) { origin = dist; }
+					if (dist.getName().equals(d)) { destination = dist; }
+				}
+				
+				kBackend.discontinueTransport(origin, destination, priority, firm);
+				System.out.println("DISCONTINUE TRANSPORT SUCCESSFUL");
+				
+			}
+			
 		}
 		
 		//CANCEL BUTTON HANDLING

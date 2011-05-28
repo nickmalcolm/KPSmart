@@ -61,8 +61,6 @@ public class KPSFrame extends JFrame {
 	}
 	
 	public void displayPanel(String s) {
-		//panel.setBackground(Color.RED);
-		//panel.add(output);
 		CardLayout cards = (CardLayout) panel.getLayout();
 		cards.show(panel, s);
 		currentPanel = s;
@@ -71,12 +69,13 @@ public class KPSFrame extends JFrame {
 	public void resetMailPanel() {
 		CardLayout cards = (CardLayout) panel.getLayout();
 		cards.show(panel, "defaultPanel");
-		for (Component c : panel.getComponents()) {
-			if (c.getName().equals("mailPanel")) {
-				((KPSPanel)c).reset();
-				System.out.println("Resetting");
-			}
-		}
+		mailPanel.reset();
+	}
+	
+	public void resetUpdatePanel() {
+		CardLayout cards = (CardLayout) panel.getLayout();
+		cards.show(panel, "defaultPanel");
+		updatePanel.reset();
 	}
 	
 	public void resetAll() {
@@ -96,15 +95,15 @@ public class KPSFrame extends JFrame {
 	}
 	
 	public ArrayList returnCustomerPriceUpdateInfo() {
-		return null;
+		return updatePanel.returnCustomerPriceUpdateInfo();
 	}
 	
 	public ArrayList returnTransportCostUpdateInfo() {
-		return null;
+		return updatePanel.returnTransportCostUpdateInfo();
 	}
 	
 	public ArrayList returnDiscontinueTransportInfo() {
-		return null;
+		return updatePanel.returnDiscontinueTransportInfo();
 	}
 
 	public void manager() {
