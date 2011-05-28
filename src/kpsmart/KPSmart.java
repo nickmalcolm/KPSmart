@@ -60,7 +60,7 @@ public class KPSmart implements ActionListener{
 			int i = kBackend.getNumberOfEvents();
 			kFrame.populateEvents(i, kBackend.calculateDeliveryTimes(i), kBackend.calculateAmountOfMail(i),
 					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
-					kBackend.getEvents(i));
+					kBackend.getCriticalRoute(i), kBackend.getEvents(i));
 			kFrame.displayPanel("eventsPanel");
 		}
 		
