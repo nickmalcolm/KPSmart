@@ -305,7 +305,7 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(DistributionCentre origin, int eventTime){
+	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(int eventTime){
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
 		if (eventTime > events.getSize() - 1)
@@ -348,7 +348,7 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(DistributionCentre origin, int eventTime){
+	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
@@ -391,7 +391,7 @@ public class KPSBackend {
 	 * @param origin	The origin of the route.
 	 * @param eventTime	The event timeframe for calculations.
 	 */
-	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(DistributionCentre origin, int eventTime){
+	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
