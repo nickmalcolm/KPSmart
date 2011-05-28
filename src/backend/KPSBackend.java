@@ -894,7 +894,7 @@ public class KPSBackend {
 					Route r = findRoute(current, d);
 					//for those routes see if they have an air vehicle
 					for(Vehicle v : r.getVehicles()){
-						if(v.getPriority().equals(Priority.INTERNATIONAL_AIR)){  //THIS DOSNET EXIST YET I THINK ITS WHATS NEEDED
+						if((v.getPriority().equals(Priority.INTERNATIONAL_AIR)) ||(v.getPriority().equals(Priority.DOMESTIC))){  //THIS DOSNET EXIST YET I THINK ITS WHATS NEEDED
 							//if they do add the dist center to air centers
 							connectedByAir.add(d);
 						}
