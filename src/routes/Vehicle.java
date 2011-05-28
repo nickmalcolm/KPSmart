@@ -111,6 +111,10 @@ public class Vehicle {
 		this.firm = firm;
 	}
 	
+	public String toString(){
+		return firm+" "+ID;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Vehicle))

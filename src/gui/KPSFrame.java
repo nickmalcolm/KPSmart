@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 import java.util.List;
 
@@ -13,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import backend.PrioritisedRoute;
+import events.Event;
 
 import routes.DistributionCentre;
 import routes.Firm;
@@ -61,8 +65,6 @@ public class KPSFrame extends JFrame {
 	}
 	
 	public void displayPanel(String s) {
-		//panel.setBackground(Color.RED);
-		//panel.add(output);
 		CardLayout cards = (CardLayout) panel.getLayout();
 		cards.show(panel, s);
 		currentPanel = s;
@@ -71,12 +73,13 @@ public class KPSFrame extends JFrame {
 	public void resetMailPanel() {
 		CardLayout cards = (CardLayout) panel.getLayout();
 		cards.show(panel, "defaultPanel");
-		for (Component c : panel.getComponents()) {
-			if (c.getName().equals("mailPanel")) {
-				((KPSPanel)c).reset();
-				System.out.println("Resetting");
-			}
-		}
+		mailPanel.reset();
+	}
+	
+	public void resetUpdatePanel() {
+		CardLayout cards = (CardLayout) panel.getLayout();
+		cards.show(panel, "defaultPanel");
+		updatePanel.reset();
 	}
 	
 	public void resetAll() {
@@ -95,16 +98,35 @@ public class KPSFrame extends JFrame {
 		return mailPanel.returnInfo();
 	}
 	
+	public int returnEventTime() {
+		return eventsPanel.returnEventTime();
+	}
+	
+	public void populateEvents(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+		eventsPanel.populate(totalNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, events);
+		
+	}
+	
+	public void updateEvents(Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+		eventsPanel.updateInfo(deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, events);
+	}
+	
 	public ArrayList returnCustomerPriceUpdateInfo() {
-		return null;
+		return updatePanel.returnCustomerPriceUpdateInfo();
 	}
 	
 	public ArrayList returnTransportCostUpdateInfo() {
-		return null;
+		return updatePanel.returnTransportCostUpdateInfo();
 	}
 	
 	public ArrayList returnDiscontinueTransportInfo() {
-		return null;
+		return updatePanel.returnDiscontinueTransportInfo();
 	}
 
 	public void manager() {

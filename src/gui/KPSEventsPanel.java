@@ -4,12 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
+import java.util.Map;
+
+import backend.PrioritisedRoute;
+import events.Event;
 
 import javax.swing.*;
 
 public class KPSEventsPanel extends JPanel implements KPSPanel{
 	
 	private String testString = "Your mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\n";
+	private int eventTime;
 	
 	//Events panel
 	private JPanel eventsPanel;
@@ -122,7 +128,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		amountOfMail.setAlignmentX(LEFT_ALIGNMENT);
 		businessTriplesBox.add(amountOfMailLabel);
 		businessTriplesBox.add(amountOfMail);
-		//businessTriplesBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		Box completeBusiness = new Box(BoxLayout.Y_AXIS);
 		completeBusiness.add(businessBox);
@@ -130,8 +135,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		businessPanel.add(completeBusiness);
 		
 		//Critical routes
-		//criticalPanel = new JPanel();
-		//criticalPanel.setPreferredSize(new Dimension(235, 220));
 		Box criticalBox = new Box(BoxLayout.Y_AXIS);
 		criticalBox.setPreferredSize(new Dimension(225, 195));
 		
@@ -142,7 +145,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		criticalRoutesField.setEditable(false);
 		criticalRoutesField.setText(testString);
 		criticalRoutes = new JScrollPane(criticalRoutesField);
-		//criticalRoutes.setPreferredSize(new Dimension(225, 380));
 		criticalRoutes.setAlignmentX(LEFT_ALIGNMENT);
 		
 		criticalBox.add(criticalRoutesLabel);
@@ -154,7 +156,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		leftSide.add(eventsPanel);
 		Box rightSide = new Box(BoxLayout.Y_AXIS);
 		rightSide.add(businessPanel);
-		//rightSide.add(criticalPanel);
 		Box completeBox = new Box(BoxLayout.X_AXIS);
 		completeBox.add(leftSide);
 		completeBox.add(Box.createRigidArea(new Dimension(5, 0)));
@@ -163,11 +164,35 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		
 		this.add(completeBox);
 		
-		
-		
+		int eventTime = 0;
+			
 		//Business Figures
 		
 		//Critical routes
+	}
+	
+	public void populate(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+		eventTime = totalNumberOfEvents;
+		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString = eventsString + e.toString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
+		
+	}
+	
+	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, List<Event> events) {
+		
+	}
+	
+	public int returnEventTime() {
+		return eventTime;
 	}
 
 	public void reset() {}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
@@ -230,6 +231,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		customerLeftBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		customerLeftBox.add(customerPriceGLabel);
 		customerLeftBox.add(customerPriceG);
+		customerLeftBox.setPreferredSize(new Dimension(280,150));
 		
 		customerRightBox.add(customerDestinationsLabel);
 		customerRightBox.add(customerDestinations);
@@ -239,8 +241,10 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		customerRightBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		customerRightBox.add(customerPriceCCLabel);
 		customerRightBox.add(customerPriceCC);
+		customerRightBox.setPreferredSize(new Dimension(280,150));
 		
 		customerButtonBox.add(customerButton);
+		customerButtonBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		customerButtonBox.add(customerCancel);
 		
 		customerFieldsBox.add(customerLeftBox);
@@ -249,10 +253,10 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		customerCompleteBox.add(customerFieldsBox);
 		customerCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		customerCompleteBox.add(customerButtonBox);
-		//completeBox.add(customerCompleteBox);
+		customerCompleteBox.setPreferredSize(new Dimension(580,165));
 		
 		JPanel customerPanel = new JPanel();
-		customerPanel.setPreferredSize(new Dimension(590,180));
+		customerPanel.setPreferredSize(new Dimension(590,175));
 		customerPanel.add(customerCompleteBox, BorderLayout.CENTER);
 		completeBox.add(customerPanel);
 		completeBox.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -301,6 +305,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		transportLeftBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		transportLeftBox.add(transportFrequencyLabel);
 		transportLeftBox.add(transportFreqeuency);
+		transportLeftBox.setPreferredSize(new Dimension(280,230));
 		
 		transportRightBox.add(transportDestinationsLabel);
 		transportRightBox.add(transportDestinations);
@@ -313,25 +318,28 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		transportRightBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		transportRightBox.add(transportDurationLabel);
 		transportRightBox.add(transportDuration);
+		transportRightBox.setPreferredSize(new Dimension(280,230));
 		
 		transportDayBox.add(transportDayLabel);
 		transportDayBox.add(transportDay);
 		transportDayBox.setAlignmentX(CENTER_ALIGNMENT);
 		
 		transportButtonBox.add(transportButton);
+		transportButtonBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		transportButtonBox.add(transportCancel);
 		
 		transportFieldsBox.add(transportLeftBox);
+		transportFieldsBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		transportFieldsBox.add(transportRightBox);
 		transportCompleteBox.add(transportFieldsBox);
 		transportCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		transportCompleteBox.add(transportDayBox);
 		transportCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		transportCompleteBox.add(transportButtonBox);
-		//completeBox.add(transportCompleteBox);
-		
+		transportCompleteBox.setPreferredSize(new Dimension(580,265));
+
 		JPanel transportPanel = new JPanel();
-		transportPanel.setPreferredSize(new Dimension(590,260));
+		transportPanel.setPreferredSize(new Dimension(590,275));
 		transportPanel.add(transportCompleteBox, BorderLayout.CENTER);
 		completeBox.add(transportPanel);
 		completeBox.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -361,28 +369,31 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		discontinueLeftBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		discontinueLeftBox.add(discontinuePriorityLabel);
 		discontinueLeftBox.add(discontinuePriority);
+		discontinueLeftBox.setPreferredSize(new Dimension(280,230));
 		
 		discontinueRightBox.add(discontinueDestinationsLabel);
 		discontinueRightBox.add(discontinueDestinations);
 		discontinueRightBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		discontinueRightBox.add(discontinueFirmLabel);
 		discontinueRightBox.add(discontinueFirms);
+		discontinueRightBox.setPreferredSize(new Dimension(280,230));
 		
 		discontinueButtonBox.add(discontinueButton);
+		discontinueButtonBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		discontinueButtonBox.add(discontinueCancel);
 		
 		discontinueFieldsBox.add(discontinueLeftBox);
+		discontinueFieldsBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		discontinueFieldsBox.add(discontinueRightBox);
 		discontinueCompleteBox.add(discontinueFieldsBox);
 		discontinueCompleteBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		discontinueCompleteBox.add(discontinueButtonBox);
-		//completeBox.add(customerCompleteBox);
+		discontinueCompleteBox.setPreferredSize(new Dimension(580,120));
 		
 		JPanel discontinuePanel = new JPanel();
-		discontinuePanel.setPreferredSize(new Dimension(590,140));
+		discontinuePanel.setPreferredSize(new Dimension(590,130));
 		discontinuePanel.add(discontinueCompleteBox, BorderLayout.CENTER);
 		completeBox.add(discontinuePanel);
-		//completeBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		this.add(completeBox);
 		this.setBackground(Color.GRAY);
@@ -390,15 +401,86 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 	}
 	
 	public ArrayList returnCustomerPriceUpdateInfo() {
-		return null;
+
+		try {
+			double d = Double.valueOf(String.valueOf(this.customerPriceCC.getText()));
+		}
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Customer Price Per CC MUST be a number", "Invalid Entry Format", JOptionPane.ERROR_MESSAGE);
+			reset();
+			return null;
+		}
+		try {
+			double d = Double.valueOf(String.valueOf(this.customerPriceG.getText()));
+		}
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Customer Price Per G MUST be a number", "Invalid Entry Format", JOptionPane.ERROR_MESSAGE);
+			reset();
+			return null;
+		}
+		ArrayList info = new ArrayList();
+		info.add(this.customerOrigins.getSelectedItem());
+		info.add(this.customerDestinations.getSelectedItem());
+		info.add(this.customerFirms.getSelectedItem());
+		info.add(this.customerPriority.getSelectedItem());
+		info.add(this.customerPriceCC.getText());
+		info.add(this.customerPriceG.getText());
+		return info;
 	}
 	
 	public ArrayList returnTransportCostUpdateInfo() {
-		return null;
+		try {
+			double d = Double.valueOf(String.valueOf(this.transportPriceG.getText()));
+		}
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Transport Cost Per G MUST be a number", "Invalid Entry Format", JOptionPane.ERROR_MESSAGE);
+			reset();
+			return null;
+		}
+		try {
+			double d = Double.valueOf(String.valueOf(this.transportPriceCC.getText()));
+		}
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Transport Cost Per CC MUST be a number", "Invalid Entry Format", JOptionPane.ERROR_MESSAGE);
+			reset();
+			return null;
+		}
+		try {
+			int d = Integer.valueOf(String.valueOf(this.transportFreqeuency.getText()));
+		}
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Transport Frequency MUST be a number", "Invalid Entry Format", JOptionPane.ERROR_MESSAGE);
+			reset();
+			return null;
+		}
+		try {
+			int d = Integer.valueOf(String.valueOf(this.transportDuration.getText()));
+		}
+		catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Transport Duration MUST be a number", "Invalid Entry Format", JOptionPane.ERROR_MESSAGE);
+			reset();
+			return null;
+		}
+		ArrayList info = new ArrayList();
+		info.add(this.transportOrigins.getSelectedItem());
+		info.add(this.transportDestinations.getSelectedItem());
+		info.add(this.transportFirms.getSelectedItem());
+		info.add(this.transportPriority.getSelectedItem());
+		info.add(this.transportPriceCC.getText());
+		info.add(this.transportPriceG.getText());
+		info.add(this.transportFreqeuency.getText());
+		info.add(this.transportDuration.getText());
+		info.add(this.transportDay.getSelectedItem());
+		return info;
 	}
 	
 	public ArrayList returnDiscontinueTransportInfo() {
-		return null;
+		ArrayList info = new ArrayList();
+		info.add(this.discontinueOrigins.getSelectedItem());
+		info.add(this.discontinueDestinations.getSelectedItem());
+		info.add(this.discontinueFirms.getSelectedItem());
+		info.add(this.discontinuePriority.getSelectedItem());
+		return info;
 	}
 
 	public void reset() {
