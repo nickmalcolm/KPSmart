@@ -26,7 +26,9 @@ public class Route {
 	}
 	
 	public void discontinueTransport(int ID) {
-		// TODO WHAT.
+		if (getVehicle(ID) != null){
+			vehicles.remove(getVehicle(ID));
+		}
 	}
 	
 	public Vehicle getVehicle(int ID) {
