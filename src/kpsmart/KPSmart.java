@@ -25,6 +25,7 @@ public class KPSmart implements ActionListener{
 	KPSBackend kBackend;
 	KPSFrame kFrame;
 	JPasswordField kPasswordField;
+	boolean managerMode;
 	
 	public KPSmart() {
 	
@@ -32,6 +33,7 @@ public class KPSmart implements ActionListener{
 		kBackend.parseXMLRecord();
 		kFrame = new KPSFrame(this, kBackend.getDistributionCentres(), kBackend.findFirms());
 		kPasswordField = new JPasswordField(10);
+		managerMode = false;
 		//KPSpasswordField.setActionCommand("OK");
 		//KPSpasswordField.addActionListener(this);
 	
@@ -62,13 +64,21 @@ public class KPSmart implements ActionListener{
 		}
 		
 		if ("View Business Figures".equals(e.getActionCommand())) {
+			if (kFrame.getPanel("eventsPanel")) { return; }
 			int i = kBackend.getNumberOfEvents();
 			kFrame.populateEvents(i, kBackend.calculateDeliveryTimes(i), kBackend.calculateAmountOfMail(i),
 					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
-					kBackend.getCriticalRoute(i), kBackend.getEvents(i), kBackend.calculateRevenue(i), kBackend.calculateExpenditure(i));
+					kBackend.getCriticalRoute(i), kBackend.getEvents(i), kBackend.calculateRevenue(i), 
+					kBackend.calculateExpenditure(i), kBackend.getNumberOfEvents());
 			kFrame.displayPanel("eventsPanel");
-			kFrame.enableBackward();
-			kFrame.disableForward();
+			if (managerMode) {
+				kFrame.enableBackward();
+				kFrame.disableForward();
+			}
+			else {
+				kFrame.disableBackward();
+				kFrame.disableForward();
+			}
 			return;
 		}
 		
@@ -79,17 +89,23 @@ public class KPSmart implements ActionListener{
 			String pass = String.valueOf(kPasswordField.getPassword());
 			if(kBackend.authenticateManager(pass)) {
 				kFrame.manager();
+				managerMode = true;
+				kFrame.enableBackward();
+				kFrame.disableForward();
 				System.out.println("MANAGER MODE");
 				return;
+			}
+			else {
+				JOptionPane.showMessageDialog(kFrame, "Uh, uh, uh! You didn't say the magic word!", "Incorrect Password", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}
 		
 		if ("Sign out as manager".equals(e.getActionCommand())) {
 			kFrame.notManager();
-			if (kFrame.getPanel("eventsPanel")) {
-				kFrame.displayPanel("defaultPanel");
-			}
+			managerMode = false;
+			kFrame.disableBackward();
+			kFrame.disableForward();
 			return;
 		}
 		
@@ -135,7 +151,8 @@ public class KPSmart implements ActionListener{
 			if (eventTime >= 0) {
 				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
 					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
-					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), kBackend.calculateExpenditure(eventTime));
+					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), 
+					kBackend.calculateExpenditure(eventTime), kBackend.getNumberOfEvents());
 				kFrame.enableForward();
 				if (eventTime == 0) { kFrame.disableBackward(); }
 			}
@@ -151,7 +168,8 @@ public class KPSmart implements ActionListener{
 			if (eventTime <= kBackend.getNumberOfEvents()) {
 				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
 					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
-					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), kBackend.calculateExpenditure(eventTime));
+					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), 
+					kBackend.calculateExpenditure(eventTime), kBackend.getNumberOfEvents());
 				kFrame.enableBackward();
 				if (eventTime == kBackend.getNumberOfEvents()) { kFrame.disableForward(); }
 			}

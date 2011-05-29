@@ -106,21 +106,13 @@ public class KPSFrame extends JFrame {
 		eventsPanel.setEventTime(eventTime);
 	}
 	
-	public void populateEvents(int totalNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
+	public void populateEvents(int currentNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
 			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
 			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
-			List<Event> events, double revenue, double expenditure) {
+			List<Event> events, double revenue, double expenditure, int totalNumberOfEvents) {
 		
-		eventsPanel.populate(totalNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events, revenue, expenditure);
+		eventsPanel.populate(currentNumberOfEvents, deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events, revenue, expenditure, totalNumberOfEvents);
 		
-	}
-	
-	public void updateEvents(Map<PrioritisedRoute, Double> deliveryTimes, 
-			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
-			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
-			List<Event> events, double revenue, double expenditure) {
-		
-		eventsPanel.updateInfo(deliveryTimes, amountOfMail, weightOfMail, volumeOfMail, criticalRoutes, events, revenue, expenditure);
 	}
 	
 	public ArrayList returnCustomerPriceUpdateInfo() {

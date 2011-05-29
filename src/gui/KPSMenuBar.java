@@ -74,13 +74,13 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	public void manager() {
 		aAuthenticate.setEnabled(false);
 		aDeauthenticate.setEnabled(true);
-		aBusinessFigures.setEnabled(true);
+		//aBusinessFigures.setEnabled(true);
 	}
 	
 	public void notManager() {
 		aAuthenticate.setEnabled(true);
 		aDeauthenticate.setEnabled(false);
-		aBusinessFigures.setEnabled(false);
+		//aBusinessFigures.setEnabled(false);
 	}
 
 }
