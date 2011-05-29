@@ -171,7 +171,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		
 		this.add(completeBox);
 		
-		eventTime = 0;
+		int eventTime = 0;
 			
 		//Business Figures
 		
@@ -194,14 +194,15 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		}
 		displayedEventsField.setText(eventsString);
 		
+<<<<<<< HEAD
 		String totalEventsString = currentNumberOfEvents + "/" + totalNumberOfEvents; 
 		totalEventsField.setText(totalEventsString);
 		totalEventsField.setMargin(new Insets(1, 150, 1, 1));
-		
+=======
 		String deliveryString = "";
 		for (PrioritisedRoute r : deliveryTimes.keySet()) {
 			deliveryString += r.toString() + "\n";
-			deliveryString += (deliveryTimes.get(r) == null ? "0" : deliveryTimes.get(r)) + " hours\n\n";
+			deliveryString += (deliveryTimes.get(r) == null ? "0" : deliveryTimes.get(r)) + " hours\n";
 		}
 		averageDeliveryField.setText(deliveryString);
 		
@@ -215,19 +216,19 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 			for (PrioritisedRoute wR : weightOfMail.keySet()) 
 				if (wR.equals(r))
 					weightR = wR;
-			mailString += "Weight of mail: " + weightOfMail.get(weightR) + "g\n\n";
+			mailString += "Weight of mail: " + weightOfMail.get(weightR) + "g\n";
 			
 			for (PrioritisedRoute vR : volumeOfMail.keySet()) 
 				if (vR.equals(r))
 					volumeR = vR;
-			mailString += "Volume of mail: " + volumeOfMail.get(volumeR) + "cc\n\n";
+			mailString += "Volume of mail: " + volumeOfMail.get(volumeR) + "cc\n";
 		}
 		amountOfMailField.setText(mailString);
 		
 		String criticalString = "";
 		for (PrioritisedRoute r : criticalRoutes.keySet()) {
 			criticalString += r.toString() + "\n";
-			criticalString += "-$" + criticalRoutes.get(r) + "\n";
+			criticalString += "$" + criticalRoutes.get(r);
 		}
 		criticalRoutesField.setText(criticalString);
 		
@@ -243,6 +244,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 			eventsString += e.toString() + "\n";
 		}
 		displayedEventsField.setText(eventsString);
+>>>>>>> 7f16951f310e1b620de897dd2132f9d9b55b8dbe
 		
 		String deliveryString = "";
 		for (PrioritisedRoute r : deliveryTimes.keySet()) {
