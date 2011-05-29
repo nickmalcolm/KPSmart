@@ -6,7 +6,6 @@ import backend.Day;
 
 import routes.Vehicle;
 
-// note @Nick, just added some dummy code to get the vehicle associated with an event as per class diagram. -J
 public abstract class Event implements EventInterface{
 	private Vehicle vehicle;
 	private Day day;

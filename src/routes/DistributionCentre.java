@@ -5,16 +5,11 @@ public class DistributionCentre {
 	private String name;
 	private String city;
 	private String country;
-	//Need for A star estimate
-	private int lat;
-	private int lon;
 	
-	public DistributionCentre(String name, String city, String country , int lat, int lon) {
+	public DistributionCentre(String name, String city, String country) {
 		this.name = name;
 		this.city = city;
 		this.country = country;
-		this.lat = lat;
-		this.lon = lon;
 	}
 
 	public String getName() {
@@ -35,12 +30,6 @@ public class DistributionCentre {
 
 	public String getCountry() {
 		return country;
-	}
-	public int lat() {
-		return lat;
-	}
-	public int lon() {
-		return lon;
 	}
 
 	public void setCountry(String country) {

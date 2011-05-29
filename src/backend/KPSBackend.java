@@ -304,7 +304,6 @@ public class KPSBackend {
 						}
 					}
 				}
-				
 				result.put(pRoute, (numEvents == 0 ? 0 : (sum / numEvents)));
 			}
 		}
