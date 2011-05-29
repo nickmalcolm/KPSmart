@@ -97,13 +97,13 @@ public class KPSBackend {
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
 			// TODO REMOVE DUMMY EVENTS.
-			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
-			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
-			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
-			
-			events.add(event1);
-			events.add(event2);
-			events.add(event3);
+//			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
+//			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
+//			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
+//			
+//			events.add(event1);
+//			events.add(event2);
+//			events.add(event3);
 			// END TODO
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
@@ -132,12 +132,14 @@ public class KPSBackend {
 	//Creates the XML record. Returns true if record is created successfully.
 	public boolean createXMLRecord(){
 		xstream = new XStream();
+		xstream.setMode(XStream.NO_REFERENCES);
 		try{
 			String routesXML = xstream.toXML(routes);
 			String mailXML = xstream.toXML(allMail);
 			String eventsXML = xstream.toXML(events);
+			String distCentXMl = xstream.toXML(distributionCentres);
 
-			//Then save (and hash?) XML file
+			//Then save XML file
 			//Save routes file
 			FileWriter fileWriter = new FileWriter("routesXML.xml");
 			BufferedWriter bufWriter = new BufferedWriter(fileWriter);
@@ -156,6 +158,13 @@ public class KPSBackend {
 			fileWriter = new FileWriter("eventsXML.xml");
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(eventsXML);
+			bufWriter.close();
+			fileWriter.close();
+			
+			//Save distribution Centres
+			fileWriter = new FileWriter("distCentreXML.xml");
+			bufWriter = new BufferedWriter(fileWriter);
+			bufWriter.write(distCentXMl);
 			bufWriter.close();
 			fileWriter.close();
 
