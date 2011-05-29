@@ -89,7 +89,7 @@ public class TransportUpdateEvent extends Event {
 	}
 
 	public String displayString() {
-		String str = "Discontinue Transport Event: \n" +
+		String str = "Update Transport Event: \n" +
 				"\tVehicle: "+super.getVehicle()+"\n"+
 				"\tCost per CC: "+costPerCC+"\n"+
 				"\tCost per g: "+costPerG+"\n"+
