@@ -201,7 +201,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		String deliveryString = "";
 		for (PrioritisedRoute r : deliveryTimes.keySet()) {
 			deliveryString += r.toString() + "\n";
-			deliveryString += (deliveryTimes.get(r) == null ? "0" : deliveryTimes.get(r)) + " hours\n\n";
+			deliveryString += deliveryTimes.get(r) + " hours\n\n";
 		}
 		averageDeliveryField.setText(deliveryString);
 		
