@@ -67,6 +67,8 @@ public class KPSmart implements ActionListener{
 					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
 					kBackend.getCriticalRoute(i), kBackend.getEvents(i), kBackend.calculateRevenue(i), kBackend.calculateExpenditure(i));
 			kFrame.displayPanel("eventsPanel");
+			kFrame.enableBackward();
+			kFrame.disableForward();
 			return;
 		}
 		
@@ -121,7 +123,7 @@ public class KPSmart implements ActionListener{
 					JOptionPane.showMessageDialog(kFrame, "Mail Sent Successfully", "Send Mail", JOptionPane.INFORMATION_MESSAGE);
 					kFrame.resetMailPanel();
 				}
-				else JOptionPane.showMessageDialog(kFrame, "Mail Could Not Be Sent", "Send Mail", JOptionPane.ERROR_MESSAGE);
+				else JOptionPane.showMessageDialog(kFrame, "Mail Could Not Be Sent: No Route At That Priority Exists", "Send Mail", JOptionPane.ERROR_MESSAGE);
 			}	
 			return;
 		}
@@ -179,7 +181,7 @@ public class KPSmart implements ActionListener{
 				}
 				
 				kBackend.updatePrice(origin, destination, customerPriceG, customerPriceCC, priority, firm);
-				System.out.println("UPDATE CUSTOMER SUCCESSFUL");
+				JOptionPane.showMessageDialog(kFrame, "Customer Price Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
 				kFrame.resetUpdatePanel();
 			}
 			return;
@@ -208,8 +210,7 @@ public class KPSmart implements ActionListener{
 				}
 				
 				kBackend.updateTransport(origin, destination, transportPriceG, transportPriceCC, frequency, duration, day, priority, firm);
-				System.out.println("UPDATE TRANSPORT SUCCESSFUL");
-				kFrame.resetUpdatePanel();
+				JOptionPane.showMessageDialog(kFrame, "Transport Cost Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);				kFrame.resetUpdatePanel();
 			}
 			return;
 		}
@@ -232,7 +233,8 @@ public class KPSmart implements ActionListener{
 				}
 				
 				kBackend.discontinueTransport(origin, destination, priority, firm);
-				System.out.println("DISCONTINUE TRANSPORT SUCCESSFUL");
+				JOptionPane.showMessageDialog(kFrame, "Discontinue Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
+				kFrame.resetUpdatePanel();
 				
 			}
 			return;			
