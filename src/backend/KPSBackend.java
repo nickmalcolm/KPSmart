@@ -602,7 +602,7 @@ public class KPSBackend {
 	}
 
 	public List<Event> getEvents(int eventTime){
-		if (events.size() == 0){
+		if (events.getSize() == 0){
 			return new ArrayList<Event>();
 		}
 		
