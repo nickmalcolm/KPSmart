@@ -14,6 +14,8 @@ import events.Event;
 
 import javax.swing.*;
 
+import priority.Priority;
+
 public class KPSEventsPanel extends JPanel implements KPSPanel{
 	
 	private String testString = "Your mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\n";
@@ -195,6 +197,51 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		String totalEventsString = currentNumberOfEvents + "/" + totalNumberOfEvents; 
 		totalEventsField.setText(totalEventsString);
 		totalEventsField.setMargin(new Insets(1, 150, 1, 1));
+		String deliveryString = "";
+		for (PrioritisedRoute r : deliveryTimes.keySet()) {
+			deliveryString += r.toString() + "\n";
+			deliveryString += (deliveryTimes.get(r) == null ? "0" : deliveryTimes.get(r)) + " hours\n";
+		}
+		averageDeliveryField.setText(deliveryString);
+		
+		String mailString = "";
+		for (PrioritisedRoute r : amountOfMail.keySet()) {
+			PrioritisedRoute weightR = null;
+			PrioritisedRoute volumeR = null;
+			mailString += r.toString() + "\n";
+			mailString += "Amount of mail: " + amountOfMail.get(r) + "\n";
+
+			for (PrioritisedRoute wR : weightOfMail.keySet()) 
+				if (wR.equals(r))
+					weightR = wR;
+			mailString += "Weight of mail: " + weightOfMail.get(weightR) + "g\n";
+			
+			for (PrioritisedRoute vR : volumeOfMail.keySet()) 
+				if (vR.equals(r))
+					volumeR = vR;
+			mailString += "Volume of mail: " + volumeOfMail.get(volumeR) + "cc\n";
+		}
+		amountOfMailField.setText(mailString);
+		
+		String criticalString = "";
+		for (PrioritisedRoute r : criticalRoutes.keySet()) {
+			criticalString += r.toString() + "\n";
+			criticalString += "$" + criticalRoutes.get(r);
+		}
+		criticalRoutesField.setText(criticalString);
+		
+	}
+	
+	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
+			List<Event> events, double revenue, double expenditure) {
+		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString += e.toString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
 		
 		String deliveryString = "";
 		for (PrioritisedRoute r : deliveryTimes.keySet()) {

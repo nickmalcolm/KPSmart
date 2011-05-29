@@ -26,7 +26,7 @@ public class PrioritisedRoute {
 		if (!(obj instanceof PrioritisedRoute))
 			return false;
 		PrioritisedRoute other = (PrioritisedRoute) obj;
-		if (this.route.equals(other.getRoute()) && this.priority == other.getPriority()){
+		if (this.route.equals(other.getRoute()) && this.priority.equals(other.getPriority())){
 			return true;
 		}
 		return false;
