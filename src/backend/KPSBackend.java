@@ -304,7 +304,8 @@ public class KPSBackend {
 						}
 					}
 				}
-				result.put(pRoute, (sum / numEvents));
+				
+				result.put(pRoute, (numEvents == 0 ? 0 : (sum / numEvents)));
 			}
 		}
 		// return avg delivery time
