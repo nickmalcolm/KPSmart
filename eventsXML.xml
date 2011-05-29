@@ -1,1 +1,98 @@
-<list/>
+<events.EventList serialization="custom">
+  <unserializable-parents/>
+  <list>
+    <default>
+      <size>0</size>
+    </default>
+    <int>10</int>
+  </list>
+  <events.EventList>
+    <default>
+      <dirty>true</dirty>
+      <list>
+        <events.MailEvent>
+          <vehicle>
+            <ID>1</ID>
+            <customerCostPerG>20.0</customerCostPerG>
+            <customerCostPerCC>20.0</customerCostPerCC>
+            <transportCostPerG>0.0</transportCostPerG>
+            <transportCostPerCC>0.0</transportCostPerCC>
+            <frequency>1</frequency>
+            <duration>1</duration>
+            <transportDay>MONDAY</transportDay>
+            <priority>DOMESTIC</priority>
+            <firm>
+              <name>NZ Couriers</name>
+            </firm>
+          </vehicle>
+          <mail>
+            <ID>123456</ID>
+            <weight>60.0</weight>
+            <volume>60.0</volume>
+            <origin>
+              <name>Auckland</name>
+              <city>Auckland</city>
+              <country>New Zealand</country>
+              <lat>-36</lat>
+              <lon>174</lon>
+            </origin>
+            <destination>
+              <name>Hamilton</name>
+              <city>Hamilton</city>
+              <country>New Zealand</country>
+              <lat>-37</lat>
+              <lon>175</lon>
+            </destination>
+            <priority>INTERNATIONAL_STANDARD</priority>
+          </mail>
+          <day>MONDAY</day>
+          <profitOnRoute>0.0</profitOnRoute>
+        </events.MailEvent>
+        <events.PriceUpdateEvent>
+          <vehicle reference="../../events.MailEvent/vehicle"/>
+          <timestamp>2011-05-29 13:43:02.10 NZST</timestamp>
+          <costPerCC>20.0</costPerCC>
+          <costPerG>20.0</costPerG>
+        </events.PriceUpdateEvent>
+        <events.MailEvent>
+          <vehicle>
+            <ID>3</ID>
+            <customerCostPerG>0.35</customerCostPerG>
+            <customerCostPerCC>0.4</customerCostPerCC>
+            <transportCostPerG>0.0</transportCostPerG>
+            <transportCostPerCC>0.0</transportCostPerCC>
+            <frequency>1</frequency>
+            <duration>1</duration>
+            <transportDay>WEDNESDAY</transportDay>
+            <priority>DOMESTIC</priority>
+            <firm>
+              <name>Budget Deliveries</name>
+            </firm>
+          </vehicle>
+          <mail>
+            <ID>123456</ID>
+            <weight>60.0</weight>
+            <volume>60.0</volume>
+            <origin>
+              <name>Hamilton</name>
+              <city>Hamilton</city>
+              <country>New Zealand</country>
+              <lat>-37</lat>
+              <lon>175</lon>
+            </origin>
+            <destination>
+              <name>Rotorua</name>
+              <city>Rototua</city>
+              <country>New Zealand</country>
+              <lat>-38</lat>
+              <lon>176</lon>
+            </destination>
+            <priority>DOMESTIC</priority>
+          </mail>
+          <day>MONDAY</day>
+          <profitOnRoute>0.0</profitOnRoute>
+        </events.MailEvent>
+      </list>
+    </default>
+  </events.EventList>
+</events.EventList>

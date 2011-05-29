@@ -142,5 +142,21 @@ public class KPSFrame extends JFrame {
 	public void notManager() {
 		menuBar.notManager();
 	}
+	
+	public void disableBackward() {
+		eventsPanel.disableBackward();
+	}
+	
+	public void disableForward() {
+		eventsPanel.disableForward();
+	}
+	
+	public void enableBackward() {
+		eventsPanel.enableBackward();
+	}
+	
+	public void enableForward() {
+		eventsPanel.enableForward();
+	}
 
 }

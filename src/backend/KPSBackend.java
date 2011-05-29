@@ -495,13 +495,13 @@ public class KPSBackend {
 	 * @param destination
 	 * @param priority
 	 */
-	public int sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
+	public boolean sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		System.out.println("Sending mail started");
 		ArrayList<MailEvent> mailEvents = CreateMailEvents(ID,weight,volume,origin,destination,priority);
 
 		if(mailEvents == null){
 			//Didnt find a route by air 
-			return 1 ;
+			return false ;
 		}
 		System.out.println("mailevents: " + mailEvents.size());
 		System.out.println("created arraylist of mail events");
@@ -523,10 +523,10 @@ public class KPSBackend {
 				System.out.println(event.getClass() + ", " + event.getVehicle());
 			}
 			//FOund route and created mail
-			return 0;
+			return true;
 
 		}
-		return 1;
+		return false;
 	}
 
 	/**

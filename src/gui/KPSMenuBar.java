@@ -11,9 +11,7 @@ import javax.swing.JMenuItem;
 public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	
 	private JMenu fileMenu;
-	private JMenuItem fOpen;
 	private JMenuItem fSave;
-	private JMenuItem fPrint;
 	private JMenuItem fExit;
 	
 	private JMenu actionMenu;
@@ -29,18 +27,10 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	public KPSMenuBar(ActionListener a) {
 		
 		fileMenu = new JMenu("File");
-		
-			fOpen = new JMenuItem("Open", KeyEvent.VK_O);
-			fOpen.addActionListener(a);
-			fileMenu.add(fOpen);
 			
 			fSave = new JMenuItem("Save", KeyEvent.VK_S);
 			fSave.addActionListener(a);
 			fileMenu.add(fSave);
-			
-			fPrint = new JMenuItem("Print", KeyEvent.VK_P);
-			fPrint.addActionListener(a);
-			fileMenu.add(fPrint);
 			
 			fExit = new JMenuItem("Exit", KeyEvent.VK_E);
 			fExit.addActionListener(a);

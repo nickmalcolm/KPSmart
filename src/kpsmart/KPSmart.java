@@ -41,9 +41,13 @@ public class KPSmart implements ActionListener{
 		System.out.println(e.getActionCommand());
 		
 		//FILE OPTIONS
-		if ("New".equals(e.getActionCommand())) {
-			System.out.println(kBackend.testMethod());
+		if ("Save".equals(e.getActionCommand())) {
+			kBackend.createXMLRecord();
 			return;
+		}
+		
+		if ("Exit".equals(e.getActionCommand())) {
+			System.exit(0);
 		}
 				
 		//ACTION OPTIONS
@@ -54,6 +58,7 @@ public class KPSmart implements ActionListener{
 		
 		if ("Update Costs".equals(e.getActionCommand())) {
 			kFrame.displayPanel("updatePanel");
+			return;
 		}
 		
 		if ("View Business Figures".equals(e.getActionCommand())) {
@@ -62,6 +67,7 @@ public class KPSmart implements ActionListener{
 					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
 					kBackend.getCriticalRoute(i), kBackend.getEvents(i), kBackend.calculateRevenue(i), kBackend.calculateExpenditure(i));
 			kFrame.displayPanel("eventsPanel");
+			return;
 		}
 		
 		if ("Sign in as manager".equals(e.getActionCommand())) {
@@ -82,13 +88,6 @@ public class KPSmart implements ActionListener{
 			if (kFrame.getPanel("eventsPanel")) {
 				kFrame.displayPanel("defaultPanel");
 			}
-			return;
-		}
-		
-		//HELP OPTIONS
-		if ("About KPSSmart".equals(e.getActionCommand())) {
-			JOptionPane.showMessageDialog(kFrame, "KPSSmart by\n  Nick Malcolm\n  Liam O'Connor\n " +
-					" Janella Espinas\n  Sean Arnold\n  Robert Crowe");
 			return;
 		}
 		
@@ -116,10 +115,15 @@ public class KPSmart implements ActionListener{
 					if (dist.getName().equals(o)) { origin = dist; }
 					if (dist.getName().equals(d)) { destination = dist; }
 				}
-
-				kBackend.sendMail(id, weight, volume, origin, destination, priority);
-				kFrame.resetMailPanel();
+				
+				boolean success = kBackend.sendMail(id, weight, volume, origin, destination, priority);
+				if (success) {
+					JOptionPane.showMessageDialog(kFrame, "Mail Sent Successfully", "Send Mail", JOptionPane.INFORMATION_MESSAGE);
+					kFrame.resetMailPanel();
+				}
+				else JOptionPane.showMessageDialog(kFrame, "Mail Could Not Be Sent", "Send Mail", JOptionPane.ERROR_MESSAGE);
 			}	
+			return;
 		}
 		
 		//EVENT DISPLAY UPDATE HANDLING
@@ -127,11 +131,16 @@ public class KPSmart implements ActionListener{
 			int eventTime = kFrame.returnEventTime();
 			eventTime--;
 			if (eventTime >= 0) {
-			kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
+				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
 					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
 					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), kBackend.calculateExpenditure(eventTime));
+				kFrame.enableForward();
+				if (eventTime == 0) { kFrame.disableBackward(); }
 			}
-			else eventTime = 0;
+			else {
+				eventTime = 0;
+			}
+			return;
 		}
 		
 		if (">".equals(e.getActionCommand())) {
@@ -141,8 +150,13 @@ public class KPSmart implements ActionListener{
 				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
 					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
 					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), kBackend.calculateExpenditure(eventTime));
+				kFrame.enableBackward();
+				if (eventTime == kBackend.getNumberOfEvents()) { kFrame.disableForward(); }
 			}
-			else eventTime = kBackend.getNumberOfEvents();
+			else { 
+				eventTime = kBackend.getNumberOfEvents();
+			}
+			return;
 		}
 		
 		//CUSTOMER PRICE UPDATE HANDLING
@@ -168,7 +182,7 @@ public class KPSmart implements ActionListener{
 				System.out.println("UPDATE CUSTOMER SUCCESSFUL");
 				kFrame.resetUpdatePanel();
 			}
-
+			return;
 		}
 		
 		//TRANSPORT COST UPDATE HANDLING
@@ -197,7 +211,7 @@ public class KPSmart implements ActionListener{
 				System.out.println("UPDATE TRANSPORT SUCCESSFUL");
 				kFrame.resetUpdatePanel();
 			}
-
+			return;
 		}
 		
 		//DISCONTINUE TRANSPORT HANDLING
@@ -221,17 +235,20 @@ public class KPSmart implements ActionListener{
 				System.out.println("DISCONTINUE TRANSPORT SUCCESSFUL");
 				
 			}
-			
+			return;			
 		}
 		
 		//CANCEL BUTTON HANDLING
 		if ("Cancel".equals(e.getActionCommand())) {
 			kFrame.resetAll();
+			return;
 		}
 		
-		//EXit BUTTON HANDLING
-		if ("Exit".equals(e.getActionCommand())) {
-			System.exit(0);
+		//HELP OPTIONS
+		if ("About KPSSmart".equals(e.getActionCommand())) {
+			JOptionPane.showMessageDialog(kFrame, "KPSSmart by\n  Nick Malcolm\n  Liam O'Connor\n " +
+					" Janella Espinas\n  Sean Arnold\n  Robert Crowe");
+			return;
 		}
 	}
 }
