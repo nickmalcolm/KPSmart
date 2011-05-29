@@ -73,6 +73,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		buttons.add(backward);
 		buttons.add(Box.createRigidArea(new Dimension(100, 0)));
 		buttons.add(forward);
+		forward.setEnabled(false);
 		
 		Box allEvents = new Box(BoxLayout.Y_AXIS);
 		allEvents.add(displayedEvents);
@@ -257,6 +258,22 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 	
 	public void setEventTime(int eventTime) {
 		this.eventTime = eventTime;
+	}
+	
+	public void disableBackward() {
+		backward.setEnabled(false);
+	}
+	
+	public void disableForward() {
+		forward.setEnabled(false);
+	}
+	
+	public void enableBackward() {
+		backward.setEnabled(true);
+	}
+	
+	public void enableForward() {
+		forward.setEnabled(true);
 	}
 
 	public void reset() {}

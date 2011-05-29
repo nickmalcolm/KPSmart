@@ -17,8 +17,8 @@
     <vehicles>
       <routes.Vehicle>
         <ID>1</ID>
-        <customerCostPerG>0.25</customerCostPerG>
-        <customerCostPerCC>0.5</customerCostPerCC>
+        <customerCostPerG>20.0</customerCostPerG>
+        <customerCostPerCC>20.0</customerCostPerCC>
         <transportCostPerG>0.0</transportCostPerG>
         <transportCostPerCC>0.0</transportCostPerCC>
         <frequency>1</frequency>
