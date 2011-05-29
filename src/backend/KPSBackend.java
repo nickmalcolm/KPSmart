@@ -194,7 +194,7 @@ public class KPSBackend {
 
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -243,7 +243,7 @@ public class KPSBackend {
 
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -273,7 +273,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 
@@ -322,7 +322,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -365,7 +365,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -378,7 +378,7 @@ public class KPSBackend {
 				PrioritisedRoute pRoute = new PrioritisedRoute();
 				pRoute.setRoute(route);
 				pRoute.setPriority(priority);
-				double vol = 0.0;
+				double vol = 0;
 				// loop through events and find all mail corresponding to correct vehicle
 				for (Event event : displayedEvents){
 					if (event instanceof MailEvent){
@@ -408,7 +408,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -450,7 +450,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -631,7 +631,7 @@ public class KPSBackend {
 	public List<Event> getEvents(int eventTime){
 		// get list of events
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
+			eventTime = events.getSize() - 1;
 		else if (eventTime < 0)
 			eventTime = 0;
 
@@ -706,6 +706,13 @@ public class KPSBackend {
 		return null;
 	}
 
+
+
+
+
+
+
+
 	//Total cost of a piece of mail.
 	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
@@ -715,6 +722,8 @@ public class KPSBackend {
 		double cost = goalNode.getTotalPathCost();
 		return cost;
 	}
+
+
 
 	//Creates mail eveents for travel between 2 node, connected or unconnected
 	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
