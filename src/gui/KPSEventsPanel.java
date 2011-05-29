@@ -215,7 +215,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 			for (PrioritisedRoute wR : weightOfMail.keySet()) 
 				if (wR.equals(r))
 					weightR = wR;
-			mailString += "Weight of mail: " + weightOfMail.get(weightR) + "g\n\n";
+			mailString += "Weight of mail: " + weightOfMail.get(weightR) + "g\n";
 			
 			for (PrioritisedRoute vR : volumeOfMail.keySet()) 
 				if (vR.equals(r))
