@@ -194,7 +194,7 @@ public class KPSBackend {
 
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -243,7 +243,7 @@ public class KPSBackend {
 
 		// select the events within an appropriate timeframe
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -273,7 +273,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 
@@ -322,7 +322,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -365,7 +365,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -408,7 +408,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -450,7 +450,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 		List<Event> displayedEvents = events.getList().subList(0, eventTime);
@@ -631,7 +631,7 @@ public class KPSBackend {
 	public List<Event> getEvents(int eventTime){
 		// get list of events
 		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize() - 1;
+			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
 
