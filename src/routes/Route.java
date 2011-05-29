@@ -91,7 +91,10 @@ public class Route {
 		if (!(obj instanceof Route))
 			return false;
 		Route other = (Route) obj;
-		if (this.d1.equals(other.getD1()) && this.d2.equals(other.getD2())){
+		if (this.d1.getName().equals(other.getD1().getName()) && this.d2.getName().equals(other.getD2().getName())){
+			return true;
+		}
+		else if (this.d1.getName().equals(other.getD2().getName()) && this.d2.getName().equals(other.getD1().getName())){
 			return true;
 		}
 		return false;
