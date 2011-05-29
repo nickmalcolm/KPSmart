@@ -29,11 +29,6 @@ public class TransportUpdateEvent extends Event {
 	 * @param origin - the DistributionCentre from which the transport departs
 	 * @param destination - the DistributionCentre at which the transport arrives
 	 */
-	
-	
-	
-	
-	
 	public TransportUpdateEvent(Vehicle vehicle, double costPerCC, double costPerG,
 			int frequency, int durationInMinutes, Date timestamp,
 			DistributionCentre origin, DistributionCentre destination) {

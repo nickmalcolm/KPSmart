@@ -97,13 +97,15 @@ public class KPSBackend {
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
 			// TODO REMOVE DUMMY EVENTS.
-			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
-			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
-			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
+			Event event1 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 1, 1);
+			Event event2 = new TransportUpdateEvent(routes.get(0).getVehicles().get(0), 1000, 1000, 5, 3, currentDate, routes.get(0).getD1(), routes.get(0).getD2());
+			Event event3 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
+			Event event4 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(122222, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
 			
 			events.add(event1);
 			events.add(event2);
 			events.add(event3);
+			events.add(event4);
 			// END TODO
 		}catch(Exception e){
 			System.out.println("Exception!: " +e+"\n ");
@@ -600,6 +602,10 @@ public class KPSBackend {
 	}
 
 	public List<Event> getEvents(int eventTime){
+		if (events.getSize() == 0){
+			return new ArrayList<Event>();
+		}
+		
 		// get list of events
 		if (eventTime > events.getSize())
 			eventTime = events.getSize();
