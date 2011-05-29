@@ -193,11 +193,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		// select the events within an appropriate timeframe
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -242,11 +238,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 
 		// select the events within an appropriate timeframe
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -272,12 +264,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateDeliveryTimes(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -321,11 +308,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(int eventTime){
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -364,11 +347,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -407,11 +386,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -449,11 +424,7 @@ public class KPSBackend {
 	public Double calculateExpenditure(int eventTime){
 		Double sum = 0.0;
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -630,7 +601,7 @@ public class KPSBackend {
 
 	public List<Event> getEvents(int eventTime){
 		// get list of events
-		if (eventTime > events.getSize() - 1)
+		if (eventTime > events.getSize())
 			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;

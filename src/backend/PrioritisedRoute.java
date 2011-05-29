@@ -34,6 +34,6 @@ public class PrioritisedRoute {
 	
 	@Override
 	public String toString(){
-		return route.getD1().getName() + " - " + route.getD2().getName() + " (" + priority + ")";
+		return route.getD1().getName() + " - " + route.getD2().getName() + "\n(" + priority + ")";
 	}
 }
