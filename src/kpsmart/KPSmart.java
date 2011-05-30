@@ -6,6 +6,7 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import javax.swing.JTextField;
 
 import priority.Priority;
 import routes.DistributionCentre;
+import routes.Firm;
 
 import gui.*;
 import backend.*;
@@ -23,13 +25,15 @@ public class KPSmart implements ActionListener{
 	KPSBackend kBackend;
 	KPSFrame kFrame;
 	JPasswordField kPasswordField;
+	boolean managerMode;
 	
 	public KPSmart() {
 	
 		kBackend = new KPSBackend();
 		kBackend.parseXMLRecord();
-		kFrame = new KPSFrame(this, kBackend.getDistributionCentres());
+		kFrame = new KPSFrame(this, kBackend.getDistributionCentres(), kBackend.findFirms());
 		kPasswordField = new JPasswordField(10);
+		managerMode = false;
 		//KPSpasswordField.setActionCommand("OK");
 		//KPSpasswordField.addActionListener(this);
 	
@@ -39,25 +43,43 @@ public class KPSmart implements ActionListener{
 		System.out.println(e.getActionCommand());
 		
 		//FILE OPTIONS
-		if ("New".equals(e.getActionCommand())) {
-			System.out.println(kBackend.testMethod());
+		if ("Save".equals(e.getActionCommand())) {
+			kBackend.createXMLRecord();
 			return;
+		}
+		
+		if ("Exit".equals(e.getActionCommand())) {
+			System.exit(0);
 		}
 				
 		//ACTION OPTIONS
 		if ("Send Mail".equals(e.getActionCommand())) {
-			//JOptionPane.showMessageDialog(kFrame, "Theoretically, you are sending new mail.");
-			
-			//prompt for data
-			
-			//create and send
 			kFrame.displayPanel("mailPanel");
-			//kBackend.sendMail(12345, 0, 0, new DistributionCentre("Christchurch", "Christchurch", "New Zealand", 20, 20), new DistributionCentre("Auckland", "Auckland", "New Zealand", 60, 10), Priority.DOMESTIC);
+			return;
+		}
+		
+		if ("Update Costs".equals(e.getActionCommand())) {
+			kFrame.displayPanel("updatePanel");
 			return;
 		}
 		
 		if ("View Business Figures".equals(e.getActionCommand())) {
+			if (kFrame.getPanel("eventsPanel")) { return; }
+			int i = kBackend.getNumberOfEvents();
+			kFrame.populateEvents(i, kBackend.calculateDeliveryTimes(i), kBackend.calculateAmountOfMail(i),
+					kBackend.calculateTotalWeightOfMail(i), kBackend.calculateTotalVolumeOfMail(i),
+					kBackend.getCriticalRoute(i), kBackend.getEvents(i), kBackend.calculateRevenue(i), 
+					kBackend.calculateExpenditure(i), kBackend.getNumberOfEvents());
 			kFrame.displayPanel("eventsPanel");
+			if (managerMode) {
+				kFrame.enableBackward();
+				kFrame.disableForward();
+			}
+			else {
+				kFrame.disableBackward();
+				kFrame.disableForward();
+			}
+			return;
 		}
 		
 		if ("Sign in as manager".equals(e.getActionCommand())) {
@@ -67,33 +89,32 @@ public class KPSmart implements ActionListener{
 			String pass = String.valueOf(kPasswordField.getPassword());
 			if(kBackend.authenticateManager(pass)) {
 				kFrame.manager();
+				managerMode = true;
+				kFrame.enableBackward();
+				kFrame.disableForward();
 				System.out.println("MANAGER MODE");
 				return;
+			}
+			else {
+				JOptionPane.showMessageDialog(kFrame, "Uh, uh, uh! You didn't say the magic word!", "Incorrect Password", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}
 		
 		if ("Sign out as manager".equals(e.getActionCommand())) {
 			kFrame.notManager();
-			if ("eventsPanel".equals(kFrame.getPanel())) {
-				kFrame.displayPanel("defaultPanel");
-			}
+			managerMode = false;
+			kFrame.disableBackward();
+			kFrame.disableForward();
 			return;
 		}
 		
-		//HELP OPTIONS
-		if ("About KPSSmart".equals(e.getActionCommand())) {
-			JOptionPane.showMessageDialog(kFrame, "KPSSmart by\n  Nick Malcolm\n  Liam O'Connor\n " +
-					" Janella Espinas\n  Sean Arnold\n  Robert Crowe");
-			return;
-		}
-		
-		//OK BUTTON HANDLING
-		if ("OK".equals(e.getActionCommand())) {
-			System.out.println(kFrame.getPanel()); //For testing
+		//SEND MAIL HANDLING
+		if ("Send".equals(e.getActionCommand())) {
 			
-			//MAIL PANEL
-			if ("mailPanel".equals(kFrame.getPanel())) {
+			//Check for mail panel
+			if (kFrame.getPanel("mailPanel")) {
+
 				ArrayList<Object> info = kFrame.returnMailPanelInfo();
 				for (Object o : info) {
 					System.out.println(String.valueOf(o));
@@ -112,14 +133,142 @@ public class KPSmart implements ActionListener{
 					if (dist.getName().equals(o)) { origin = dist; }
 					if (dist.getName().equals(d)) { destination = dist; }
 				}
-				kBackend.sendMail(id, weight, volume, origin, destination, priority);
-				kFrame.resetMailPanel();
-			}		
+				
+				boolean success = kBackend.sendMail(id, weight, volume, origin, destination, priority);
+				if (success) {
+					JOptionPane.showMessageDialog(kFrame, "Mail Sent Successfully", "Send Mail", JOptionPane.INFORMATION_MESSAGE);
+					kFrame.resetMailPanel();
+				}
+				else JOptionPane.showMessageDialog(kFrame, "Mail Could Not Be Sent: No Route At That Priority Exists", "Send Mail", JOptionPane.ERROR_MESSAGE);
+			}	
+			return;
+		}
+		
+		//EVENT DISPLAY UPDATE HANDLING
+		if ("<".equals(e.getActionCommand())) {
+			int eventTime = kFrame.returnEventTime();
+			eventTime--;
+			if (eventTime >= 0) {
+				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
+					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
+					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), 
+					kBackend.calculateExpenditure(eventTime), kBackend.getNumberOfEvents());
+				kFrame.enableForward();
+				if (eventTime == 0) { kFrame.disableBackward(); }
+			}
+			else {
+				eventTime = 0;
+			}
+			return;
+		}
+		
+		if (">".equals(e.getActionCommand())) {
+			int eventTime = kFrame.returnEventTime();
+			eventTime++;
+			if (eventTime <= kBackend.getNumberOfEvents()) {
+				kFrame.populateEvents(eventTime, kBackend.calculateDeliveryTimes(eventTime), kBackend.calculateAmountOfMail(eventTime),
+					kBackend.calculateTotalWeightOfMail(eventTime), kBackend.calculateTotalVolumeOfMail(eventTime),
+					kBackend.getCriticalRoute(eventTime), kBackend.getEvents(eventTime), kBackend.calculateRevenue(eventTime), 
+					kBackend.calculateExpenditure(eventTime), kBackend.getNumberOfEvents());
+				kFrame.enableBackward();
+				if (eventTime == kBackend.getNumberOfEvents()) { kFrame.disableForward(); }
+			}
+			else { 
+				eventTime = kBackend.getNumberOfEvents();
+			}
+			return;
+		}
+		
+		//CUSTOMER PRICE UPDATE HANDLING
+		if ("Update Customer Cost".equals(e.getActionCommand())) {
+			ArrayList info = kFrame.returnCustomerPriceUpdateInfo();
+			if (info != null) {
+				int i = 0;
+				DistributionCentre origin = null;
+				DistributionCentre destination = null;
+				String o = String.valueOf(info.get(i++));
+				String d = String.valueOf(info.get(i++));
+				Firm firm = new Firm((String)info.get(i++));
+				Priority priority = (Priority)info.get(i++);
+				double customerPriceCC = Double.valueOf(String.valueOf(info.get(i++)));
+				double customerPriceG = Double.valueOf(String.valueOf(info.get(i)));
+				
+				for (DistributionCentre dist : kBackend.getDistributionCentres()) {
+					if (dist.getName().equals(o)) { origin = dist; }
+					if (dist.getName().equals(d)) { destination = dist; }
+				}
+				
+				kBackend.updatePrice(origin, destination, customerPriceG, customerPriceCC, priority, firm);
+				JOptionPane.showMessageDialog(kFrame, "Customer Price Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
+				kFrame.resetUpdatePanel();
+			}
+			return;
+		}
+		
+		//TRANSPORT COST UPDATE HANDLING
+		if ("Update Transport Cost".equals(e.getActionCommand())) {
+			ArrayList info = kFrame.returnTransportCostUpdateInfo();
+			if (info != null) {
+				int i = 0;
+				DistributionCentre origin = null;
+				DistributionCentre destination = null;
+				String o = String.valueOf(info.get(i++));
+				String d = String.valueOf(info.get(i++));
+				Firm firm = new Firm((String)info.get(i++));
+				Priority priority = (Priority)info.get(i++);
+				double transportPriceCC = Double.valueOf(String.valueOf(info.get(i++)));
+				double transportPriceG = Double.valueOf(String.valueOf(info.get(i++)));
+				int frequency = Integer.valueOf(String.valueOf(info.get(i++)));;
+				int duration = Integer.valueOf(String.valueOf(info.get(i++)));;;
+				Day day = (Day)info.get(i);
+				
+				for (DistributionCentre dist : kBackend.getDistributionCentres()) {
+					if (dist.getName().equals(o)) { origin = dist; }
+					if (dist.getName().equals(d)) { destination = dist; }
+				}
+				
+				kBackend.updateTransport(origin, destination, transportPriceG, transportPriceCC, frequency, duration, day, priority, firm);
+				JOptionPane.showMessageDialog(kFrame, "Transport Cost Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);				kFrame.resetUpdatePanel();
+			}
+			return;
+		}
+		
+		//DISCONTINUE TRANSPORT HANDLING
+		if ("Discontinue Transport".equals(e.getActionCommand())) {
+			ArrayList info = kFrame.returnDiscontinueTransportInfo();
+			if (info != null) {
+				int i = 0;
+				DistributionCentre origin = null;
+				DistributionCentre destination = null;
+				String o = String.valueOf(info.get(i++));
+				String d = String.valueOf(info.get(i++));
+				Firm firm = new Firm((String)info.get(i++));
+				Priority priority = (Priority)info.get(i++);
+				
+				for (DistributionCentre dist : kBackend.getDistributionCentres()) {
+					if (dist.getName().equals(o)) { origin = dist; }
+					if (dist.getName().equals(d)) { destination = dist; }
+				}
+				
+				kBackend.discontinueTransport(origin, destination, priority, firm);
+				JOptionPane.showMessageDialog(kFrame, "Discontinue Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
+				kFrame.resetUpdatePanel();
+				
+			}
+			return;			
 		}
 		
 		//CANCEL BUTTON HANDLING
 		if ("Cancel".equals(e.getActionCommand())) {
 			kFrame.resetAll();
+			return;
+		}
+		
+		//HELP OPTIONS
+		if ("About KPSSmart".equals(e.getActionCommand())) {
+			JOptionPane.showMessageDialog(kFrame, "KPSSmart by\n  Nick Malcolm\n  Liam O'Connor\n " +
+					" Janella Espinas\n  Sean Arnold\n  Robert Crowe");
+			return;
 		}
 	}
 }

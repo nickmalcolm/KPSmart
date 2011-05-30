@@ -18,8 +18,8 @@ public class Mail {
 	
 	private int ID;
 	
-	private double weight;
-	private double volume;
+	private double weight = 0;
+	private double volume = 0;
 	
 	private DistributionCentre origin;
 	private DistributionCentre destination;
@@ -67,6 +67,17 @@ public class Mail {
 	}
 	public void setEvents(ArrayList<MailEvent> m) {
 		events = m;
+	}
+
+	public String displayString() {
+		String str = "Mail: \n"+
+					"\tID: "+ID+"\n"+
+					"\tWeight: "+weight+"g\n"+
+					"\tVolume: "+volume+"CC\n"+
+					"\tOrigin: "+origin.displayString()+"\n"+
+					"\tDestination: "+destination.displayString()+"\n"+
+					"\tPriority: "+priority;
+		return str;
 	}
 	
 

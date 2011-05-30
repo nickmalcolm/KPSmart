@@ -29,15 +29,14 @@ public class TransportUpdateEvent extends Event {
 	 * @param origin - the DistributionCentre from which the transport departs
 	 * @param destination - the DistributionCentre at which the transport arrives
 	 */
-	public TransportUpdateEvent(Vehicle vehicle, Date timestamp, double costPerCC, double costPerG,
-			int frequency, int durationInMinutes, Day day,
+	public TransportUpdateEvent(Vehicle vehicle, double costPerCC, double costPerG,
+			int frequency, int durationInMinutes, Date timestamp,
 			DistributionCentre origin, DistributionCentre destination) {
 		super(vehicle, timestamp);
 		this.costPerCC = costPerCC;
 		this.costPerG = costPerG;
 		this.frequency = frequency;
 		this.durationInMinutes = durationInMinutes;
-		this.day = day;
 		this.origin = origin;
 		this.destination = destination;
 	}
@@ -78,5 +77,26 @@ public class TransportUpdateEvent extends Event {
 	public DistributionCentre getDestination() {
 		return destination;
 	}
+
+	public Date getDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String displayString() {
+		String str = "Update Transport Event: \n" +
+				"\tVehicle: "+super.getVehicle()+"\n"+
+				"\tCost per CC: "+costPerCC+"\n"+
+				"\tCost per g: "+costPerG+"\n"+
+				"\tFrequency: "+frequency+"\n"+
+				"\tDuration: "+durationInMinutes+"min \n"+
+				"\tOrigin: "+origin.displayString()+"\n"+
+				"\tDestination: "+destination.displayString()+"\n"
+				;
+		
+		return str;
+	}
+
+
 
 }

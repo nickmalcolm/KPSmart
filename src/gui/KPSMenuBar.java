@@ -11,13 +11,12 @@ import javax.swing.JMenuItem;
 public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	
 	private JMenu fileMenu;
-	private JMenuItem fOpen;
 	private JMenuItem fSave;
-	private JMenuItem fPrint;
 	private JMenuItem fExit;
 	
 	private JMenu actionMenu;
 	private JMenuItem aSend;
+	private JMenuItem aUpdateCosts;
 	private JMenuItem aBusinessFigures;
 	private JMenuItem aAuthenticate;
 	private JMenuItem aDeauthenticate;
@@ -28,18 +27,10 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	public KPSMenuBar(ActionListener a) {
 		
 		fileMenu = new JMenu("File");
-		
-			fOpen = new JMenuItem("Open", KeyEvent.VK_O);
-			fOpen.addActionListener(a);
-			fileMenu.add(fOpen);
 			
 			fSave = new JMenuItem("Save", KeyEvent.VK_S);
 			fSave.addActionListener(a);
 			fileMenu.add(fSave);
-			
-			fPrint = new JMenuItem("Print", KeyEvent.VK_P);
-			fPrint.addActionListener(a);
-			fileMenu.add(fPrint);
 			
 			fExit = new JMenuItem("Exit", KeyEvent.VK_E);
 			fExit.addActionListener(a);
@@ -50,6 +41,10 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 			aSend = new JMenuItem("Send Mail", KeyEvent.VK_M);
 			aSend.addActionListener(a);
 			actionMenu.add(aSend);
+			
+			aUpdateCosts = new JMenuItem("Update Costs", KeyEvent.VK_U);
+			aUpdateCosts.addActionListener(a);
+			actionMenu.add(aUpdateCosts);
 			
 			aBusinessFigures = new JMenuItem("View Business Figures", KeyEvent.VK_V);
 			aBusinessFigures.addActionListener(a);
@@ -79,13 +74,13 @@ public class KPSMenuBar extends JMenuBar { //implements ActionListener{
 	public void manager() {
 		aAuthenticate.setEnabled(false);
 		aDeauthenticate.setEnabled(true);
-		aBusinessFigures.setEnabled(true);
+		//aBusinessFigures.setEnabled(true);
 	}
 	
 	public void notManager() {
 		aAuthenticate.setEnabled(true);
 		aDeauthenticate.setEnabled(false);
-		aBusinessFigures.setEnabled(false);
+		//aBusinessFigures.setEnabled(false);
 	}
 
 }

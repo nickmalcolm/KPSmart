@@ -3,6 +3,8 @@ package routes;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.PrioritisedRoute;
+
 import priority.Priority;
 
 public class Route {
@@ -24,7 +26,9 @@ public class Route {
 	}
 	
 	public void discontinueTransport(int ID) {
-		
+		if (getVehicle(ID) != null){
+			vehicles.remove(getVehicle(ID));
+		}
 	}
 	
 	public Vehicle getVehicle(int ID) {
@@ -48,8 +52,13 @@ public class Route {
 	}
 	
 	public List<Vehicle> getVehiclesByPriority(Priority priority){
-		//TODO
-		return null;
+		List<Vehicle> result = new ArrayList<Vehicle>();
+		for (Vehicle vehicle : vehicles){
+			if (vehicle.getPriority() == priority){
+				result.add(vehicle);
+			}
+		}
+		return result;
 	}
 
 	public DistributionCentre getD1() {
@@ -77,6 +86,18 @@ public class Route {
 		
 	}
 	
-
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Route))
+			return false;
+		Route other = (Route) obj;
+		if (this.d1.getName().equals(other.getD1().getName()) && this.d2.getName().equals(other.getD2().getName())){
+			return true;
+		}
+		else if (this.d1.getName().equals(other.getD2().getName()) && this.d2.getName().equals(other.getD1().getName())){
+			return true;
+		}
+		return false;
+	}
 	
 }

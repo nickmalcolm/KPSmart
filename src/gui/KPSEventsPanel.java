@@ -4,12 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
+
+import backend.PrioritisedRoute;
+import events.Event;
 
 import javax.swing.*;
+
+import priority.Priority;
 
 public class KPSEventsPanel extends JPanel implements KPSPanel{
 	
 	private String testString = "Your mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\nYour mum\n";
+	private int eventTime;
 	
 	//Events panel
 	private JPanel eventsPanel;
@@ -39,7 +49,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 	private JScrollPane criticalRoutes;
 	
 	
-	public KPSEventsPanel() {
+	public KPSEventsPanel(ActionListener actionlistener) {
 		super();
 		this.setPreferredSize(new Dimension(600,600));
 		this.setBackground(Color.GRAY);
@@ -59,11 +69,14 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		totalEventsField.setPreferredSize(new Dimension(340, 25));
 		
 		forward = new JButton(">");
+		forward.addActionListener(actionlistener);
 		backward = new JButton("<");
+		backward.addActionListener(actionlistener);
 		Box buttons = new Box(BoxLayout.X_AXIS);
 		buttons.add(backward);
 		buttons.add(Box.createRigidArea(new Dimension(100, 0)));
 		buttons.add(forward);
+		forward.setEnabled(false);
 		
 		Box allEvents = new Box(BoxLayout.Y_AXIS);
 		allEvents.add(displayedEvents);
@@ -122,7 +135,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		amountOfMail.setAlignmentX(LEFT_ALIGNMENT);
 		businessTriplesBox.add(amountOfMailLabel);
 		businessTriplesBox.add(amountOfMail);
-		//businessTriplesBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		Box completeBusiness = new Box(BoxLayout.Y_AXIS);
 		completeBusiness.add(businessBox);
@@ -130,8 +142,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		businessPanel.add(completeBusiness);
 		
 		//Critical routes
-		//criticalPanel = new JPanel();
-		//criticalPanel.setPreferredSize(new Dimension(235, 220));
 		Box criticalBox = new Box(BoxLayout.Y_AXIS);
 		criticalBox.setPreferredSize(new Dimension(225, 195));
 		
@@ -142,7 +152,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		criticalRoutesField.setEditable(false);
 		criticalRoutesField.setText(testString);
 		criticalRoutes = new JScrollPane(criticalRoutesField);
-		//criticalRoutes.setPreferredSize(new Dimension(225, 380));
 		criticalRoutes.setAlignmentX(LEFT_ALIGNMENT);
 		
 		criticalBox.add(criticalRoutesLabel);
@@ -154,7 +163,6 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		leftSide.add(eventsPanel);
 		Box rightSide = new Box(BoxLayout.Y_AXIS);
 		rightSide.add(businessPanel);
-		//rightSide.add(criticalPanel);
 		Box completeBox = new Box(BoxLayout.X_AXIS);
 		completeBox.add(leftSide);
 		completeBox.add(Box.createRigidArea(new Dimension(5, 0)));
@@ -163,11 +171,126 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		
 		this.add(completeBox);
 		
-		
-		
+		eventTime = 0;
+			
 		//Business Figures
 		
 		//Critical routes
+	}
+	
+	public void populate(int currentNumberOfEvents, Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
+			List<Event> events, double revenue, double expenditure, int totalNumberOfEvents) {
+		
+		eventTime = currentNumberOfEvents;
+		
+		revenueField.setText(String.valueOf(revenue));
+		expenditureField.setText(String.valueOf(expenditure));
+		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString += e.displayString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
+		
+		String totalEventsString = currentNumberOfEvents + "/" + totalNumberOfEvents; 
+		totalEventsField.setText(totalEventsString);
+		totalEventsField.setMargin(new Insets(1, 150, 1, 1));
+		
+		String deliveryString = "";
+		for (PrioritisedRoute r : deliveryTimes.keySet()) {
+			deliveryString += r.toString() + "\n";
+			deliveryString += deliveryTimes.get(r) + " hours\n\n";
+		}
+		averageDeliveryField.setText(deliveryString);
+		
+		String mailString = "";
+		for (PrioritisedRoute r : amountOfMail.keySet()) {
+			PrioritisedRoute weightR = null;
+			PrioritisedRoute volumeR = null;
+			mailString += r.toString() + "\n";
+			mailString += "Amount of mail: " + amountOfMail.get(r) + "\n";
+
+			for (PrioritisedRoute wR : weightOfMail.keySet()) 
+				if (wR.equals(r))
+					weightR = wR;
+			mailString += "Weight of mail: " + weightOfMail.get(weightR) + "g\n";
+			
+			for (PrioritisedRoute vR : volumeOfMail.keySet()) 
+				if (vR.equals(r))
+					volumeR = vR;
+			mailString += "Volume of mail: " + volumeOfMail.get(volumeR) + "cc\n\n";
+		}
+		amountOfMailField.setText(mailString);
+		
+		String criticalString = "";
+		for (PrioritisedRoute r : criticalRoutes.keySet()) {
+			criticalString += r.toString() + "\n";
+			criticalString += "-$" + criticalRoutes.get(r) + "\n";
+		}
+		criticalRoutesField.setText(criticalString);
+		
+	}
+	
+	public void updateInfo(Map<PrioritisedRoute, Double> deliveryTimes, 
+			Map<PrioritisedRoute, Integer> amountOfMail, Map<PrioritisedRoute, Double> weightOfMail,
+			Map<PrioritisedRoute, Double> volumeOfMail, Map<PrioritisedRoute, Double> criticalRoutes,
+			List<Event> events, double revenue, double expenditure) {
+		
+		String eventsString = "";
+		for (Event e : events) {
+			eventsString += e.toString() + "\n";
+		}
+		displayedEventsField.setText(eventsString);
+		
+		String deliveryString = "";
+		for (PrioritisedRoute r : deliveryTimes.keySet()) {
+			deliveryString += r.toString() + "\n";
+			deliveryString += deliveryTimes.get(r) + " hours\n\n";
+		}
+		averageDeliveryField.setText(deliveryString);
+		
+		String mailString = "";
+		for (PrioritisedRoute r : amountOfMail.keySet()) {
+			mailString += r.toString() + "\n";
+			mailString += "Amount of mail: " + amountOfMail.get(r) + "\n";
+			mailString += "Weight of mail: " + weightOfMail.get(r) + "g\n";
+			mailString += "Volume of mail: " + volumeOfMail.get(r) + "cc\n\n";
+		}
+		amountOfMailField.setText(mailString);
+		
+		String criticalString = "";
+		for (PrioritisedRoute r : criticalRoutes.keySet()) {
+			criticalString += r.toString() + "\n";
+			criticalString += "-$" + criticalRoutes.get(r) + "\n\n";
+		}
+		criticalRoutesField.setText(criticalString);
+		
+	}
+	
+	public int returnEventTime() {
+		return eventTime;
+	}
+	
+	public void setEventTime(int eventTime) {
+		this.eventTime = eventTime;
+	}
+	
+	public void disableBackward() {
+		backward.setEnabled(false);
+	}
+	
+	public void disableForward() {
+		forward.setEnabled(false);
+	}
+	
+	public void enableBackward() {
+		backward.setEnabled(true);
+	}
+	
+	public void enableForward() {
+		forward.setEnabled(true);
 	}
 
 	public void reset() {}

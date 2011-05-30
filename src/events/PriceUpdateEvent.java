@@ -2,6 +2,8 @@ package events;
 
 import java.util.Date;
 
+import backend.Day;
+
 import routes.Vehicle;
 
 public class PriceUpdateEvent extends Event {
@@ -26,7 +28,20 @@ public class PriceUpdateEvent extends Event {
 	public double getCostPerG() {
 		return costPerG;
 	}
+
+	public Date getDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
-	
+	public String displayString() {
+		String str = "Price Update Event: \n" +
+				"\tVehicle: "+super.getVehicle()+"\n"+
+				"\tPrice per CC: "+costPerCC+"\n"+
+				"\tPrice per G: "+costPerG+"\n"
+				;
+		
+		return str;
+	}
 
 }
