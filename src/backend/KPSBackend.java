@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -480,7 +481,7 @@ public class KPSBackend {
 	public boolean sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		System.out.println("Sending mail started");
 		ArrayList<MailEvent> mailEvents = CreateMailEvents(ID,weight,volume,origin,destination,priority);
-
+		
 		if(mailEvents == null){
 			//Didnt find a route by air 
 			return false ;
@@ -488,6 +489,7 @@ public class KPSBackend {
 		System.out.println("mailevents: " + mailEvents.size());
 		System.out.println("created arraylist of mail events");
 
+		Collections.reverse(mailEvents);
 		if (mailEvents.size() > 0){
 			//Make a piece of mail
 			Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
