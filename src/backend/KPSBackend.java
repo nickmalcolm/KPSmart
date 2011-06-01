@@ -62,59 +62,72 @@ public class KPSBackend {
 
 	//Parses the XML record(s) and retains their contents in memory
 	@SuppressWarnings("unchecked")
-	public void parseXMLRecord() {
+	/**
+	 * Loads the XML files from the external path and loads the data into the program.
+	 * The XStream library is used to read in the XML and create the objects using the data to 
+	 * use later.
+	 * @return true The XML has been parsed in correctly without errors
+	 * @return false The XML parse has encountered an error
+	 */
+	public boolean parseXMLRecord() {
 		xstream = new XStream();
+		xstream.setMode(XStream.NO_REFERENCES);
+		String file = "";
 		try{
 			//Reads in all the XML files from disk
 			String routeXMLInput;
 			String mailXMLinput;
 			String eventsXMLInput;
 			String distCentreXMLInput;
-
-			File fileToRead = new File("routesXML.xml");
+			
+			//Reading routes file
+			file = "routesXML.xml";
+			File fileToRead = new File(file);
 			routeXMLInput = readFileToString(fileToRead);
 
-			fileToRead = new File("mailXML.xml");
+			//Reading mail file
+			file = "mailXML.xml";
+			fileToRead = new File(file);
 			mailXMLinput = readFileToString(fileToRead);
 
-			fileToRead = new File("eventsXML.xml");
-			eventsXMLInput = readFileToString(fileToRead);
+			//Reading events file
+			//file = "eventsXML.xml";
+			//fileToRead = new File(file);
+			//eventsXMLInput = readFileToString(fileToRead);
 
-			fileToRead = new File("distCentreXML.xml");
+			//Reading distribution centre file
+			file = "distCentreXML.xml";
+			fileToRead = new File(file);
 			distCentreXMLInput = readFileToString(fileToRead);
 
-			
+			//Tells XStream some pretty obvious things. (It gets confused sometimes)
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			xstream.alias("transportDay", Day.class);
 			
 			//Finally parses the files back into objects.
 			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 			allMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
-			ArrayList<Event> arrayEvents = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
-			for (Event event : arrayEvents){
-				events.add(event);
-			}
-			xstream.alias("DistributionCentre", DistributionCentre.class);
+//			ArrayList<Event> arrayEvents = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+//			for (Event event : arrayEvents){
+//				events.add(event);
+//			}
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
-			// TODO REMOVE DUMMY EVENTS.
-			Event event1 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 1, 1);
-			Event event2 = new TransportUpdateEvent(routes.get(0).getVehicles().get(0), 1000, 1000, 5, 3, currentDate, routes.get(0).getD1(), routes.get(0).getD2());
-			Event event3 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
-			Event event4 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(122222, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
-
-			events.add(event1);
-			events.add(event2);
-			events.add(event3);
-			events.add(event4);
-			// END TODO
+			return true;
 		}catch(Exception e){
+			System.out.println("-----There has been an error creating the XML files!-----");
+			System.out.println("Error loading file: "+file);			
 			System.out.println("Exception!: " +e+"\n ");
-			e.printStackTrace(); //Keep this here for debugging
+			//e.printStackTrace(); //Keep this here for debugging
+			return false;
 		}
 	}
 
-	//Method to read the disk file and put into a string.
+	/**
+	 * This reads the file from the disk, stepping through it and converting it into a string.
+	 * @param f The file that is to b e read
+	 * @return The string that has been read from the file. Null if an error has been encountered.
+	 */
 	public String readFileToString(File f){
 		if (f!=null){
 			try{
@@ -125,7 +138,7 @@ public class KPSBackend {
 				scanner.close();
 				return output;
 			}catch (Exception e) {
-				System.out.println("Error reading external file!");
+				System.out.println("Error reading external file "+f.getName()+"!");
 				return null;
 			}
 		}
@@ -133,39 +146,51 @@ public class KPSBackend {
 	}
 
 	//Creates the XML record. Returns true if record is created successfully.
+	/**
+	 * Saves the current state of the program into the external XML files.
+	 * Once saved, these XML files will be re-loaded the next time the program is run.
+	 * @return boolean Returns true if saved correctly, false if there has been an error.
+	 */
 	public boolean createXMLRecord(){
 		xstream = new XStream();
 		xstream.setMode(XStream.NO_REFERENCES);
+		FileWriter fileWriter;
+		BufferedWriter bufWriter;
+		String file = "";
 		try{
 			String routesXML = xstream.toXML(routes);
 			String mailXML = xstream.toXML(allMail);
-			String eventsXML = xstream.toXML(events);
+			String eventsXML = xstream.toXML(events.getList());
 			String distCentXMl = xstream.toXML(distributionCentres);
 
 			//Then save XML file
 			//Save routes file
-			FileWriter fileWriter = new FileWriter("routesXML.xml");
-			BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+			file = "routesXML.xml";
+			fileWriter = new FileWriter(file);
+			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(routesXML);
 			bufWriter.close();
 			fileWriter.close();
 
 			//Save mail file
-			fileWriter = new FileWriter("mailXML.xml");
+			file = "mailXML.xml";
+			fileWriter = new FileWriter(file);
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(mailXML);
 			bufWriter.close();
 			fileWriter.close();
 
 			//Save events file
-			fileWriter = new FileWriter("eventsXML.xml");
+			file = "eventsXML.xml";
+			fileWriter = new FileWriter(file);
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(eventsXML);
 			bufWriter.close();
 			fileWriter.close();
 			
 			//Save distribution Centres
-			fileWriter = new FileWriter("distCentreXML.xml");
+			file = "distCentreXML.xml";
+			fileWriter = new FileWriter(file);
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(distCentXMl);
 			bufWriter.close();
@@ -173,8 +198,10 @@ public class KPSBackend {
 
 			return true;
 		}catch (Exception e) {
-			System.out.println("Exception!: " +e+"\n ");
-			e.printStackTrace(); //Keep this here for debugging
+			System.out.println("-----There has been an error creating the XML files!-----");
+			System.out.println("Error saving file: "+file);
+			//System.out.println("Exception!: " +e+"\n ");
+			//e.printStackTrace(); //Keep this here for debugging
 			return false;
 		}
 
