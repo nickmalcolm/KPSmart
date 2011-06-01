@@ -1,170 +1,156 @@
 <list>
   <events.MailEvent>
     <vehicle>
-      <ID>8</ID>
-      <customerCostPerG>0.35</customerCostPerG>
+      <ID>12</ID>
+      <customerCostPerG>0.6</customerCostPerG>
       <customerCostPerCC>0.4</customerCostPerCC>
       <transportCostPerG>0.0</transportCostPerG>
       <transportCostPerCC>0.0</transportCostPerCC>
-      <frequency>1</frequency>
+      <frequency>2</frequency>
       <duration>1</duration>
       <transportDay>WEDNESDAY</transportDay>
-      <priority>DOMESTIC</priority>
+      <priority>INTERNATIONAL_AIR</priority>
       <firm>
-        <name>Budget Deliveries</name>
+        <name>Air Postal Express</name>
       </firm>
     </vehicle>
     <mail>
-      <ID>58280026</ID>
-      <weight>13.0</weight>
-      <volume>18.0</volume>
+      <ID>17503909</ID>
+      <weight>28.0</weight>
+      <volume>23.0</volume>
       <origin>
-        <name>Wellington</name>
-        <city>Wellington</city>
+        <name>Auckland</name>
+        <city>Auckland</city>
         <country>New Zealand</country>
-        <lat>-41</lat>
+        <lat>-36</lat>
         <lon>174</lon>
       </origin>
       <destination>
-        <name>Christchurch</name>
-        <city>Christchurch</city>
-        <country>New Zealand</country>
-        <lat>-43</lat>
-        <lon>172</lon>
+        <name>Sydney</name>
+        <city>Sydney</city>
+        <country>Australia</country>
+        <lat>-33</lat>
+        <lon>151</lon>
       </destination>
-      <priority>DOMESTIC</priority>
+      <priority>INTERNATIONAL_AIR</priority>
     </mail>
     <day>WEDNESDAY</day>
     <route>
       <d1>
-        <name>Wellington</name>
-        <city>Wellington</city>
+        <name>Auckland</name>
+        <city>Auckland</city>
         <country>New Zealand</country>
-        <lat>-41</lat>
+        <lat>-36</lat>
         <lon>174</lon>
       </d1>
       <d2>
-        <name>Christchurch</name>
-        <city>Christchurch</city>
-        <country>New Zealand</country>
-        <lat>-43</lat>
-        <lon>172</lon>
+        <name>Sydney</name>
+        <city>Sydney</city>
+        <country>Australia</country>
+        <lat>-33</lat>
+        <lon>151</lon>
       </d2>
       <vehicles>
         <routes.Vehicle>
-          <ID>8</ID>
-          <customerCostPerG>0.35</customerCostPerG>
+          <ID>12</ID>
+          <customerCostPerG>0.6</customerCostPerG>
           <customerCostPerCC>0.4</customerCostPerCC>
+          <transportCostPerG>0.0</transportCostPerG>
+          <transportCostPerCC>0.0</transportCostPerCC>
+          <frequency>2</frequency>
+          <duration>1</duration>
+          <transportDay>WEDNESDAY</transportDay>
+          <priority>INTERNATIONAL_AIR</priority>
+          <firm>
+            <name>Air Postal Express</name>
+          </firm>
+        </routes.Vehicle>
+        <routes.Vehicle>
+          <ID>13</ID>
+          <customerCostPerG>0.45</customerCostPerG>
+          <customerCostPerCC>0.45</customerCostPerCC>
           <transportCostPerG>0.0</transportCostPerG>
           <transportCostPerCC>0.0</transportCostPerCC>
           <frequency>1</frequency>
           <duration>1</duration>
-          <transportDay>WEDNESDAY</transportDay>
-          <priority>DOMESTIC</priority>
+          <transportDay>THURSDAY</transportDay>
+          <priority>INTERNATIONAL_STANDARD</priority>
           <firm>
-            <name>Budget Deliveries</name>
-          </firm>
-        </routes.Vehicle>
-        <routes.Vehicle>
-          <ID>9</ID>
-          <customerCostPerG>0.35</customerCostPerG>
-          <customerCostPerCC>0.55</customerCostPerCC>
-          <transportCostPerG>0.0</transportCostPerG>
-          <transportCostPerCC>0.0</transportCostPerCC>
-          <frequency>1</frequency>
-          <duration>2</duration>
-          <transportDay>MONDAY</transportDay>
-          <priority>DOMESTIC</priority>
-          <firm>
-            <name>Budget Deliveries</name>
+            <name>International Postal Services</name>
           </firm>
         </routes.Vehicle>
       </vehicles>
     </route>
-    <profitOnRoute>11.75</profitOnRoute>
+    <profitOnRoute>26.0</profitOnRoute>
   </events.MailEvent>
   <events.MailEvent>
     <vehicle>
-      <ID>10</ID>
-      <customerCostPerG>0.4</customerCostPerG>
-      <customerCostPerCC>0.35</customerCostPerCC>
+      <ID>7</ID>
+      <customerCostPerG>0.35</customerCostPerG>
+      <customerCostPerCC>0.55</customerCostPerCC>
       <transportCostPerG>0.0</transportCostPerG>
       <transportCostPerCC>0.0</transportCostPerCC>
       <frequency>1</frequency>
       <duration>1</duration>
-      <transportDay>SUNDAY</transportDay>
+      <transportDay>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</transportDay>
       <priority>DOMESTIC</priority>
       <firm>
         <name>NZ Couriers</name>
       </firm>
     </vehicle>
     <mail>
-      <ID>58280026</ID>
-      <weight>13.0</weight>
-      <volume>18.0</volume>
+      <ID>13211525</ID>
+      <weight>17.0</weight>
+      <volume>7.0</volume>
       <origin>
-        <name>Christchurch</name>
-        <city>Christchurch</city>
+        <name>Palmerston North</name>
+        <city>Palmerston North</city>
         <country>New Zealand</country>
-        <lat>-43</lat>
-        <lon>172</lon>
+        <lat>-40</lat>
+        <lon>175</lon>
       </origin>
       <destination>
-        <name>Dunedin</name>
-        <city>Dunedin</city>
+        <name>Wellington</name>
+        <city>Wellington</city>
         <country>New Zealand</country>
-        <lat>-45</lat>
-        <lon>170</lon>
+        <lat>-41</lat>
+        <lon>174</lon>
       </destination>
       <priority>DOMESTIC</priority>
     </mail>
-    <day>SUNDAY</day>
+    <day>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</day>
     <route>
       <d1>
-        <name>Christchurch</name>
-        <city>Christchurch</city>
+        <name>Palmerston North</name>
+        <city>Palmerston North</city>
         <country>New Zealand</country>
-        <lat>-43</lat>
-        <lon>172</lon>
+        <lat>-40</lat>
+        <lon>175</lon>
       </d1>
       <d2>
-        <name>Dunedin</name>
-        <city>Dunedin</city>
+        <name>Wellington</name>
+        <city>Wellington</city>
         <country>New Zealand</country>
-        <lat>-45</lat>
-        <lon>170</lon>
+        <lat>-41</lat>
+        <lon>174</lon>
       </d2>
       <vehicles>
         <routes.Vehicle>
-          <ID>10</ID>
-          <customerCostPerG>0.4</customerCostPerG>
-          <customerCostPerCC>0.35</customerCostPerCC>
+          <ID>7</ID>
+          <customerCostPerG>0.35</customerCostPerG>
+          <customerCostPerCC>0.55</customerCostPerCC>
           <transportCostPerG>0.0</transportCostPerG>
           <transportCostPerCC>0.0</transportCostPerCC>
           <frequency>1</frequency>
           <duration>1</duration>
-          <transportDay>SUNDAY</transportDay>
+          <transportDay>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</transportDay>
           <priority>DOMESTIC</priority>
           <firm>
             <name>NZ Couriers</name>
           </firm>
         </routes.Vehicle>
-        <routes.Vehicle>
-          <ID>11</ID>
-          <customerCostPerG>0.35</customerCostPerG>
-          <customerCostPerCC>0.4</customerCostPerCC>
-          <transportCostPerG>0.0</transportCostPerG>
-          <transportCostPerCC>0.0</transportCostPerCC>
-          <frequency>1</frequency>
-          <duration>1</duration>
-          <transportDay>SUNDAY</transportDay>
-          <priority>DOMESTIC</priority>
-          <firm>
-            <name>Budget Deliveries</name>
-          </firm>
-        </routes.Vehicle>
       </vehicles>
     </route>
-    <profitOnRoute>11.5</profitOnRoute>
+    <profitOnRoute>9.8</profitOnRoute>
   </events.MailEvent>
 </list>

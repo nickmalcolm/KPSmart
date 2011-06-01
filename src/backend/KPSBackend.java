@@ -91,9 +91,9 @@ public class KPSBackend {
 			mailXMLinput = readFileToString(fileToRead);
 
 			//Reading events file
-			//file = "eventsXML.xml";
-			//fileToRead = new File(file);
-			//eventsXMLInput = readFileToString(fileToRead);
+			file = "eventsXML.xml";
+			fileToRead = new File(file);
+			eventsXMLInput = readFileToString(fileToRead);
 
 			//Reading distribution centre file
 			file = "distCentreXML.xml";
@@ -107,10 +107,10 @@ public class KPSBackend {
 			//Finally parses the files back into objects.
 			routes = (ArrayList<Route>)xstream.fromXML(routeXMLInput);
 			allMail =(ArrayList<Mail>)xstream.fromXML(mailXMLinput);
-//			ArrayList<Event> arrayEvents = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
-//			for (Event event : arrayEvents){
-//				events.add(event);
-//			}
+			ArrayList<Event> arrayEvents = (ArrayList<Event>)xstream.fromXML(eventsXMLInput);
+			for (Event event : arrayEvents){
+				events.add(event);
+			}
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
 			return true;
