@@ -9,6 +9,13 @@ import routes.Vehicle;
 import backend.Day;
 import backend.Mail;
 
+/**
+ * A mail event represents the transportation of a piece of mail from 
+ * one location to another.
+ * 
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ */
 public class MailEvent extends Event {
 
 
@@ -17,6 +24,12 @@ public class MailEvent extends Event {
 	private Route route;
 	private double profitOnRoute = 0.0;
 	
+	/**
+	 * Creates a Mail Event
+	 * @param vehicle - the vehicle on which this piece of mail is being transported
+	 * @param day - the day on which this mail was given to the vehicle
+	 * @param mail - the mail object
+	 */
 	public MailEvent(Vehicle vehicle,Day day , Mail mail) {
 		super(vehicle, null);
 		this.mail = mail;

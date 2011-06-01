@@ -6,6 +6,14 @@ import routes.DistributionCentre;
 import routes.Vehicle;
 import backend.Day;
 
+/**
+ * A Transport Update Event records a change in a Transport's variables.
+ * In addition, the first Transport Update Event for a unique (firm, priority and route)
+ * will create a new Transport.
+ * 
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ */
 public class TransportUpdateEvent extends Event {
 	
 	private double costPerCC;

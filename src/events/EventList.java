@@ -3,6 +3,13 @@ package events;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * A handy subclass of ArrayList for events, with a filter method
+ * 
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ * @param <T>
+ */
 public class EventList<T extends Event> extends ArrayList<T>{
 	
 	private static final long serialVersionUID = 1L;
@@ -16,7 +23,7 @@ public class EventList<T extends Event> extends ArrayList<T>{
 	 * Returns a subset of this list which are only an instance
 	 * of the class specified.
 	 * @param klass - A Class object
-	 * @return
+	 * @return all the Events of that Class type in this EventList
 	 */
 	public EventList<T> showOnly(Class klass){
 		

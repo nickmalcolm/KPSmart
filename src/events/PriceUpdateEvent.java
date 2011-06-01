@@ -6,6 +6,13 @@ import backend.Day;
 
 import routes.Vehicle;
 
+/**
+ * A PriceUpdateEvent updates the price a customer pays
+ * for sending a piece of mail between two DistributionCentres.
+ * 
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ */
 public class PriceUpdateEvent extends Event {
 	
 	private double costPerCC;
