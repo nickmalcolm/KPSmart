@@ -633,10 +633,11 @@ public class KPSBackend {
 	 * @param firm	The firm the vehicle belongs to.
 	 * @param day	The day the transport is available.
 	 */
-	public void discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm) {
+	public boolean discontinueTransport(DistributionCentre origin, DistributionCentre destination, Priority priority, Firm firm) {
 		Route route = findRoute(origin, destination);
 		if (route == null)
-			return;
+			return false;
+		boolean hasDiscontinued = false;
 		// iterate through all vehicles corresponding to priority and firm
 		for (Vehicle vehicle : route.getVehiclesByPriority(priority)){
 			if (vehicle.getFirm().equals(firm)){
@@ -645,9 +646,11 @@ public class KPSBackend {
 
 				// add to event log
 				Event event = new DiscontinueTransportEvent(vehicle, currentDate, destination, destination);
-				events.add(event); 
+				events.add(event);
+				hasDiscontinued = true;
 			}
 		}
+		return hasDiscontinued;
 	}
 
 	public void getMail(int ID) {
