@@ -83,7 +83,7 @@ public class MailEvent extends Event {
 
 	public Date getDate() {
 		
-		return null;
+		return super.getTimestamp();
 	}
 	
 	public String displayString() {

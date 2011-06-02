@@ -64,7 +64,66 @@ public class BackendTests extends TestCase{
 		
 		
 	}
- 
+	
+	//delivery times
+	//Checking if right for 1st 3 dummy events
+	@Test
+	public void testDeliveryTimes(){
+		Map<PrioritisedRoute, Double> deliveryTimes = kBackend.calculateDeliveryTimes(3);
+		 
+		
+		
+	}
+	
+	//amount of mail
+	//Checking if right for 1st 3 dummy events
+	@Test
+	public void testAmountOfMail(){
+		Map<PrioritisedRoute, Integer> amountOfMail = kBackend.calculateAmountOfMail(3);
+		 for(PrioritisedRoute p : amountOfMail.keySet()){
+			 if(p.getRoute() )
+		 }
+		
+		
+	}
+	
+	//  wieght of mail
+	//Checking if right for 1st   dummy event 
+	//simple test for 1st piece of mail
+	@Test
+	public void testWeightOfMail(){
+		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalWeightOfMail(1);
+		
+		
+		double wieght = 0;
+		
+		 
+		 
+		
+	 
+	}
+	
+	
+
+	//volume of mail  
+	//Checking if right for 1st 3 dummy events
+	@Test
+	public void testVolumeOfMail(){
+		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalVolumeOfMail(3);
+	 
+		
+		
+	}
+	
+	//expenditure
+	//Checking if right for 1st 3 dummy events
+	@Test
+	public void testExpenditure(){
+		Double expenditure = kBackend.calculateExpenditure(3);
+		assertEquals(expenditure, 15.3);
+		
+		
+	}
 	
 	
 }

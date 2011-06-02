@@ -111,8 +111,8 @@
         <ID>5</ID>
         <customerCostPerG>0.25</customerCostPerG>
         <customerCostPerCC>0.5</customerCostPerCC>
-        <transportCostPerG>0.10</transportCostPerG>
-        <transportCostPerCC>0.10</transportCostPerCC>
+        <transportCostPerG>0.1</transportCostPerG>
+        <transportCostPerCC>0.1</transportCostPerCC>
         <frequency>1</frequency>
         <duration>1</duration>
         <transportDay>THURSDAY</transportDay>
@@ -203,8 +203,8 @@
         <ID>9</ID>
         <customerCostPerG>1.35</customerCostPerG>
         <customerCostPerCC>1.55</customerCostPerCC>
-        <transportCostPerG>0.50</transportCostPerG>
-        <transportCostPerCC>0.90</transportCostPerCC>
+        <transportCostPerG>0.5</transportCostPerG>
+        <transportCostPerCC>0.9</transportCostPerCC>
         <frequency>1</frequency>
         <duration>2</duration>
         <transportDay>MONDAY</transportDay>
