@@ -1,4 +1,4 @@
-package events;
+package tests;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -6,6 +6,11 @@ import java.text.ParseException;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import events.Event;
+import events.EventList;
+import events.MailEvent;
+import events.PriceUpdateEvent;
 
 import backend.Day;
 
