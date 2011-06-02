@@ -2,6 +2,7 @@ package tests;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -29,8 +30,8 @@ public class EventsTests extends TestCase{
 	EventList<Event> list;
 	
 	protected void setUp() throws ParseException{
-		old = new MailEvent(null, Day.MONDAY, null);
-		newer = new MailEvent(null, Day.TUESDAY, null);
+		old = new MailEvent(null, Day.MONDAY, null, new Date());
+		newer = new MailEvent(null, Day.TUESDAY, null, new Date());
 		p1 = new PriceUpdateEvent(null, DateFormat.getDateInstance(DateFormat.SHORT).parse("11/12/2010"), 0, 0);
 		p2 = new PriceUpdateEvent(null, DateFormat.getDateInstance(DateFormat.SHORT).parse("11/08/2010"), 0, 0);
 		list = new EventList<Event>();

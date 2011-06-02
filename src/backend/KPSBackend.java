@@ -751,7 +751,7 @@ public class KPSBackend {
 	/**
 	 * Finds the route corresponding to the origin and destination.
 	 */
-	private Route findRoute(DistributionCentre origin, DistributionCentre destination){
+	public Route findRoute(DistributionCentre origin, DistributionCentre destination){
 		for (Route route : this.routes){
 			if (route.getD1().equals(origin) && route.getD2().equals(destination))
 				return route;
@@ -806,7 +806,7 @@ public class KPSBackend {
 			Mail tempMail = new Mail(ID, weight, volume, s.getPreviousSearchNode().getCurrentDistributionCentre()
 					, s.getCurrentDistributionCentre(), priority);
 			//Make a mail event and add mail to it
-			MailEvent tempMailEvent = new MailEvent(s.getVehicle(), s.getVehicle().getDay(), tempMail);
+			MailEvent tempMailEvent = new MailEvent(s.getVehicle(), s.getVehicle().getDay(), tempMail ,currentDate);
 		
 			
 			//Step 3 -- ...........?

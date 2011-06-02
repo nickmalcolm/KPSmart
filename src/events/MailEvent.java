@@ -30,8 +30,8 @@ public class MailEvent extends Event {
 	 * @param day - the day on which this mail was given to the vehicle
 	 * @param mail - the mail object
 	 */
-	public MailEvent(Vehicle vehicle,Day day , Mail mail) {
-		super(vehicle, null);
+	public MailEvent(Vehicle vehicle,Day day , Mail mail , Date timestamp) {
+		super(vehicle, timestamp);
 		this.mail = mail;
 		this.day = day;
 	}
@@ -92,6 +92,7 @@ public class MailEvent extends Event {
 				"\tDay: "+day.toString();
 		return str;
 	}
+ 
 
 
 }

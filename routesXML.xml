@@ -235,8 +235,8 @@
         <ID>10</ID>
         <customerCostPerG>0.4</customerCostPerG>
         <customerCostPerCC>0.35</customerCostPerCC>
-        <transportCostPerG>0.0</transportCostPerG>
-        <transportCostPerCC>0.0</transportCostPerCC>
+        <transportCostPerG>10.0</transportCostPerG>
+        <transportCostPerCC>10.0</transportCostPerCC>
         <frequency>1</frequency>
         <duration>1</duration>
         <transportDay>SUNDAY</transportDay>
