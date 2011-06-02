@@ -82,7 +82,7 @@ public class MailEvent extends Event {
 	}
 
 	public Date getDate() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

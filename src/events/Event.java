@@ -46,7 +46,9 @@ public abstract class Event implements EventInterface{
 	 */
 	public int compareTo(EventInterface o) {
 		// TODO Auto-generated method stub
+	
 		return o.getDate().compareTo(timestamp);
+		
 	}
 	
 	public String toString(){

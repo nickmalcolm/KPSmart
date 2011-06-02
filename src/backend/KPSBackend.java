@@ -211,6 +211,9 @@ public class KPSBackend {
 		return distributionCentres;
 	}
 
+	public ArrayList<Route> getRoutes() {
+		return routes;
+	}
 	//Authenticates a manager to allow for extra options
 	public boolean authenticateManager(String s) {
 		//System.out.println(passwordHasher(s));
