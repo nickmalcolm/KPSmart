@@ -22,11 +22,15 @@ import backend.*;
 
 public class KPSmart implements ActionListener{
 	
+	//GUI ELEMENTS
 	KPSBackend kBackend;
 	KPSFrame kFrame;
 	JPasswordField kPasswordField;
 	boolean managerMode;
 	
+	/**
+	 * Creates a new instance of the KPSmart program
+	 */
 	public KPSmart() {
 	
 		kBackend = new KPSBackend();
@@ -34,13 +38,11 @@ public class KPSmart implements ActionListener{
 		kFrame = new KPSFrame(this, kBackend.getDistributionCentres(), kBackend.findFirms());
 		kPasswordField = new JPasswordField(10);
 		managerMode = false;
-		//KPSpasswordField.setActionCommand("OK");
-		//KPSpasswordField.addActionListener(this);
 	
 	}
 
+	//ACTION LISTENER HANDLING
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
 		
 		//FILE OPTIONS
 		if ("Save".equals(e.getActionCommand())) {
@@ -92,7 +94,6 @@ public class KPSmart implements ActionListener{
 				managerMode = true;
 				kFrame.enableBackward();
 				kFrame.disableForward();
-				System.out.println("MANAGER MODE");
 				return;
 			}
 			else {
@@ -116,9 +117,6 @@ public class KPSmart implements ActionListener{
 			if (kFrame.getPanel("mailPanel")) {
 
 				ArrayList<Object> info = kFrame.returnMailPanelInfo();
-				for (Object o : info) {
-					System.out.println(String.valueOf(o));
-				}
 				int i = 0;
 				int id = Integer.valueOf(String.valueOf(info.get(i++)));
 				i++; //Address
