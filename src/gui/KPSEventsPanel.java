@@ -131,7 +131,7 @@ public class KPSEventsPanel extends JPanel implements KPSPanel{
 		businessTriplesBox.add(averageDelivery);
 		businessTriplesBox.add(Box.createRigidArea(new Dimension(0, 5)));
 		
-		amountOfMailLabel = new JLabel("Amount of Mail:");
+		amountOfMailLabel = new JLabel("Route Statistics:");
 		amountOfMailLabel.setFont(new Font("Arial", 0, 12));
 		amountOfMailField = new JTextArea();
 		amountOfMailField.setEditable(false);

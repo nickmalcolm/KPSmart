@@ -196,9 +196,12 @@ public class KPSmart implements ActionListener{
 					if (dist.getName().equals(d)) { destination = dist; }
 				}
 				
-				kBackend.updatePrice(origin, destination, customerPriceG, customerPriceCC, priority, firm);
-				JOptionPane.showMessageDialog(kFrame, "Customer Price Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
-				kFrame.resetUpdatePanel();
+				if (kBackend.updatePrice(origin, destination, customerPriceG, customerPriceCC, priority, firm) != null) { 
+					JOptionPane.showMessageDialog(kFrame, "Customer Price Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
+					kFrame.resetUpdatePanel();
+				}
+				else 
+					JOptionPane.showMessageDialog(kFrame, "Customer Price Update Unuccessful", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 			return;
 		}
@@ -248,9 +251,11 @@ public class KPSmart implements ActionListener{
 					if (dist.getName().equals(d)) { destination = dist; }
 				}
 				
-				kBackend.discontinueTransport(origin, destination, priority, firm);
-				JOptionPane.showMessageDialog(kFrame, "Discontinue Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
-				kFrame.resetUpdatePanel();
+				if (kBackend.discontinueTransport(origin, destination, priority, firm) == true) {
+					JOptionPane.showMessageDialog(kFrame, "Discontinue Update Successful", "Successful Update is Successful", JOptionPane.INFORMATION_MESSAGE);
+					kFrame.resetUpdatePanel();
+				}
+				JOptionPane.showMessageDialog(kFrame, "Discontinue Update Failed: No Such Transport Exists", "ERROR", JOptionPane.ERROR_MESSAGE);
 				
 			}
 			return;			
