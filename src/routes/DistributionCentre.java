@@ -2,9 +2,9 @@ package routes;
 
 public class DistributionCentre {
 
-	private String name = "";
-	private String city = "";
-	private String country = "";
+	private String name ;
+	private String city ;
+	private String country ;
 	//Need for A star estimate
 	private int lat;
 	private int lon;

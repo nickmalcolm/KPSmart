@@ -523,15 +523,21 @@ public class KPSBackend {
 	 * @param priority
 	 */
 	public boolean sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
-		System.out.println("Sending mail started");
+		
 		ArrayList<MailEvent> mailEvents = CreateMailEvents(ID,weight,volume,origin,destination,priority);
+		
+		
+		if(origin.getCity().equalsIgnoreCase(destination.getCity())){
+			return false;
+		}
+		
 		
 		if(mailEvents == null){
 			//Didnt find a route by air 
 			return false ;
 		}
-		System.out.println("mailevents: " + mailEvents.size());
-		System.out.println("created arraylist of mail events");
+		//System.out.println("mailevents: " + mailEvents.size());
+		//System.out.println("created arraylist of mail events");
 
 		Collections.reverse(mailEvents);
 		if (mailEvents.size() > 0){
@@ -546,10 +552,11 @@ public class KPSBackend {
 			for (Event event : tempMail.getEvents()){
 				events.add(event);
 			}
+			/* testing
 			System.out.println("events: " + events.getSize());
 			for (Event event : events.getList()){
 				System.out.println(event.getClass() + ", " + event.getVehicle());
-			}
+			}*/
 			//FOund route and created mail
 			return true;
 
@@ -784,6 +791,7 @@ public class KPSBackend {
 		//to be added to a peice of mail later.
 		ArrayList<MailEvent> mailEvents = new ArrayList<MailEvent>();
 		//the search node that was at the destination.
+
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
 
 		//HAve a goal search node, now go back through nodes making a mail event for each route
@@ -828,18 +836,26 @@ public class KPSBackend {
 		Double wieght = Weight;
 		Double volume = Volume;
 		Priority priority = p;
+		
+		//should fail if equal
 
+		if(origin.getCity().equals(destination.getCity())){
+	 
+			return null;
+		}
+		
 		ArrayList<DistributionCentre> searched = new ArrayList<DistributionCentre>(); // The set of nodes already evaluated. 
 		PriorityQueue<SearchNode> fringe = new PriorityQueue<SearchNode>();			  // Fringe nodes
 
 		SearchNode search = new SearchNode(origin, null, wieght, volume, null);
 		fringe.offer(search); //Queue our starting node.
-
+ 
 
 		while(fringe.size() != 0){
-
+ 
 			SearchNode tempNode = fringe.poll(); 	//Remove node closest
 			searched.add(tempNode.current);			//Temp node added to visited 
+		 
 
 			if(tempNode.getCurrentDistributionCentre().equals(destination)){	//Goal node has been reached
 				//Returning final searchNode to do stuff with
@@ -874,7 +890,9 @@ public class KPSBackend {
 				}	
 
 			}
+ 
 		}
+ 
 
 		//NO ROUTE EXISTS 
 		return null;
@@ -912,7 +930,6 @@ public class KPSBackend {
 			else {
 				routeCost = (vehicle.getCustomerCostPerCC()*volume) + (vehicle.getCustomerCostPerG()*wieght);
 				
-			System.out.println();
 			}
 			if (previous == null){
 				totalPathCost = 0;
@@ -955,7 +972,6 @@ public class KPSBackend {
 		public ArrayList<DistributionCentre> getConnectingNodes(Priority pri){
 
 			Priority p = pri;
-			ArrayList<Route> routesFromNode = new ArrayList<Route>();
 			ArrayList<DistributionCentre> connected = new ArrayList<DistributionCentre>();
 			ArrayList<DistributionCentre> connectedByAir = new ArrayList<DistributionCentre>();
 			//Find all nodes that connect to this node

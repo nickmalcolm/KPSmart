@@ -55,7 +55,7 @@
     </d1>
     <d2>
       <name>Rotorua</name>
-      <city>Rototua</city>
+      <city>Rotorua</city>
       <country>New Zealand</country>
       <lat>-38</lat>
       <lon>176</lon>
@@ -94,7 +94,7 @@
   <routes.Route>
     <d1>
       <name>Rotorua</name>
-      <city>Rototua</city>
+      <city>Rotorua</city>
       <country>New Zealand</country>
       <lat>-38</lat>
       <lon>176</lon>
@@ -325,8 +325,8 @@
     <vehicles>
       <routes.Vehicle>
         <ID>14</ID>
-        <customerCostPerG>0.45</customerCostPerG>
-        <customerCostPerCC>0.45</customerCostPerCC>
+        <customerCostPerG>10000.45</customerCostPerG>
+        <customerCostPerCC>10000.45</customerCostPerCC>
         <transportCostPerG>0.0</transportCostPerG>
         <transportCostPerCC>0.0</transportCostPerCC>
         <frequency>1</frequency>
@@ -381,7 +381,7 @@
     </d1>
     <d2>
       <name>Rotorua</name>
-      <city>Rototua</city>
+      <city>Rotorua</city>
       <country>New Zealand</country>
       <lat>-38</lat>
       <lon>176</lon>
