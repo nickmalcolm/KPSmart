@@ -8,7 +8,12 @@ import priority.Priority;
 import routes.DistributionCentre;
 import routes.Firm;
 import routes.Vehicle;
-
+/**
+ * This represents an event where a Transport was discontinued.
+ * 
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ */
 public class DiscontinueTransportEvent extends Event {
 	
 	private Firm firm;

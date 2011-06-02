@@ -1,46 +1,46 @@
 package routes;
 
 public class DistributionCentre {
-	
+
 	private String name;
 	private String city;
 	private String country;
 	//Need for A star estimate
 	private int lat;
 	private int lon;
-	
+
 	public DistributionCentre(String name, String city, String country , int lat, int lon) {
-		this.name = name;
-		this.city = city;
-		this.country = country;
-		this.lat = lat;
-		this.lon = lon;
+	this.name = name;
+	this.city = city;
+	this.country = country;
+	this.lat = lat;
+	this.lon = lon;
 	}
 
 	public String getName() {
-		return name;
+	return name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+	this.name = name;
 	}
 
 	public String getCity() {
-		return city;
+	return city;
 	}
 
 	public void setCity(String city) {
-		this.city = city;
+	this.city = city;
 	}
 
 	public String getCountry() {
-		return country;
+	return country;
 	}
 	public int lat() {
-		return lat;
+	return lat;
 	}
 	public int lon() {
-		return lon;
+	return lon;
 	}
 
 	public void setCountry(String country) {

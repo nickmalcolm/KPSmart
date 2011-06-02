@@ -13,6 +13,10 @@ public class KPSTitlePanel extends JPanel{
 	ClassLoader cl = this.getClass().getClassLoader();
 	Image title = Toolkit.getDefaultToolkit().getImage(cl.getResource("images/kpsmart.jpg"));
 	
+	/**
+	 * Just class loads a pretty image because pretty is nice
+	 * (Look, I wasn't inspecting some kind of Spanish Inquisition!)
+	 */
 	public KPSTitlePanel() {
 		super();
 		this.setPreferredSize(new Dimension(600, 100));

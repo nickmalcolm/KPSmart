@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,28 +62,45 @@ public class KPSBackend {
 
 	//Parses the XML record(s) and retains their contents in memory
 	@SuppressWarnings("unchecked")
-	public void parseXMLRecord() {
+	/**
+	 * Loads the XML files from the external path and loads the data into the program.
+	 * The XStream library is used to read in the XML and create the objects using the data to 
+	 * use later.
+	 * @return true The XML has been parsed in correctly without errors
+	 * @return false The XML parse has encountered an error
+	 */
+	public boolean parseXMLRecord() {
 		xstream = new XStream();
+		xstream.setMode(XStream.NO_REFERENCES);
+		String file = "";
 		try{
 			//Reads in all the XML files from disk
 			String routeXMLInput;
 			String mailXMLinput;
 			String eventsXMLInput;
 			String distCentreXMLInput;
-
-			File fileToRead = new File("routesXML.xml");
+			
+			//Reading routes file
+			file = "routesXML.xml";
+			File fileToRead = new File(file);
 			routeXMLInput = readFileToString(fileToRead);
 
-			fileToRead = new File("mailXML.xml");
+			//Reading mail file
+			file = "mailXML.xml";
+			fileToRead = new File(file);
 			mailXMLinput = readFileToString(fileToRead);
 
-			fileToRead = new File("eventsXML.xml");
+			//Reading events file
+			file = "eventsXML.xml";
+			fileToRead = new File(file);
 			eventsXMLInput = readFileToString(fileToRead);
 
-			fileToRead = new File("distCentreXML.xml");
+			//Reading distribution centre file
+			file = "distCentreXML.xml";
+			fileToRead = new File(file);
 			distCentreXMLInput = readFileToString(fileToRead);
 
-			
+			//Tells XStream some pretty obvious things. (It gets confused sometimes)
 			xstream.alias("DistributionCentre", DistributionCentre.class);
 			xstream.alias("transportDay", Day.class);
 			
@@ -93,25 +111,23 @@ public class KPSBackend {
 			for (Event event : arrayEvents){
 				events.add(event);
 			}
-			xstream.alias("DistributionCentre", DistributionCentre.class);
 			distributionCentres = (Set<DistributionCentre>)xstream.fromXML(distCentreXMLInput);
 			
-			// TODO REMOVE DUMMY EVENTS.
-			Event event1 = new MailEvent(routes.get(0).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(0).getD1(), routes.get(0).getD2(), Priority.INTERNATIONAL_STANDARD));
-			Event event2 = new PriceUpdateEvent(routes.get(0).getVehicles().get(0), currentDate, 20, 20);
-			Event event3 = new MailEvent(routes.get(1).getVehicles().get(0), Day.MONDAY, new Mail(123456, 60, 60, routes.get(1).getD1(), routes.get(1).getD2(), Priority.DOMESTIC));
-			
-			events.add(event1);
-			events.add(event2);
-			events.add(event3);
-			// END TODO
+			return true;
 		}catch(Exception e){
+			System.out.println("-----There has been an error creating the XML files!-----");
+			System.out.println("Error loading file: "+file);			
 			System.out.println("Exception!: " +e+"\n ");
-			e.printStackTrace(); //Keep this here for debugging
+			//e.printStackTrace(); //Keep this here for debugging
+			return false;
 		}
 	}
 
-	//Method to read the disk file and put into a string.
+	/**
+	 * This reads the file from the disk, stepping through it and converting it into a string.
+	 * @param f The file that is to b e read
+	 * @return The string that has been read from the file. Null if an error has been encountered.
+	 */
 	public String readFileToString(File f){
 		if (f!=null){
 			try{
@@ -122,7 +138,7 @@ public class KPSBackend {
 				scanner.close();
 				return output;
 			}catch (Exception e) {
-				System.out.println("Error reading external file!");
+				System.out.println("Error reading external file "+f.getName()+"!");
 				return null;
 			}
 		}
@@ -130,39 +146,62 @@ public class KPSBackend {
 	}
 
 	//Creates the XML record. Returns true if record is created successfully.
+	/**
+	 * Saves the current state of the program into the external XML files.
+	 * Once saved, these XML files will be re-loaded the next time the program is run.
+	 * @return boolean Returns true if saved correctly, false if there has been an error.
+	 */
 	public boolean createXMLRecord(){
 		xstream = new XStream();
+		xstream.setMode(XStream.NO_REFERENCES);
+		FileWriter fileWriter;
+		BufferedWriter bufWriter;
+		String file = "";
 		try{
 			String routesXML = xstream.toXML(routes);
 			String mailXML = xstream.toXML(allMail);
-			String eventsXML = xstream.toXML(events);
+			String eventsXML = xstream.toXML(events.getList());
+			String distCentXMl = xstream.toXML(distributionCentres);
 
-			//Then save (and hash?) XML file
+			//Then save XML file
 			//Save routes file
-			FileWriter fileWriter = new FileWriter("routesXML.xml");
-			BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+			file = "routesXML.xml";
+			fileWriter = new FileWriter(file);
+			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(routesXML);
 			bufWriter.close();
 			fileWriter.close();
 
 			//Save mail file
-			fileWriter = new FileWriter("mailXML.xml");
+			file = "mailXML.xml";
+			fileWriter = new FileWriter(file);
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(mailXML);
 			bufWriter.close();
 			fileWriter.close();
 
 			//Save events file
-			fileWriter = new FileWriter("eventsXML.xml");
+			file = "eventsXML.xml";
+			fileWriter = new FileWriter(file);
 			bufWriter = new BufferedWriter(fileWriter);
 			bufWriter.write(eventsXML);
+			bufWriter.close();
+			fileWriter.close();
+			
+			//Save distribution Centres
+			file = "distCentreXML.xml";
+			fileWriter = new FileWriter(file);
+			bufWriter = new BufferedWriter(fileWriter);
+			bufWriter.write(distCentXMl);
 			bufWriter.close();
 			fileWriter.close();
 
 			return true;
 		}catch (Exception e) {
-			System.out.println("Exception!: " +e+"\n ");
-			e.printStackTrace(); //Keep this here for debugging
+			System.out.println("-----There has been an error creating the XML files!-----");
+			System.out.println("Error saving file: "+file);
+			//System.out.println("Exception!: " +e+"\n ");
+			//e.printStackTrace(); //Keep this here for debugging
 			return false;
 		}
 
@@ -193,11 +232,7 @@ public class KPSBackend {
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
 		// select the events within an appropriate timeframe
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -242,11 +277,7 @@ public class KPSBackend {
 		Double sum = 0.0;
 
 		// select the events within an appropriate timeframe
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -272,12 +303,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateDeliveryTimes(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -306,7 +332,7 @@ public class KPSBackend {
 						}
 					}
 				}
-				result.put(pRoute, (sum / numEvents));
+				result.put(pRoute, (numEvents == 0 ? 0 : (sum / numEvents)));
 			}
 		}
 		// return avg delivery time
@@ -321,11 +347,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Integer> calculateAmountOfMail(int eventTime){
 		Map<PrioritisedRoute, Integer> result = new HashMap<PrioritisedRoute, Integer>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -364,11 +386,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateTotalVolumeOfMail(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -378,7 +396,7 @@ public class KPSBackend {
 				PrioritisedRoute pRoute = new PrioritisedRoute();
 				pRoute.setRoute(route);
 				pRoute.setPriority(priority);
-				double vol = 0.0;
+				double vol = 0;
 				// loop through events and find all mail corresponding to correct vehicle
 				for (Event event : displayedEvents){
 					if (event instanceof MailEvent){
@@ -407,11 +425,7 @@ public class KPSBackend {
 	public Map<PrioritisedRoute, Double> calculateTotalWeightOfMail(int eventTime){
 		Map<PrioritisedRoute, Double> result = new HashMap<PrioritisedRoute, Double>();
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// yuck code! want to buy LINQ query/database...
 		// loop through every route
@@ -449,11 +463,7 @@ public class KPSBackend {
 	public Double calculateExpenditure(int eventTime){
 		Double sum = 0.0;
 
-		if (eventTime > events.getSize() - 1)
-			eventTime = events.getSize();
-		else if (eventTime < 0)
-			eventTime = 0;
-		List<Event> displayedEvents = events.getList().subList(0, eventTime);
+		List<Event> displayedEvents = getEvents(eventTime);
 
 		// loop through events
 		for (Event event : displayedEvents){
@@ -495,17 +505,18 @@ public class KPSBackend {
 	 * @param destination
 	 * @param priority
 	 */
-	public int sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
+	public boolean sendMail(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority) {
 		System.out.println("Sending mail started");
 		ArrayList<MailEvent> mailEvents = CreateMailEvents(ID,weight,volume,origin,destination,priority);
-
+		
 		if(mailEvents == null){
 			//Didnt find a route by air 
-			return 1 ;
+			return false ;
 		}
 		System.out.println("mailevents: " + mailEvents.size());
 		System.out.println("created arraylist of mail events");
 
+		Collections.reverse(mailEvents);
 		if (mailEvents.size() > 0){
 			//Make a piece of mail
 			Mail tempMail = new Mail(ID, weight, volume, origin, destination, priority);
@@ -523,10 +534,10 @@ public class KPSBackend {
 				System.out.println(event.getClass() + ", " + event.getVehicle());
 			}
 			//FOund route and created mail
-			return 0;
+			return true;
 
 		}
-		return 1;
+		return false;
 	}
 
 	/**
@@ -629,8 +640,12 @@ public class KPSBackend {
 	}
 
 	public List<Event> getEvents(int eventTime){
+		if (events.getSize() == 0){
+			return new ArrayList<Event>();
+		}
+		
 		// get list of events
-		if (eventTime > events.getSize() - 1)
+		if (eventTime > events.getSize())
 			eventTime = events.getSize();
 		else if (eventTime < 0)
 			eventTime = 0;
@@ -706,6 +721,13 @@ public class KPSBackend {
 		return null;
 	}
 
+
+
+
+
+
+
+
 	//Total cost of a piece of mail.
 	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
@@ -715,6 +737,8 @@ public class KPSBackend {
 		double cost = goalNode.getTotalPathCost();
 		return cost;
 	}
+
+
 
 	//Creates mail eveents for travel between 2 node, connected or unconnected
 	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){

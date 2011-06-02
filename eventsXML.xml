@@ -1,1 +1,156 @@
-<list/>
+<list>
+  <events.MailEvent>
+    <vehicle>
+      <ID>12</ID>
+      <customerCostPerG>0.6</customerCostPerG>
+      <customerCostPerCC>0.4</customerCostPerCC>
+      <transportCostPerG>0.0</transportCostPerG>
+      <transportCostPerCC>0.0</transportCostPerCC>
+      <frequency>2</frequency>
+      <duration>1</duration>
+      <transportDay>WEDNESDAY</transportDay>
+      <priority>INTERNATIONAL_AIR</priority>
+      <firm>
+        <name>Air Postal Express</name>
+      </firm>
+    </vehicle>
+    <mail>
+      <ID>17503909</ID>
+      <weight>28.0</weight>
+      <volume>23.0</volume>
+      <origin>
+        <name>Auckland</name>
+        <city>Auckland</city>
+        <country>New Zealand</country>
+        <lat>-36</lat>
+        <lon>174</lon>
+      </origin>
+      <destination>
+        <name>Sydney</name>
+        <city>Sydney</city>
+        <country>Australia</country>
+        <lat>-33</lat>
+        <lon>151</lon>
+      </destination>
+      <priority>INTERNATIONAL_AIR</priority>
+    </mail>
+    <day>WEDNESDAY</day>
+    <route>
+      <d1>
+        <name>Auckland</name>
+        <city>Auckland</city>
+        <country>New Zealand</country>
+        <lat>-36</lat>
+        <lon>174</lon>
+      </d1>
+      <d2>
+        <name>Sydney</name>
+        <city>Sydney</city>
+        <country>Australia</country>
+        <lat>-33</lat>
+        <lon>151</lon>
+      </d2>
+      <vehicles>
+        <routes.Vehicle>
+          <ID>12</ID>
+          <customerCostPerG>0.6</customerCostPerG>
+          <customerCostPerCC>0.4</customerCostPerCC>
+          <transportCostPerG>0.0</transportCostPerG>
+          <transportCostPerCC>0.0</transportCostPerCC>
+          <frequency>2</frequency>
+          <duration>1</duration>
+          <transportDay>WEDNESDAY</transportDay>
+          <priority>INTERNATIONAL_AIR</priority>
+          <firm>
+            <name>Air Postal Express</name>
+          </firm>
+        </routes.Vehicle>
+        <routes.Vehicle>
+          <ID>13</ID>
+          <customerCostPerG>0.45</customerCostPerG>
+          <customerCostPerCC>0.45</customerCostPerCC>
+          <transportCostPerG>0.0</transportCostPerG>
+          <transportCostPerCC>0.0</transportCostPerCC>
+          <frequency>1</frequency>
+          <duration>1</duration>
+          <transportDay>THURSDAY</transportDay>
+          <priority>INTERNATIONAL_STANDARD</priority>
+          <firm>
+            <name>International Postal Services</name>
+          </firm>
+        </routes.Vehicle>
+      </vehicles>
+    </route>
+    <profitOnRoute>26.0</profitOnRoute>
+  </events.MailEvent>
+  <events.MailEvent>
+    <vehicle>
+      <ID>7</ID>
+      <customerCostPerG>0.35</customerCostPerG>
+      <customerCostPerCC>0.55</customerCostPerCC>
+      <transportCostPerG>0.0</transportCostPerG>
+      <transportCostPerCC>0.0</transportCostPerCC>
+      <frequency>1</frequency>
+      <duration>1</duration>
+      <transportDay>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</transportDay>
+      <priority>DOMESTIC</priority>
+      <firm>
+        <name>NZ Couriers</name>
+      </firm>
+    </vehicle>
+    <mail>
+      <ID>13211525</ID>
+      <weight>17.0</weight>
+      <volume>7.0</volume>
+      <origin>
+        <name>Palmerston North</name>
+        <city>Palmerston North</city>
+        <country>New Zealand</country>
+        <lat>-40</lat>
+        <lon>175</lon>
+      </origin>
+      <destination>
+        <name>Wellington</name>
+        <city>Wellington</city>
+        <country>New Zealand</country>
+        <lat>-41</lat>
+        <lon>174</lon>
+      </destination>
+      <priority>DOMESTIC</priority>
+    </mail>
+    <day>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</day>
+    <route>
+      <d1>
+        <name>Palmerston North</name>
+        <city>Palmerston North</city>
+        <country>New Zealand</country>
+        <lat>-40</lat>
+        <lon>175</lon>
+      </d1>
+      <d2>
+        <name>Wellington</name>
+        <city>Wellington</city>
+        <country>New Zealand</country>
+        <lat>-41</lat>
+        <lon>174</lon>
+      </d2>
+      <vehicles>
+        <routes.Vehicle>
+          <ID>7</ID>
+          <customerCostPerG>0.35</customerCostPerG>
+          <customerCostPerCC>0.55</customerCostPerCC>
+          <transportCostPerG>0.0</transportCostPerG>
+          <transportCostPerCC>0.0</transportCostPerCC>
+          <frequency>1</frequency>
+          <duration>1</duration>
+          <transportDay>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</transportDay>
+          <priority>DOMESTIC</priority>
+          <firm>
+            <name>NZ Couriers</name>
+          </firm>
+        </routes.Vehicle>
+      </vehicles>
+    </route>
+    <profitOnRoute>9.8</profitOnRoute>
+  </events.MailEvent>
+</list>

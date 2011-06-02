@@ -96,9 +96,16 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 	private Priority[] priorityList = Priority.values();
 	private Day[] dayList = Day.values();
 
+	/**
+	 * Creates a KPSUpdatePanel for use with KPSFrame
+	 * @param actionlistener Passed by parent
+	 * @param centres Set of DistributionCentre elements for population
+	 * @param firms List of Firm elements for population
+	 */
 	public KPSUpdatePanel(ActionListener actionlistener, Set<DistributionCentre> centres, List<Firm> firms) {
 		super();
 		
+		//ERROR CHECKING
 		if (centres != null) {
 			originList = new String[centres.size()];
 			destList = new String[centres.size()];
@@ -108,6 +115,7 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 				destList[i++] = d.getName();
 			}
 		}
+		//XML FILE FAILED TO LOAD
 		else {
 			originList = new String[1];
 			destList = new String[1];
@@ -400,8 +408,13 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		
 	}
 	
+	/**
+	 * Returns an ArrayList of customer price update information
+	 * (WARNING: The contents are undefined and variable. Handle with care!)
+	 * @return An ArrayList of mail information of differing types
+	 */
 	public ArrayList returnCustomerPriceUpdateInfo() {
-
+		//Error checking of text fields
 		try {
 			double d = Double.valueOf(String.valueOf(this.customerPriceCC.getText()));
 		}
@@ -428,7 +441,13 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		return info;
 	}
 	
+	/**
+	 * Returns an ArrayList of transport cost update information
+	 * (WARNING: The contents are undefined and variable. Handle with care!)
+	 * @return An ArrayList of mail information of differing types
+	 */
 	public ArrayList returnTransportCostUpdateInfo() {
+		//Error checking of text fields
 		try {
 			double d = Double.valueOf(String.valueOf(this.transportPriceG.getText()));
 		}
@@ -474,6 +493,11 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		return info;
 	}
 	
+	/**
+	 * Returns an ArrayList of discontinue transport information
+	 * (WARNING: The contents are undefined and variable. Handle with care!)
+	 * @return An ArrayList of mail information of differing types
+	 */
 	public ArrayList returnDiscontinueTransportInfo() {
 		ArrayList info = new ArrayList();
 		info.add(this.discontinueOrigins.getSelectedItem());
@@ -483,6 +507,9 @@ public class KPSUpdatePanel extends JPanel implements KPSPanel{
 		return info;
 	}
 
+	/**
+	 * Resets the panel
+	 */
 	public void reset() {
 		
 		//Update Customer Cost Fields

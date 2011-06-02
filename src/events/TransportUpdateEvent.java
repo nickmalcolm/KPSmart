@@ -6,6 +6,14 @@ import routes.DistributionCentre;
 import routes.Vehicle;
 import backend.Day;
 
+/**
+ * A Transport Update Event records a change in a Transport's variables.
+ * In addition, the first Transport Update Event for a unique (firm, priority and route)
+ * will create a new Transport.
+ * 
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ */
 public class TransportUpdateEvent extends Event {
 	
 	private double costPerCC;
@@ -29,11 +37,6 @@ public class TransportUpdateEvent extends Event {
 	 * @param origin - the DistributionCentre from which the transport departs
 	 * @param destination - the DistributionCentre at which the transport arrives
 	 */
-	
-	
-	
-	
-	
 	public TransportUpdateEvent(Vehicle vehicle, double costPerCC, double costPerG,
 			int frequency, int durationInMinutes, Date timestamp,
 			DistributionCentre origin, DistributionCentre destination) {
@@ -89,7 +92,7 @@ public class TransportUpdateEvent extends Event {
 	}
 
 	public String displayString() {
-		String str = "Discontinue Transport Event: \n" +
+		String str = "Update Transport Event: \n" +
 				"\tVehicle: "+super.getVehicle()+"\n"+
 				"\tCost per CC: "+costPerCC+"\n"+
 				"\tCost per g: "+costPerG+"\n"+

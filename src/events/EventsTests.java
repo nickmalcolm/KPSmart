@@ -9,6 +9,11 @@ import org.junit.Test;
 
 import backend.Day;
 
+/**
+ * Some Event tests
+ * @author Nicholas Malcolm - malcolnich - 300170288
+ *
+ */
 public class EventsTests extends TestCase{
 	MailEvent old;
 	MailEvent newer;
