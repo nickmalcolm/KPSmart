@@ -727,7 +727,11 @@ public class KPSBackend {
 
 
 
-
+	/**
+	 * 
+	 * Returns a double which is the total cost of a piece of mail.
+	 * @return cost
+	 */
 	//Total cost of a piece of mail.
 	public  double returnMailCost(double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		SearchNode goalNode = CalculateRoute(origin, destination, weight, volume, priority);
@@ -739,7 +743,20 @@ public class KPSBackend {
 	}
 
 
-
+	/**
+	 * @param ID		The ID of the mail  
+	 * @param weight    The wieght of the mail 
+	 * @param volume	The volume of the  mail 
+	 * @param origin 	
+	 * @param destination
+	 * @param priority
+	 * 
+	 * Creates a list of mail events for a peice of mail by passing all relevant info to 
+	 * the calclate route method getting back a search node and then reconstructing the path
+	 * the mail took and returning it
+	 * 
+	 * @return mailEvents
+	 */
 	//Creates mail eveents for travel between 2 node, connected or unconnected
 	public  ArrayList<MailEvent> CreateMailEvents(int ID, double weight, double volume, DistributionCentre origin, DistributionCentre destination, Priority priority){
 		//to be added to a peice of mail later.
@@ -768,6 +785,20 @@ public class KPSBackend {
 
 		return mailEvents;
 	}
+	
+	
+	/** 
+	 * @param weight    The wieght of the mail 
+	 * @param volume	The volume of the  mail 
+	 * @param origin 	
+	 * @param destination
+	 * @param priority
+	 * 
+	 * Calculates the optimal route for a piece of mail to take based on the 
+	 * cheapest route, also makes sure that if no route is possible null is returned
+	 * 
+	 * @return mailEvents
+	 */
 	//Calculates path between nodes
 	public SearchNode  CalculateRoute(DistributionCentre o,DistributionCentre d , Double Weight, Double Volume , Priority p){
 		DistributionCentre destination = d;	
@@ -829,6 +860,12 @@ public class KPSBackend {
 	}
 
 	//For finding route
+	/**
+	 * 
+	 * Used in the Dijkstra s  search algorithm 
+	 * 
+	 * @return mailEvents
+	 */
 	private class SearchNode implements Comparable<SearchNode>{
 
 
@@ -885,6 +922,13 @@ public class KPSBackend {
 		public Vehicle getVehicle() {
 			return vehicle;
 		}
+		
+		/**
+		 * Find all nodes that a have a route in common with the current dist center 
+		 * also checks if they can be reached with current priority
+		 * eg if air priority and there is no air vehicle between 2 dist centers then that
+		 * node wont be returned.
+		 */
 		//Gets all connecting nodes that are valid (eg air nodes if air priority)
 		public ArrayList<DistributionCentre> getConnectingNodes(Priority pri){
 
