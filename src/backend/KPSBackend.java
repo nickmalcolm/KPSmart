@@ -550,7 +550,7 @@ public class KPSBackend {
 			tempMail.setEvents(mailEvents);
 			//Add mail to all mail
 			allMail.add(tempMail);
-			getMail(ID);
+		 
 			// add new MailEvents
 			for (Event event : tempMail.getEvents()){
 				events.add(event);
@@ -656,18 +656,6 @@ public class KPSBackend {
 		return hasDiscontinued;
 	}
 
-	public void getMail(int ID) {
-		System.out.println(allMail.size());
-		for (Mail m : allMail) {
-			String answer = "ID: " + m.getID()
-			+ "\nOrigin: " + m.getOrigin().getName()
-			+ "\nDestination: " + m.getDestination().getName()
-			+ "\nWeight: " + m.getWeight()
-			+ "\nVolume: " + m.getVolume()
-			+ "\nPriority: " + m.getPriority();
-			System.out.println(answer);
-		}
-	}
 
 	/**
 	 * Gets a sublist of events within a given event timeframe.

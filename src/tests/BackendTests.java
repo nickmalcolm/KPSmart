@@ -93,13 +93,16 @@ public class BackendTests extends TestCase{
 	@Test
 	public void testWeightOfMail(){
 		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalWeightOfMail(1);
-		
-		
-		double wieght = 0;
-		
 		 
-		 
-		
+		PrioritisedRoute pRoute =null;
+		for(PrioritisedRoute p : mailWieght.keySet()){
+			 if(p != null){
+				 pRoute = p;
+			 }
+		 }
+		System.out.println(pRoute.toString());
+		System.out.println(mailWieght.get(pRoute));
+		 assertEquals(mailWieght.get(pRoute), 82.0);
 	 
 	}
 	
@@ -109,11 +112,23 @@ public class BackendTests extends TestCase{
 	//Checking if right for 1st 3 dummy events
 	@Test
 	public void testVolumeOfMail(){
-		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalVolumeOfMail(3);
+		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalVolumeOfMail(100);
+		PrioritisedRoute pRoute =null;
+		for(PrioritisedRoute p : mailWieght.keySet()){
+			 if(p.getRoute().getD1().getName().equals("Wellington") && p.getRoute().getD2().getName().equals("Palmerston North") && p.getPriority() == Priority.DOMESTIC){
+				 pRoute = p;
+				 System.out.println("goodo");
+				 break;
+			 }
+		 }
+		System.out.println(pRoute.toString());
+		System.out.println(mailWieght.get(pRoute));
+		 assertEquals(mailWieght.get(pRoute), 28.0);
 	 
-		
-		
 	}
+		
+		
+	
 	
 	//expenditure
 	//Checking if right for 1st 3 dummy events
