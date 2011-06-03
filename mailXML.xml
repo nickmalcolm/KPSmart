@@ -548,8 +548,8 @@
         </vehicle>
         <mail>
           <ID>29329020</ID>
-          <weight>05.0</weight>
-          <volume>05.0</volume>
+          <weight>5.0</weight>
+          <volume>5.0</volume>
           <origin>
             <name>Wellington</name>
             <city>Wellington</city>
@@ -619,8 +619,8 @@
   </backend.Mail>
   <backend.Mail>
     <ID>48534885</ID>
-    <weight>012.0</weight>
-    <volume>012.0</volume>
+    <weight>12.0</weight>
+    <volume>12.0</volume>
     <origin>
       <name>Rotorua</name>
       <city>Rototua</city>
@@ -760,8 +760,8 @@
         </vehicle>
         <mail>
           <ID>70146577</ID>
-          <weight>01.0</weight>
-          <volume>01.0</volume>
+          <weight>1.0</weight>
+          <volume>1.0</volume>
           <origin>
             <name>Wellington</name>
             <city>Wellington</city>
@@ -844,8 +844,8 @@
         </vehicle>
         <mail>
           <ID>70146577</ID>
-          <weight>02.0</weight>
-          <volume>01.0</volume>
+          <weight>2.0</weight>
+          <volume>1.0</volume>
           <origin>
             <name>Palmerston North</name>
             <city>Palmerston North</city>
@@ -901,8 +901,8 @@
   </backend.Mail>
   <backend.Mail>
     <ID>28471063</ID>
-    <weight>02.0</weight>
-    <volume>03.0</volume>
+    <weight>2.0</weight>
+    <volume>3.0</volume>
     <origin>
       <name>Palmerston North</name>
       <city>Palmerston North</city>
@@ -936,8 +936,8 @@
         </vehicle>
         <mail>
           <ID>28471063</ID>
-          <weight>01.0</weight>
-          <volume>02.0</volume>
+          <weight>1.0</weight>
+          <volume>2.0</volume>
           <origin>
             <name>Rotorua</name>
             <city>Rototua</city>
@@ -1006,8 +1006,8 @@
         </vehicle>
         <mail>
           <ID>28471063</ID>
-          <weight>04.0</weight>
-          <volume>05.0</volume>
+          <weight>4.0</weight>
+          <volume>5.0</volume>
           <origin>
             <name>Palmerston North</name>
             <city>Palmerston North</city>
@@ -2420,6 +2420,99 @@
           </firm>
         </vehicle>
         <timestamp>2011-06-03 11:50:37.199 NZST</timestamp>
+        <mail>
+          <ID>1</ID>
+          <weight>1.0</weight>
+          <volume>1.0</volume>
+          <origin>
+            <name>Wellington</name>
+            <city>Wellington</city>
+            <country>New Zealand</country>
+            <lat>-41</lat>
+            <lon>174</lon>
+          </origin>
+          <destination>
+            <name>Palmerston North</name>
+            <city>Palmerston North</city>
+            <country>New Zealand</country>
+            <lat>-40</lat>
+            <lon>175</lon>
+          </destination>
+          <priority>DOMESTIC</priority>
+        </mail>
+        <day>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</day>
+        <route>
+          <d1>
+            <name>Palmerston North</name>
+            <city>Palmerston North</city>
+            <country>New Zealand</country>
+            <lat>-40</lat>
+            <lon>175</lon>
+          </d1>
+          <d2>
+            <name>Wellington</name>
+            <city>Wellington</city>
+            <country>New Zealand</country>
+            <lat>-41</lat>
+            <lon>174</lon>
+          </d2>
+          <vehicles>
+            <routes.Vehicle>
+              <ID>7</ID>
+              <customerCostPerG>0.35</customerCostPerG>
+              <customerCostPerCC>0.55</customerCostPerCC>
+              <transportCostPerG>10.0</transportCostPerG>
+              <transportCostPerCC>10.0</transportCostPerCC>
+              <frequency>1</frequency>
+              <duration>1</duration>
+              <transportDay>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</transportDay>
+              <priority>DOMESTIC</priority>
+              <firm>
+                <name>NZ Couriers</name>
+              </firm>
+            </routes.Vehicle>
+          </vehicles>
+        </route>
+        <profitOnRoute>0.9</profitOnRoute>
+      </events.MailEvent>
+    </events>
+  </backend.Mail>
+  <backend.Mail>
+    <ID>1</ID>
+    <weight>1.0</weight>
+    <volume>1.0</volume>
+    <origin>
+      <name>Wellington</name>
+      <city>Wellington</city>
+      <country>New Zealand</country>
+      <lat>-41</lat>
+      <lon>174</lon>
+    </origin>
+    <destination>
+      <name>Palmerston North</name>
+      <city>Palmerston North</city>
+      <country>New Zealand</country>
+      <lat>-40</lat>
+      <lon>175</lon>
+    </destination>
+    <priority>DOMESTIC</priority>
+    <events>
+      <events.MailEvent>
+        <vehicle>
+          <ID>7</ID>
+          <customerCostPerG>0.35</customerCostPerG>
+          <customerCostPerCC>0.55</customerCostPerCC>
+          <transportCostPerG>10.0</transportCostPerG>
+          <transportCostPerCC>10.0</transportCostPerCC>
+          <frequency>1</frequency>
+          <duration>1</duration>
+          <transportDay>FRIDAY_FRIDAY_GETTING_DOWN_ON_FRIDAY</transportDay>
+          <priority>DOMESTIC</priority>
+          <firm>
+            <name>NZ Couriers</name>
+          </firm>
+        </vehicle>
+        <timestamp>2011-06-03 14:52:59.755 NZST</timestamp>
         <mail>
           <ID>1</ID>
           <weight>1.0</weight>

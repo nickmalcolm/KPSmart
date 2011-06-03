@@ -1,5 +1,33 @@
 <set>
   <routes.DistributionCentre>
+    <name>Sydney</name>
+    <city>Sydney</city>
+    <country>Australia</country>
+    <lat>-33</lat>
+    <lon>151</lon>
+  </routes.DistributionCentre>
+  <routes.DistributionCentre>
+    <name>New York</name>
+    <city>New York</city>
+    <country>United States</country>
+    <lat>40</lat>
+    <lon>-74</lon>
+  </routes.DistributionCentre>
+  <routes.DistributionCentre>
+    <name>Wellington</name>
+    <city>Wellington</city>
+    <country>New Zealand</country>
+    <lat>-41</lat>
+    <lon>174</lon>
+  </routes.DistributionCentre>
+  <routes.DistributionCentre>
+    <name>Dunedin</name>
+    <city>Dunedin</city>
+    <country>New Zealand</country>
+    <lat>-45</lat>
+    <lon>170</lon>
+  </routes.DistributionCentre>
+  <routes.DistributionCentre>
     <name>Hamilton</name>
     <city>Hamilton</city>
     <country>New Zealand</country>
@@ -14,11 +42,11 @@
     <lon>176</lon>
   </routes.DistributionCentre>
   <routes.DistributionCentre>
-    <name>Auckland</name>
-    <city>Auckland</city>
+    <name>Christchurch</name>
+    <city>Christchurch</city>
     <country>New Zealand</country>
-    <lat>-36</lat>
-    <lon>174</lon>
+    <lat>-43</lat>
+    <lon>172</lon>
   </routes.DistributionCentre>
   <routes.DistributionCentre>
     <name>Palmerston North</name>
@@ -28,38 +56,10 @@
     <lon>175</lon>
   </routes.DistributionCentre>
   <routes.DistributionCentre>
-    <name>New York</name>
-    <city>New York</city>
-    <country>United States</country>
-    <lat>40</lat>
-    <lon>-74</lon>
-  </routes.DistributionCentre>
-  <routes.DistributionCentre>
-    <name>Christchurch</name>
-    <city>Christchurch</city>
+    <name>Auckland</name>
+    <city>Auckland</city>
     <country>New Zealand</country>
-    <lat>-43</lat>
-    <lon>172</lon>
-  </routes.DistributionCentre>
-  <routes.DistributionCentre>
-    <name>Wellington</name>
-    <city>Wellington</city>
-    <country>New Zealand</country>
-    <lat>-41</lat>
+    <lat>-36</lat>
     <lon>174</lon>
-  </routes.DistributionCentre>
-  <routes.DistributionCentre>
-    <name>Sydney</name>
-    <city>Sydney</city>
-    <country>Australia</country>
-    <lat>-33</lat>
-    <lon>151</lon>
-  </routes.DistributionCentre>
-  <routes.DistributionCentre>
-    <name>Dunedin</name>
-    <city>Dunedin</city>
-    <country>New Zealand</country>
-    <lat>-45</lat>
-    <lon>170</lon>
   </routes.DistributionCentre>
 </set>

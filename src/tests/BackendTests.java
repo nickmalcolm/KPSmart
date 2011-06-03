@@ -32,8 +32,6 @@ public class BackendTests extends TestCase{
 	//adding mail event where we lose lots o money , should be cit route
 	@Test
 	public void testCritRoute(){
-		 
-		 
 		DistributionCentre origin = null;
 		DistributionCentre destination = null;
 		for(DistributionCentre d : kBackend.getDistributionCentres()){
@@ -51,7 +49,7 @@ public class BackendTests extends TestCase{
 		Map<PrioritisedRoute, Double> critical = kBackend.getCriticalRoute(4);
 		
 		critical.containsKey(route);
-		}
+	}
 		
 	
 	//see if reveune is right for 1st 2 dummy events
@@ -60,50 +58,82 @@ public class BackendTests extends TestCase{
 		assertEquals(kBackend.calculateRevenue(1), 26.0);
 	
 		assertEquals(kBackend.calculateRevenue(2), 35.8);
-	
-		
-		
 	}
 	
 	//delivery times
 	//Checking if right for 1st 3 dummy events
 	@Test
 	public void testDeliveryTimes(){
-		Map<PrioritisedRoute, Double> deliveryTimes = kBackend.calculateDeliveryTimes(3);
-		 
+		Map<PrioritisedRoute, Double> deliveryTimes = kBackend.calculateDeliveryTimes(2);
+		PrioritisedRoute pRoute1 =null;
+		PrioritisedRoute pRoute2 = null;
 		
-		
+		for(PrioritisedRoute p : deliveryTimes.keySet()){
+			 if(p.getRoute().getD1().getName().equals("Auckland") 
+					 && p.getRoute().getD2().getName().equals("Sydney") 
+					 && p.getPriority() == Priority.INTERNATIONAL_AIR){
+				 pRoute1 = p;
+			 }
+			 else if (p.getRoute().getD1().getName().equals("Palmerston North") 
+					 && p.getRoute().getD2().getName().equals("Wellington") 
+					 && p.getPriority() == Priority.DOMESTIC){
+				 pRoute2 = p;
+			 }
+		 }
+		System.out.println(pRoute2.toString());
+		System.out.println(deliveryTimes.get(pRoute2));
+		assertEquals(deliveryTimes.get(pRoute1), 1.0);
+		assertEquals(deliveryTimes.get(pRoute2), 1.0);
 	}
 	
 	//amount of mail
 	//Checking if right for 1st 3 dummy events
 	@Test
 	public void testAmountOfMail(){
-		Map<PrioritisedRoute, Integer> amountOfMail = kBackend.calculateAmountOfMail(3);
-		 for(PrioritisedRoute p : amountOfMail.keySet()){
-			 if(p.getRoute() )
+		Map<PrioritisedRoute, Integer> mailAmount = kBackend.calculateAmountOfMail(3);
+		PrioritisedRoute pRoute1 =null;
+		PrioritisedRoute pRoute2 = null;
+		
+		for(PrioritisedRoute p : mailAmount.keySet()){
+			 if(p.getRoute().getD1().getName().equals("Auckland") 
+					 && p.getRoute().getD2().getName().equals("Sydney") 
+					 && p.getPriority() == Priority.INTERNATIONAL_AIR){
+				 pRoute1 = p;
+			 }
+			 else if (p.getRoute().getD1().getName().equals("Palmerston North") 
+					 && p.getRoute().getD2().getName().equals("Wellington") 
+					 && p.getPriority() == Priority.DOMESTIC){
+				 pRoute2 = p;
+			 }
 		 }
-		
-		
+		assert(mailAmount.get(pRoute1) == 1);
+		assert(mailAmount.get(pRoute2) == 2);
 	}
 	
 	//  wieght of mail
-	//Checking if right for 1st   dummy event 
+	//Checking if right for 1st 3 dummy event 
 	//simple test for 1st piece of mail
 	@Test
 	public void testWeightOfMail(){
-		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalWeightOfMail(1);
-		 
-		PrioritisedRoute pRoute =null;
-		for(PrioritisedRoute p : mailWieght.keySet()){
-			 if(p != null){
-				 pRoute = p;
+		Map<PrioritisedRoute, Double> mailWeight = kBackend.calculateTotalWeightOfMail(2);
+		PrioritisedRoute pRoute1 = null;
+		PrioritisedRoute pRoute2 = null;
+		
+		for(PrioritisedRoute p : mailWeight.keySet()){
+			 if(p.getRoute().getD1().getName().equals("Auckland") 
+					 && p.getRoute().getD2().getName().equals("Sydney") 
+					 && p.getPriority() == Priority.INTERNATIONAL_AIR){
+				 pRoute1 = p;
+			 }
+			 else if (p.getRoute().getD1().getName().equals("Palmerston North") 
+					 && p.getRoute().getD2().getName().equals("Wellington") 
+					 && p.getPriority() == Priority.DOMESTIC){
+				 pRoute2 = p;
 			 }
 		 }
-		System.out.println(pRoute.toString());
-		System.out.println(mailWieght.get(pRoute));
-		 assertEquals(mailWieght.get(pRoute), 82.0);
-	 
+		assertEquals(mailWeight.get(pRoute1), 28.0);
+		assertEquals(mailWeight.get(pRoute2), 17.0);
+		
 	}
 	
 	
@@ -112,19 +142,27 @@ public class BackendTests extends TestCase{
 	//Checking if right for 1st 3 dummy events
 	@Test
 	public void testVolumeOfMail(){
-		Map<PrioritisedRoute, Double> mailWieght = kBackend.calculateTotalVolumeOfMail(100);
-		PrioritisedRoute pRoute =null;
-		for(PrioritisedRoute p : mailWieght.keySet()){
-			 if(p.getRoute().getD1().getName().equals("Wellington") && p.getRoute().getD2().getName().equals("Palmerston North") && p.getPriority() == Priority.DOMESTIC){
-				 pRoute = p;
-				 System.out.println("goodo");
-				 break;
+		Map<PrioritisedRoute, Double> mailVolume = kBackend.calculateTotalVolumeOfMail(2);
+		PrioritisedRoute pRoute1 =null;
+		PrioritisedRoute pRoute2 = null;
+		
+		for(PrioritisedRoute p : mailVolume.keySet()){
+			 if(p.getRoute().getD1().getName().equals("Auckland") 
+					 && p.getRoute().getD2().getName().equals("Sydney") 
+					 && p.getPriority() == Priority.INTERNATIONAL_AIR){
+				 pRoute1 = p;
+			 }
+			 else if (p.getRoute().getD1().getName().equals("Palmerston North") 
+					 && p.getRoute().getD2().getName().equals("Wellington") 
+					 && p.getPriority() == Priority.DOMESTIC){
+				 pRoute2 = p;
 			 }
 		 }
-		System.out.println(pRoute.toString());
-		System.out.println(mailWieght.get(pRoute));
-		 assertEquals(mailWieght.get(pRoute), 28.0);
-	 
+
+		System.out.println(pRoute2.toString());
+		System.out.println(mailVolume.get(pRoute2));
+		assertEquals(mailVolume.get(pRoute1), 23.0);
+		assertEquals(mailVolume.get(pRoute2), 7.0);
 	}
 		
 		
